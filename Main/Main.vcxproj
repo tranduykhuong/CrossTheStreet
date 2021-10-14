@@ -143,6 +143,7 @@
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CMENU.cpp" />
     <ClCompile Include="Common_Function.cpp" />
+    <ClCompile Include="CONSOLE.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CMENU.h" />
     <ClInclude Include="Common_Function.h" />
+    <ClInclude Include="CONSOLE.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

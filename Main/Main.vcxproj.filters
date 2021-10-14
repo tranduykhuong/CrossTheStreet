@@ -30,6 +30,9 @@
     <ClCompile Include="CMENU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CONSOLE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common_Function.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CMENU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CONSOLE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
