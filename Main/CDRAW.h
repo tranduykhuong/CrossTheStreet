@@ -1,5 +1,5 @@
 #pragma once
-#include"Common_Function.h"
+#include"CONSOLE.h"
 
 
 class CDRAW {
@@ -10,6 +10,6 @@ public:
 	static void drawVerticalLine(COORD, SHORT, SHORT, SHORT);
 	static void drawBox(COORD, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT);
 	static void backroundBox(COORD, SHORT, SHORT, SHORT);
-	static void drawGameName(string, COORD, SHORT, int);
+	static void drawGameTXT(string, COORD, SHORT, int);
 	static void printString(string, COORD, SHORT color = 0, SHORT width = 0);
 };
