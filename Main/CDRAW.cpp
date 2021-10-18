@@ -4,8 +4,7 @@
 /***********************************************************
 * FUNCTION TO DRAW HORIZONTAL LINE
 * Parameters:
-*	x			: x coordinate of the left end of the line
-*	y			: y coordinate of the left end of the line
+*	coord		: coordinates of the left end
 *	width		: length of the line
 *	typeChar	: character type for drawing the line
 *	textColor	: the color of the character
@@ -21,8 +20,7 @@ void CDRAW::drawHorizontalLine(COORD coord, SHORT width, SHORT typeChar, SHORT t
 /***********************************************************
 * FUNCTION TO DRAW VERTICAL LINE
 * Parameters:
-*	x			: x coordinate of the left end of the line
-*	y			: y coordinate of the left end of the line
+*	coord		: coordinates of the left end
 *	height		: height of the line
 *	typeChar	: character type for drawing the line
 *	textColor	: the color of the character
@@ -39,8 +37,7 @@ void CDRAW::drawVerticalLine(COORD coord, SHORT height, SHORT typeChar, SHORT te
 /****************************************************************
 * FUNCTION THAT DRAWING A BOX
 * Parameters:
-*	x			: x-coordinate of the upper left corner of the box
-*	y			: y-coordinate of the upper left corner of the box
+*	coord		: coordinates of the left end
 *	width		: width of box
 *	height		: heigth of box
 *	horizo		: character type for horizontal line
@@ -62,6 +59,7 @@ void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT 
 	drawVerticalLine(COORD{ coord.X, coord.Y }, height, vertical, textColor);
 	drawVerticalLine(COORD{ x_right, coord.Y }, height, vertical, textColor);
 
+	CONSOLE::textcolor(textColor);
 	CONSOLE::gotoXY(coord.X, coord.Y);
 	cout << char(topLeft);
 	CONSOLE::gotoXY(coord.X + width, coord.Y);
@@ -76,12 +74,11 @@ void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT 
 * FUNCTION TO DRAW NAME OF THE GAME
 * Parameters:
 *	filename	: name of file txt
-*	x			: x-coordinate of the upper left corner of name
-*	y			: y-coordinate of the upper left corner of name
+*	coord		: coordinates of the left end
 *   textColor	: the color of the character
 *	delay		: delay while printing each line	
 ****************************************************************/
-void CDRAW::drawGameName(string filename, COORD coord, SHORT color, int delay) {
+void CDRAW::drawGameTXT(string filename, COORD coord, SHORT color, int delay) {
 	ifstream fin(filename);
 	if (fin.fail())
 		return;
@@ -102,8 +99,7 @@ void CDRAW::drawGameName(string filename, COORD coord, SHORT color, int delay) {
 /*********************************************************
 * FUNCTION TO DRAW BACKGROUND COLOR FOR BOX
 * Parameters:
-*	x			: x-coordinate of the upper left corner of box
-*	y			: y-coordinate of the upper left corner of box
+*	coord		: coordinates of the left end
 *	width		: width of box
 *	height		: heigth of box
 *	backgroudColor: color of background

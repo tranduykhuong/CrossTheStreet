@@ -1,7 +1,12 @@
 #include"CGAME.h"
 
+CGAME::CGAME() {
+
+}
+
 void CGAME::drawGame() {
-	short colorText = TEXT_BOX_GAME_COLOR;
+	short colorText = ColorGame::black;
+	short heightRoad = SCREEN_GAME_HEIGHT / NUMBER_ROAD;
 
 	CDRAW::drawBox(COORD{ SCREEN_GAME_RECT_X, SCREEN_GAME_RECT_Y }, SCREEN_GAME_WIDTH, SCREEN_GAME_HEIGHT,
 		205, 186, 201, 187, 200, 188, colorText);
@@ -12,7 +17,7 @@ void CGAME::drawGame() {
 	short typeChar = 45;
 
 	for (int i = 1; i < NUMBER_ROAD; i++) {
-		short tempY = y + 5 * i;
+		short tempY = y + heightRoad * i;
 		CDRAW::drawHorizontalLine(COORD{ x, tempY }, width, typeChar, colorText);
 	}
 }
@@ -29,11 +34,11 @@ void CGAME::runApp() {
 
 	for (int i = 1; i < 4; i++) {
 		int color = i % 15;
-		CDRAW::drawGameName("nameGametr.txt", COORD{ x_name, y_name }, color, 200);
+		CDRAW::drawGameTXT("nameGametr.txt", COORD{ x_name, y_name }, color, 200);
 	}
 	for (int i = 4; i <= 10; i += 2) {
 		--y_name;
-		CDRAW::drawGameName("nameGametr.txt", COORD{ x_name, y_name }, i, 50);
+		CDRAW::drawGameTXT("nameGametr.txt", COORD{ x_name, y_name }, i, 50);
 	}
 	int choice;
 
@@ -47,13 +52,13 @@ void CGAME::runApp() {
 }
 
 void CGAME::drawGuide() {
-	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 8, SCREEN_CONSOLE_HEIGHT / 2 + 5 }, 30);
+	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 7, SCREEN_CONSOLE_HEIGHT / 2 + 5 }, 24);
 	guide.addItem("GUIDE");
 	guide.addItem("");
 	guide.addItem("W: up");
 	guide.addItem("S: Down");
 	guide.addItem("A: Left");
 	guide.addItem("D: Right");
-	guide.setColorTable(112, 113);
+	guide.setColorTable(ColorGame::black, ColorGame::blue);
 	guide.displayTableNoneLine();
 }

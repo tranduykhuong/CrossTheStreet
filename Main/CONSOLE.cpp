@@ -16,6 +16,16 @@ void CONSOLE::SetWindowSize(SHORT width, SHORT height) {
     MoveWindow(console, rect.left, rect.top, width, height, TRUE);
 }
 
+void CONSOLE::SetConsoleOutput(int value) {
+    SetConsoleCP(value);
+    SetConsoleOutputCP(value);
+}
+
+// Function to set title of game
+void CONSOLE::SetTitleCosole(LPCSTR title) {
+    SetConsoleTitleA(title);
+}
+
 // Function to set screen console in the upper left corner of laptop screen
 void CONSOLE::SreenConsole_Top_Left() {
     HWND console = GetConsoleWindow();

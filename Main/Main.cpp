@@ -1,23 +1,27 @@
-﻿#include"Common_Function.h"
+﻿#include"CONSOLE.h"
 #include"CGAME.h"
+#include"CPEOPLE.h"
+
 
 int main()
 {
-    CONSOLE::SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    CONSOLE::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     CONSOLE::FixConsoleWindow();
     CONSOLE::SreenConsole_Top_Left();
     CONSOLE::HiddenScrollBar();
     CONSOLE::ShowCur(false);
-    SetConsoleCP(437);
-    SetConsoleOutputCP(437);
-    //SetConsoleTitleA("Game CROSS THE STREET");
+    CONSOLE::SetConsoleOutput(437);
+    CONSOLE::SetTitleCosole("Game CROSS THE STREET");
     system("color 7a");
     
     CGAME cg;
     CDRAW cd;
-    cg.runApp();
-    //cg.drawGame();
-    //cg.drawGuide();
+    //cg.runApp();
+    cg.drawGame();
+    cg.drawGuide();
+
+    CPEOPLE *cp = new CPEOPLE;
+    cp->draw(Key::LEFT);
 
    /* int cl = TEXT_BOX_GAME_COLOR;
     cd.backroundBox(4, 5, 4, 5, cl);*/
