@@ -5,24 +5,26 @@
 #define CHAR_COLOR 224
 
 class CMENU {
-	int x, y;
-	int y_ptr;
-	int width, height;
-	int boxColor, charColor;
+	COORD coord;
+	SHORT y_ptr;
+	SHORT width, height;
+	SHORT boxColor, charColor;
 	vector<string> opsArr;
 
-	CDRAW draw;
-
-	void cornerAmongBox(int y_cur);
-	void dataBox(int x_data, int y_data, string& content, int newColor = -1);
+	void cornerAmongBox(SHORT y_cur);
+	void dataBox(COORD coord_data, string& content, SHORT newColor = -1);
 public:
 
-	CMENU(int x, int y, int width);
+	CMENU(COORD, SHORT width);
 	~CMENU();
 
-	void setColorBox(int boxColor, int charColor);
-	void setPosition_Width(int x, int y, int width);
-	void addOption(string ops);
-	void displayTable();
+	void setColorTable(SHORT boxColor, SHORT charColor);
+	void setPosition_Width(COORD, SHORT width);
+	void addItem(string ops);
+	void displayTableLine();
+	void displayTableNoneLine();
+	bool removeItem(int);
+	void insertItem(string, int);
+	
 	int getSelectFromUser();
 };

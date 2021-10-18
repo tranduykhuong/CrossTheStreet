@@ -1,9 +1,8 @@
 ﻿#include"CMENU.h"
 
-CMENU::CMENU(int x, int y, int width) {
-	this->x = x;
-	this->y = y;
-	this->y_ptr = y;
+CMENU::CMENU(COORD coord, SHORT width) {
+	this->coord = coord;
+	this->y_ptr = coord.Y;
 	this->width = width;
 	this->height = 2;
 	this->boxColor = BOX_COLOR;
@@ -11,70 +10,92 @@ CMENU::CMENU(int x, int y, int width) {
 }
 
 CMENU::~CMENU() {
-	this->x = 0;
-	this->y = 0;
+	this->coord = { 0,0 };
 	this->y_ptr = 0;
 	this->height = 0;
 	this->width = 0; 
 }
 
-void CMENU::setPosition_Width(int x, int y, int width) {
-	this->x = x;
-	this->y = y;
-	this->y_ptr = y;
+void CMENU::setPosition_Width(COORD coord, SHORT width) {
+	this->coord = coord;
+	this->y_ptr = coord.Y;
 	this->width = width;
 }
 
 	//HÀM VẼ CÁC GÓC CỦA BOX Ở GIỮA (TRỪ CÁC GÓC CỦA TABLE)
-void CMENU::cornerAmongBox(int y_cur) {
-	textcolor(boxColor);
-	gotoXY(x, y_cur);			//góc bên phải
+void CMENU::cornerAmongBox(SHORT y_cur) {
+	CONSOLE::textcolor(boxColor);
+	CONSOLE::gotoXY(coord.X, y_cur);			//góc bên phải
 	cout << char(195);
-	gotoXY(x + width, y_cur);	//góc bên trái
+	CONSOLE::gotoXY(coord.X + width, y_cur);	//góc bên trái
 	cout << char(180);
 }
 
-void CMENU::addOption(string ops) {
+void CMENU::addItem(string ops) {
 	opsArr.push_back(ops);
 }
 
+bool CMENU::removeItem(int idx) {
+	if (idx >= opsArr.size() || idx < 0)
+		return false;
+	opsArr.erase(opsArr.begin() + idx);
+	return true;
+}
+
+void CMENU::insertItem(string content, int idx) {
+	opsArr.insert(opsArr.begin() + idx, content);
+}
+
 	//HÀM VẼ NỀN VÀ XUẤT TÊN CỦA OPTION 
-void CMENU::dataBox(int x_data, int y_data, string& content, int newColor) {
-	int textColor = this->charColor;
+void CMENU::dataBox(COORD coord_data, string& content, SHORT newColor) {
+	short textColor = this->charColor;
 	if (newColor != -1)
 		textColor = newColor;
-	draw.backroundBox(x_data + 1, y_data + 1, width - 1, height - 1, textColor);	//vẽ nền
 
-	textcolor(textColor);
-	gotoXY(x_data + 1 + (width - content.length()) / 2, y_data + height / 2);		//đến vị trí sao cho sau khi vẽ chuỗi có thể nằm ở giữa
+	short x_box = coord_data.X + 1;
+	short y_box = coord_data.Y + 1;
+	CDRAW::backroundBox(COORD{ x_box, y_box }, width - 1, height - 1, textColor);	//vẽ nền
+
+	CONSOLE::textcolor(textColor);
+	CONSOLE::gotoXY(coord_data.X + 1 + (width - content.length()) / 2, coord_data.Y + height / 2);		//đến vị trí sao cho sau khi vẽ chuỗi có thể nằm ở giữa
 	cout << content;
 }
 
-void CMENU::setColorBox(int boxColor, int charColor) {
+void CMENU::setColorTable(SHORT boxColor, SHORT charColor) {
 	this->boxColor = boxColor;
 	this->charColor = charColor;
 }
 
 
 	//HÀM TẠO TABLE
-void CMENU::displayTable() {
-	int tempY = y;
+void CMENU::displayTableLine() {
+	short tempY = coord.Y;
 	for (auto e : opsArr) {
-		draw.drawBox(x, tempY, width, height, 196, 179, 218, 191, 192, 217, boxColor);
-		dataBox(x, tempY, e);
-		if (tempY != y)
+		CDRAW::drawBox(COORD{ coord.X, tempY }, width, height, 196, 179, 218, 191, 192, 217, boxColor);
+		dataBox(COORD{ coord.X, tempY }, e);
+		if (tempY != coord.Y)
 			cornerAmongBox(tempY);
 		tempY += height;
 	}
 }
 
+void CMENU::displayTableNoneLine() {
+	short tempY = coord.Y;
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, opsArr.size() +  1, 196, 179, 218, 191, 192, 217, boxColor);
+	for (auto e : opsArr) {
+		dataBox(COORD{ coord.X, tempY }, e);
+		//tempY += height;
+		tempY++;
+	}
+}
+
 int CMENU::getSelectFromUser() {
 	//tạo màu cho ô được chọn
-	int optionColor = 64;
+	short optionColor = 64;
 	int index = 0;
 	int sizeOps = opsArr.size();
 	
-	dataBox(x, y_ptr, opsArr[index], optionColor);		//hàm tạo màu khác cho option
+	dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//hàm tạo màu khác cho option
 
 	while (true) {		//sử dụng 2 phím (lên, xuống) để điều kiển
 		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
@@ -85,28 +106,28 @@ int CMENU::getSelectFromUser() {
 				if (c == -32) {
 					c = _getch();
 					if (c == 80) {	//đi xuống
-						dataBox(x, y_ptr, opsArr[index]);			//vẽ chồng màu lên option
+						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);			//vẽ chồng màu lên option
 						if (index < sizeOps - 1) {
 							y_ptr += height;
 							index++;
 						}
 						else {
-							y_ptr = y;
+							y_ptr = coord.Y;
 							index = 0;
 						}
-						dataBox(x, y_ptr, opsArr[index], optionColor);		//vẽ lại option mới
+						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
 					}
 					else if (c == 72) { //đi lên
-						dataBox(x, y_ptr, opsArr[index]);		//vẽ chồng màu lên option
+						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);		//vẽ chồng màu lên option
 						if (index > 0) {	
 							y_ptr -= height;
 							index--;
 						}
 						else {
-							y_ptr = y + (sizeOps - 1) * height;
+							y_ptr = coord.Y + (sizeOps - 1) * height;
 							index = sizeOps - 1;
 						}
-						dataBox(x, y_ptr, opsArr[index], optionColor);		//vẽ lại option mới
+						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
 					}
 				}
 		}

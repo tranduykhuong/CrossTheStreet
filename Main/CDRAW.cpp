@@ -10,10 +10,10 @@
 *	typeChar	: character type for drawing the line
 *	textColor	: the color of the character
 ************************************************************/
-void CDRAW::drawHorizontalLine(int x, int y, int width, int typeChar, int textColor) {
-	textcolor(textColor);
-	gotoXY(x, y);
-	for (int ix = 0; ix != width; ix++)
+void CDRAW::drawHorizontalLine(COORD coord, SHORT width, SHORT typeChar, SHORT textColor) {
+	CONSOLE::textcolor(textColor);
+	CONSOLE::gotoXY(coord.X, coord.Y);
+	for (short ix = 0; ix != width; ix++)
 		cout << char(typeChar);
 }
 
@@ -27,10 +27,10 @@ void CDRAW::drawHorizontalLine(int x, int y, int width, int typeChar, int textCo
 *	typeChar	: character type for drawing the line
 *	textColor	: the color of the character
 ************************************************************/
-void CDRAW::drawVerticalLine(int x, int y, int height, int typeChar, int textColor) {
-	textcolor(textColor);
-	for (int iy = 0; iy != height; iy++) {
-		gotoXY(x, y + iy);
+void CDRAW::drawVerticalLine(COORD coord, SHORT height, SHORT typeChar, SHORT textColor) {
+	CONSOLE::textcolor(textColor);
+	for (short iy = 0; iy != height; iy++) {
+		CONSOLE::gotoXY(coord.X, coord.Y + iy);
 		cout << char(typeChar);
 	}
 }
@@ -51,22 +51,24 @@ void CDRAW::drawVerticalLine(int x, int y, int height, int typeChar, int textCol
 *	botRight	: character type for bottom right corner
 *   textColor	: the color of the character
 ******************************************************************/
-void CDRAW::drawBox(int x, int y, int width, int height, int horizo, int vertical,
-	int topLeft, int topRight, int botLeft, int botRight, int textColor) {
+void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT vertical,
+	SHORT topLeft, SHORT topRight, SHORT botLeft, SHORT botRight, SHORT textColor) {
 
-	drawHorizontalLine(x, y, width, horizo, textColor);
-	drawHorizontalLine(x, y + height, width, horizo, textColor);
+	short y_bottom = coord.Y + height;
+	short x_right = coord.X + width;
+	drawHorizontalLine(coord, width, horizo, textColor);
+	drawHorizontalLine(COORD{ coord.X, y_bottom}, width, horizo, textColor);
 
-	drawVerticalLine(x, y, height, vertical, textColor);
-	drawVerticalLine(x + width, y, height, vertical, textColor);
+	drawVerticalLine(COORD{ coord.X, coord.Y }, height, vertical, textColor);
+	drawVerticalLine(COORD{ x_right, coord.Y }, height, vertical, textColor);
 
-	gotoXY(x, y);
+	CONSOLE::gotoXY(coord.X, coord.Y);
 	cout << char(topLeft);
-	gotoXY(x + width, y);
+	CONSOLE::gotoXY(coord.X + width, coord.Y);
 	cout << char(topRight);
-	gotoXY(x, y + height);
+	CONSOLE::gotoXY(coord.X, coord.Y + height);
 	cout << char(botLeft);
-	gotoXY(x + width, y + height);
+	CONSOLE::gotoXY(coord.X + width, coord.Y + height);
 	cout << char(botRight);
 }
 
@@ -79,17 +81,17 @@ void CDRAW::drawBox(int x, int y, int width, int height, int horizo, int vertica
 *   textColor	: the color of the character
 *	delay		: delay while printing each line	
 ****************************************************************/
-void CDRAW::drawGameName(string filename, int x, int y, int color, int delay) {
+void CDRAW::drawGameName(string filename, COORD coord, SHORT color, int delay) {
 	ifstream fin(filename);
 	if (fin.fail())
 		return;
 
 	string line;
-	int y_pointer = y;
+	short y_pointer = coord.Y;
 	while (!fin.eof()) {
 		getline(fin, line);
-		gotoXY(x, y_pointer++);
-		textcolor(color);
+		CONSOLE::gotoXY(coord.X, y_pointer++);
+		CONSOLE::textcolor(color);
 		cout << line << endl;
 		Sleep(delay);
 	}
@@ -106,26 +108,26 @@ void CDRAW::drawGameName(string filename, int x, int y, int color, int delay) {
 *	height		: heigth of box
 *	backgroudColor: color of background
 **********************************************************/
-void CDRAW::backroundBox(int x, int y, int width, int height, int& backgroudColor) {
+void CDRAW::backroundBox(COORD coord, SHORT width, SHORT height, SHORT backgroudColor) {
 	string line;
-	textcolor(backgroudColor);
+	CONSOLE::textcolor(backgroudColor);
 
-	for (int i = 0; i < width; i++)
+	for (short i = 0; i < width; i++)
 		line += " ";
-	for (int i = y; i < y + height; i++) {
-		gotoXY(x, i);
+	for (short i = coord.Y; i < coord.Y + height; i++) {
+		CONSOLE::gotoXY(coord.X, i);
 		cout << line;
 	}
 }
 
-void CDRAW::printString(string content, int x, int y, int color, int width) {
-	textcolor(color);
+void CDRAW::printString(string content, COORD coord, SHORT color, SHORT width) {
+	CONSOLE::textcolor(color);
 	if (width == 0) {
-		gotoXY(x, y);
+		CONSOLE::gotoXY(coord.X, coord.Y);
 		cout << content;
 		return;
 	}
-	int new_x = (x + width - content.length()) / 2;
-	gotoXY(new_x, y);
+	int new_x = (coord.X + width - content.length()) / 2;
+	CONSOLE::gotoXY(new_x, coord.Y);
 	cout << content;
 }

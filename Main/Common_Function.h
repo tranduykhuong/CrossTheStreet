@@ -1,16 +1,14 @@
 #pragma once
+#pragma execution_character_set("utf-8")
 #include<iostream>
-#include<Windows.h>
 #include<conio.h>
 #include<fstream>
 #include<string>
 #include<vector>
+#include"CONSOLE.h"
 using namespace std;
 
-void FixConsoleWindow();
-void SetWindowSize(SHORT, SHORT);
-void SreenConsole_Top_Left();
-void HiddenScrollBar();
-void gotoXY(int, int);
-void ShowCur(bool CursorVisibility);
-void textcolor(int x);
+#define SCREEN_WIDTH 1200 //pixel
+#define SCREEN_HEIGHT 695 //pixel
+#define SCREEN_CONSOLE_WIDTH 146 //column
+#define SCREEN_CONSOLE_HEIGHT 40 //row
