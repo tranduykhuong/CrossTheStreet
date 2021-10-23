@@ -66,27 +66,27 @@ void CPEOPLE::setColor(int newColor) {
 		mColor = newColor;
 }
 
-short CPEOPLE::getSpeed() {
+short CPEOPLE::getSpeed() const {
 	return mSpeed;
 }
 
-short CPEOPLE::getX() {
+short CPEOPLE::getX() const {
 	return mX;
 }
 
-short CPEOPLE::getY() {
+short CPEOPLE::getY() const {
 	return mY;
 }
 
-int CPEOPLE::getColor() {
+int CPEOPLE::getColor() const {
 	return mColor;
 }
 
-bool CPEOPLE::isDead() {
+bool CPEOPLE::isDead() const {
 	return mState == false;
 }
 
-bool CPEOPLE::isWin() {
+bool CPEOPLE::isWin() const {
 	return mY < (GameScreen::sTOP + heightRoad);
 }
 

@@ -1,7 +1,9 @@
 ﻿#include"CONSOLE.h"
 #include"CGAME.h"
 #include"CPEOPLE.h"
-
+#include"CVEHICLE.h"
+#include"CCAR.h"
+#include"CTRUCK.h"
 
 int main()
 {
@@ -13,30 +15,49 @@ int main()
     CONSOLE::SetConsoleOutput(437);
     CONSOLE::SetTitleCosole("Game CROSS THE STREET");
     system("color 7a");
-    
+
     CGAME cg;
     CDRAW cd;
     //cg.runApp();
     cg.drawGame();
     cg.drawGuide();
 
-    CPEOPLE *cp = new CPEOPLE;
-    cp->draw(Key::LEFT);
+    CPEOPLE cn;
+    cn.draw(LEFT);
 
-   /* int cl = TEXT_BOX_GAME_COLOR;
-    cd.backroundBox(4, 5, 4, 5, cl);*/
+    CTRUCK a;
 
-    /*for (int i = 0; i < 256; i++) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
-        cout << "color " << i << "   ";
-        if (i % 10 == 0)cout << endl;
-    }*/
-    /*for (int i = 100; i < 256; i++) {
-        wcout << i << ": " << char(i) << "\t";
-        if (i % 10 == 0) cout << endl;
-    }*/
+    a.set(-18, 1, ColorGame::black, 30, 1, RIGHT);    //hàm input: tọa độ X, tọa độ Y, màu, tốc độ
+    a.move();                    
 
-    //cd.printString("duy khuong", 0, 20, 5, 144);
+    //a.set(sRIGHT, 1, ColorGame::black, 30);
+    //a.move();
+
+    /*CTRUCK b;
+
+    b.set(-18, 1, ColorGame::black, 30);
+    b.moveTruck(1, RIGHT);
+
+    b.set(sRIGHT, 1, ColorGame::black, 30);
+    b.moveTruck(1, LEFT);*/
+
+    /*CPEOPLE *cp = new CPEOPLE;
+    cp->draw(Key::LEFT);*/
+
+    /* int cl = TEXT_BOX_GAME_COLOR;
+     cd.backroundBox(4, 5, 4, 5, cl);*/
+
+     /*for (int i = 0; i < 256; i++) {
+         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
+         cout << "color " << i << "   ";
+         if (i % 10 == 0)cout << endl;
+     }*/
+     /*for (int i = 100; i < 256; i++) {
+         wcout << i << ": " << char(i) << "\t";
+         if (i % 10 == 0) cout << endl;
+     }*/
+
+     //cd.printString("duy khuong", 0, 20, 5, 144);
 
     _getch();
 }
