@@ -1,8 +1,9 @@
 #pragma once
 #include"CDRAW.h"
 
-#define BOX_COLOR 123
+#define BOX_COLOR 121
 #define CHAR_COLOR 224
+#define OPTION_COLOR 206
 
 class CMENU {
 	COORD coord;
@@ -13,6 +14,7 @@ class CMENU {
 
 	void cornerAmongBox(SHORT y_cur);
 	void dataBox(COORD coord_data, string& content, SHORT newColor = -1);
+	void dataBoxTrueFalse(COORD coord_data, string& content, bool& set, SHORT opsColor = -1, SHORT newColor = -1);
 public:
 
 	CMENU(COORD, SHORT width);
@@ -26,5 +28,6 @@ public:
 	bool removeItem(int);
 	void insertItem(string, int);
 	
+	void getSettingFromUser(bool& a1, bool& a2);
 	int getSelectFromUser();
 };

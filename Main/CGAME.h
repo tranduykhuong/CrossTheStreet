@@ -8,6 +8,7 @@ public:
 	static SHORT MAX_LEVEL;
 	
 private:
+	short level = 1;
 
 public:
 	CGAME();

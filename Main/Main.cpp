@@ -13,7 +13,7 @@ int main()
     CONSOLE::HiddenScrollBar();
     CONSOLE::ShowCur(false);
     CONSOLE::SetConsoleOutput(437);
-    CONSOLE::SetTitleCosole("Game CROSS THE STREET");
+    CONSOLE::SetTitleCosole("CROSS THE STREET");
     system("color 7a");
 
     CGAME cg;
@@ -22,13 +22,13 @@ int main()
     cg.drawGame();
     cg.drawGuide();
 
-    CPEOPLE cn;
-    cn.draw(LEFT);
+    /*CPEOPLE cn;
+    cn.draw(LEFT);*/
 
     CTRUCK a;
 
-    a.set(-18, 1, ColorGame::black, 30, 1, RIGHT);    //hàm input: tọa độ X, tọa độ Y, màu, tốc độ
-    a.move();                    
+    //a.set(-18, 1, ColorGame::black, 30, 1, RIGHT);    //hàm input: tọa độ X, tọa độ Y, màu, tốc độ
+    //a.move();                    
 
     //a.set(sRIGHT, 1, ColorGame::black, 30);
     //a.move();

@@ -41,7 +41,7 @@ void CPEOPLE::left() {
 }
 
 void CPEOPLE::right() {
-	if (mX + mSpeed < GameScreen::sRIGHT)
+	if (mX + mSpeed + widthPeople < GameScreen::sRIGHT)
 		mX += mSpeed;
 }
 
