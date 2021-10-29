@@ -7,7 +7,6 @@ private:
 	short mX, mY;
 	short mColor;
 	short mSpeed;
-
 public:
 	
 };

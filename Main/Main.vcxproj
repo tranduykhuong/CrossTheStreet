@@ -140,20 +140,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CANIMAL.cpp" />
     <ClCompile Include="CDRAW.cpp" />
     <ClCompile Include="CGAME.cpp" />
+    <ClCompile Include="CHORSE.cpp" />
     <ClCompile Include="CMENU.cpp" />
     <ClCompile Include="CONSOLE.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
+    <ClCompile Include="CRABBIT.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CANIMAL.h" />
     <ClInclude Include="CDRAW.h" />
     <ClInclude Include="CGAME.h" />
+    <ClInclude Include="CHORSE.h" />
     <ClInclude Include="CMENU.h" />
     <ClInclude Include="CONSOLE.h" />
     <ClInclude Include="CPEOPLE.h" />
+    <ClInclude Include="CRABBIT.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

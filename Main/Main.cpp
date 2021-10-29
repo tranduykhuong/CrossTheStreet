@@ -1,10 +1,14 @@
 ﻿#include"CONSOLE.h"
 #include"CGAME.h"
 #include"CPEOPLE.h"
+#include "CANIMAL.h"
+#include "CHORSE.h"
+#include "CRABBIT.h"
 
 
 int main()
 {
+    
     CONSOLE::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     CONSOLE::FixConsoleWindow();
     CONSOLE::SreenConsole_Top_Left();
@@ -16,12 +20,16 @@ int main()
     
     CGAME cg;
     CDRAW cd;
+    CHORSE h;
+    CANIMAL a;
+   
     //cg.runApp();
     cg.drawGame();
     cg.drawGuide();
-
-    CPEOPLE *cp = new CPEOPLE;
-    cp->draw(Key::LEFT);
+    h.set(1, 1, 112, 100, LEFT);
+    h.move();
+    //CPEOPLE *cp = new CPEOPLE;
+    //cp->draw(Key::LEFT);
 
    /* int cl = TEXT_BOX_GAME_COLOR;
     cd.backroundBox(4, 5, 4, 5, cl);*/
