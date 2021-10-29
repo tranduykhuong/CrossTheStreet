@@ -192,7 +192,7 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 
 	dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor); //hàm tạo màu khác cho option
 
-	while (true) {		//sử dụng 2 phím (lên, xuống) để điều kiển
+	while (true) {			//sử dụng 2 phím (lên, xuống) để điều kiển
 		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
 			char c = _getch();
 			if (c == 13 && y_ptr == coord.Y + height * 2)		//khi nhập enter sẽ kết thúc while
