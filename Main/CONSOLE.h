@@ -9,8 +9,8 @@
 using namespace std;
 
 // Information of Window size and Screen Buffer size 
-#define WINDOW_WIDTH 1200 //pixel
-#define WINDOW_HEIGHT 695 //pixel
+#define WINDOW_WIDTH 1200		 //pixel
+#define WINDOW_HEIGHT 695		 //pixel
 #define SCREEN_CONSOLE_WIDTH 146 //number of column
 #define SCREEN_CONSOLE_HEIGHT 40 //number of row
 
@@ -51,10 +51,10 @@ enum ColorGame {
 };
 
 enum Key {
-	UP = 87,
-	DOWN = 83,
-	LEFT = 65,
-	RIGHT = 68
+	UP = 87,	//W
+	DOWN = 83,	//S
+	LEFT = 65,  //A
+	RIGHT = 68	//D
 };
 
 class CONSOLE
