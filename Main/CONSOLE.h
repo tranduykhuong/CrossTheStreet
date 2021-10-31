@@ -6,6 +6,8 @@
 #include<fstream>
 #include<string>
 #include<vector>
+#include <mmsystem.h>
+#pragma comment (lib, "winmm.lib")
 using namespace std;
 
 // Information of Window size and Screen Buffer size 
