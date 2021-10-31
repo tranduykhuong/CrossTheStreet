@@ -1,18 +1,37 @@
-﻿#include"CONSOLE.h"
-#include"CGAME.h"
-#include"CPEOPLE.h"
-#include"CVEHICLE.h"
-#include"CCAR.h"
-#include"CTRUCK.h"
+﻿#include"CGAME.h"
+#include<thread>
+
+CGAME cg;
+char MOVING;
+bool isSound;
+bool isMusic;
+
+void runGame() {
+    while (cg.isRunning()) {
+
+        if (!cg.getPeople().isDead()) {
+            cg.updatePosPeople(MOVING);
+        }
+        MOVING = ' ';
+
+        cg.updatePosAnimal();
+        cg.updatePosVehicle();
+        cg.drawObjects(MOVING);
+
+        Sleep(2);
+    }
+}
 
 int main()
 {
+
     CONSOLE::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     CONSOLE::FixConsoleWindow();
     CONSOLE::SreenConsole_Top_Left();
     CONSOLE::HiddenScrollBar();
     CONSOLE::ShowCur(false);
     CONSOLE::SetConsoleOutput(437);
+<<<<<<< HEAD
     CONSOLE::SetTitleCosole("CROSS THE STREET");
     //system("color 7a");
 
@@ -26,43 +45,60 @@ int main()
     cg.runApp();
     //cg.drawGame();
     //cg.drawGuide();
+=======
+    CONSOLE::SetTitleCosole("Game CROSS THE STREET");
+    system("color 7a");
 
-    /*CPEOPLE cn;
-    cn.draw(LEFT);*/
+    //cg.runApp();
+    cg.drawGame();
+    cg.drawGuide();
+>>>>>>> duykhuong
 
-    CTRUCK a;
+   /* CHORSE h;
+    h.set(5, 16, 112, 3, LEFT);
+    CRABBIT r;
+    r.set(5, 11, 114, 2, RIGHT);
+    CCAR car;
+    car.set(5, 1, 113, 1, 2, RIGHT);
+    CTRUCK truck;
+    truck.set(5, 6, 113, 4, 2, RIGHT);
 
-    //a.set(-18, 1, ColorGame::black, 30, 1, RIGHT);    //hàm input: tọa độ X, tọa độ Y, màu, tốc độ
-    //a.move();                    
+    while (1) {
+        car.move();
+        car.draw();
+        r.move();
+        r.draw();
+        h.move();
+        h.draw();
+        truck.move();
+        truck.draw();
+        Sleep(5);
+    }*/
 
-    //a.set(sRIGHT, 1, ColorGame::black, 30);
-    //a.move();
+    cg.resetGame(4);
+    char key;
 
-    /*CTRUCK b;
+    thread run(runGame);
+    while (1) 
+    {
+        key = toupper(_getch());
+        // Người còn sống
+        if (!cg.getPeople().isDead()) {
+            if (key == 27) {
+                //xử lý exit
+            }
+            //.....
+            else {
+                if (cg.isRunning())
+                    MOVING = key;
+            }
 
-    b.set(-18, 1, ColorGame::black, 30);
-    b.moveTruck(1, RIGHT);
+        }
+        // Người đã chết
+        else {
 
-    b.set(sRIGHT, 1, ColorGame::black, 30);
-    b.moveTruck(1, LEFT);*/
-
-    /*CPEOPLE *cp = new CPEOPLE;
-    cp->draw(Key::LEFT);*/
-
-    /* int cl = TEXT_BOX_GAME_COLOR;
-     cd.backroundBox(4, 5, 4, 5, cl);*/
-
-     /*for (int i = 0; i < 256; i++) {
-         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
-         cout << "color " << i << "   ";
-         if (i % 10 == 0)cout << endl;
-     }*/
-     /*for (int i = 100; i < 256; i++) {
-         wcout << i << ": " << char(i) << "\t";
-         if (i % 10 == 0) cout << endl;
-     }*/
-
-     //cd.printString("duy khuong", 0, 20, 5, 144);
+        }
+    }
 
     _getch();
 }

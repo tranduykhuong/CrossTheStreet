@@ -3,10 +3,10 @@
 
 CPEOPLE::CPEOPLE() {
 	mX = (GameScreen::sLEFT + GameScreen::sRIGHT) / 2;
-	mY = GameScreen::sBOTTOM - heightPeople;
+	mY = GameScreen::sBOTTOM - getHeightPeople();
 	mState = true;
 	mSpeed = 1;
-	mColor = ColorGame::blue;
+	mColor = ColorGame::green;
 }
 
 CPEOPLE::CPEOPLE(short x, short y) {
@@ -17,22 +17,14 @@ CPEOPLE::CPEOPLE(short x, short y) {
 	mColor = ColorGame::blue;
 }
 
-CPEOPLE::~CPEOPLE() {
-	mX = 0;
-	mY = 0;
-	mState = false;
-	mSpeed = 0;
-	mColor = 0;
-}
-
 void CPEOPLE::up() {
-	if (mY - heightRoad > GameScreen::sTOP)
-		mY -= heightRoad;
+	if (mY - mSpeed > GameScreen::sTOP)
+		mY -= mSpeed;
 }
 
 void CPEOPLE::down() {
-	if (mY + heightRoad < GameScreen::sBOTTOM)
-		mY += heightRoad;
+	if (mY + mSpeed + getHeightPeople() - 1 < GameScreen::sBOTTOM)
+		mY += mSpeed;
 }
 
 void CPEOPLE::left() {
@@ -41,7 +33,7 @@ void CPEOPLE::left() {
 }
 
 void CPEOPLE::right() {
-	if (mX + mSpeed + widthPeople < GameScreen::sRIGHT)
+	if (mX + mSpeed + getWidthPeople() - 1 < GameScreen::sRIGHT)
 		mX += mSpeed;
 }
 
@@ -52,7 +44,7 @@ void CPEOPLE::setState(bool state) {
 void CPEOPLE::setPosition(short x, short y) {
 	if (x<GameScreen::sRIGHT && x>GameScreen::sLEFT)
 		mX = x;
-	if (y + heightPeople >= GameScreen::sBOTTOM && y + heightPeople - heightRoad >= GameScreen::sTOP)
+	if (y + getHeightPeople() >= GameScreen::sBOTTOM && y + getHeightPeople() - heightRoad >= GameScreen::sTOP)
 		mY = y;
 }
 
@@ -112,9 +104,9 @@ void CPEOPLE::draw(int key) {
 		break;
 	}
 
-	for (int i = 0; i < heightPeople; i++) {
+	for (int i = 0; i < getHeightPeople(); i++) {
 		CONSOLE::gotoXY(mX, mY + i);
-		for (int j = 0; j < widthPeople; j++)
+		for (int j = 0; j < getWidthPeople(); j++)
 			cout << char(form[i][j]);
 	}
 }

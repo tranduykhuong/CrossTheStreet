@@ -42,6 +42,15 @@
     <ClCompile Include="CTRUCK.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CANIMAL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CHORSE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CRABBIT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CGAME.h">
@@ -66,6 +75,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CTRUCK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CANIMAL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CHORSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRABBIT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

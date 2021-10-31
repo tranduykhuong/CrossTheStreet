@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "CONSOLE.h"
 
+#define MAX_SPEED 5
+
 class CVEHICLE
 {
 protected:
