@@ -11,8 +11,6 @@ private:
 	vector<vector<int>> peopleRight = { {32, 2, 47}, {47, 245, 32}, {47, 32, 124} };
 	vector<vector<int>> peopleDown = { {92, 2, 47}, {32, 245, 32}, {60, 32, 62} };
 
-	const short widthPeople = peopleWait.size();
-	const short heightPeople = peopleWait.size();
 	const short heightRoad = SCREEN_GAME_HEIGHT / NUMBER_ROAD;
 
 private:
@@ -24,7 +22,6 @@ private:
 public:
 	CPEOPLE();
 	CPEOPLE(short, short);
-	~CPEOPLE();
 
 	void up();
 	void down();
@@ -43,7 +40,10 @@ public:
 	short getX() const;
 	short getY() const;
 	int getColor() const;
+	short getHeightPeople() const { return peopleWait.size(); }
+	short getWidthPeople() const { return peopleWait[0].size(); }
 
 	void draw(int);
+
 };
 

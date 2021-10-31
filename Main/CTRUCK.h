@@ -13,6 +13,7 @@ private:
 	short mType;
 	short mMove;
 
+	short countSpeed;
 public:
 	CTRUCK();
 	~CTRUCK();
@@ -22,5 +23,6 @@ public:
 	short getHeight() const;
 
 	void move();
+	void draw();
 };
 

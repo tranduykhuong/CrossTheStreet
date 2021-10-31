@@ -3,6 +3,7 @@
 CTRUCK::CTRUCK() {
 	mType = 1;
 	mMove = RIGHT;
+	countSpeed = MAX_SPEED;
 }
 
 CTRUCK::~CTRUCK() {
@@ -28,33 +29,38 @@ short CTRUCK::getHeight() const {
 }
 
 void CTRUCK::move() {
-	vector<vector<short>> truck;
+	if (countSpeed > mSpeed) {
+		countSpeed--;
+		return;
+	}
+
 	if (mMove == LEFT) {
-		if (mType == 1)
-			truck = truckLeft1;
-		else truck = truckLeft2;
-
-		while (1) {
-			CVEHICLE::drawVehicle(truck, mMove);	//vẽ xe
-			mX--;								//giảm tọa độ
-			if (mX == sLEFT - truck[0].size() - 1)					//nếu xe chạm biên trái thì cho xuất phát lại
-				mX = sRIGHT;
-
-			Sleep(mSpeed);
-		}
+		mX--;								//giảm tọa độ
+		if (mX == sLEFT - getWidth() - 1)					//nếu xe chạm biên trái thì cho xuất phát lại
+			mX = sRIGHT;
 	}
 	else {
-		if (mType == 1)
-			truck = truckRight1;
-		else truck = truckRight2;
-
-		while (1) {
-			CVEHICLE::drawVehicle(truck, mMove);	//vẽ xe
-			mX++;								//tăng tọa độ
-			if (mX == sRIGHT)					//nếu xe chạm biên phải thì cho xuất phát lại
-				mX = (truck[0].size()) * (-1);
-
-			Sleep(mSpeed);
-		}
+		mX++;								//tăng tọa độ
+		if (mX == sRIGHT)					//nếu xe chạm biên phải thì cho xuất phát lại
+			mX = (getWidth()) * (-1);
 	}
+	countSpeed = MAX_SPEED;
+}
+
+void CTRUCK::draw() {
+	vector<vector<short>> truck;
+	if (mType == 1) {
+		if (mMove == LEFT)
+			truck = truckLeft1;
+		else
+			truck = truckRight1;
+	}
+	else {
+		if (mMove == LEFT)
+			truck = truckLeft2;
+		else
+			truck = truckRight2;
+	}
+	
+	CVEHICLE::drawVehicle(truck, mMove);	//vẽ xe
 }

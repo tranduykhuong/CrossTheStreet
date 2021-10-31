@@ -3,6 +3,7 @@
 CCAR::CCAR() {
 	mType = 1;
 	mMove = LEFT;
+	countSpeed = MAX_SPEED;
 }
 
 CCAR::~CCAR() {
@@ -32,33 +33,37 @@ short CCAR::getWidth() const {
 }
 
 void CCAR::move() {
-	vector<vector<short>> car;
+	if (countSpeed > mSpeed) {
+		countSpeed--;
+		return;
+	}
+
 	if (mMove == LEFT) {
-		if (mType == 1)
-			car = carLeft1;
-		else car = carLeft2;
-
-		while (1) {
-			CVEHICLE::drawVehicle(car, mMove);	//vẽ xe
-			mX--;								//giảm tọa độ
-			if (mX == sLEFT - car[0].size() - 1)					//nếu xe chạm biên trái thì cho xuất phát lại
-				mX = sRIGHT;
-
-			Sleep(mSpeed);
-		}
+		mX--;								//giảm tọa độ
+		if (mX == sLEFT - getWidth() - 1)	//nếu xe chạm biên trái thì cho xuất phát lại
+			mX = sRIGHT;
 	}
 	else {
-		if (mType == 1)
-			car = carRight1;
-		else car = carRight2;
-
-		while (1) {
-			CVEHICLE::drawVehicle(car, mMove);	//vẽ xe
-			mX++;								//tăng tọa độ
-			if (mX == sRIGHT)					//nếu xe chạm biên phải thì cho xuất phát lại
-				mX = (car[0].size()) * (-1);
-
-			Sleep(mSpeed);
-		}
+		mX++;								//tăng tọa độ
+		if (mX == sRIGHT)					//nếu xe chạm biên phải thì cho xuất phát lại
+			mX = (getWidth()) * (-1);
 	}
+	countSpeed = MAX_SPEED;
+}
+
+void CCAR::draw() {
+	vector<vector<short>> car;
+	if (mType == 1) {
+		if (mMove == LEFT)
+			car = carLeft1;
+		else
+			car = carRight1;
+	}
+	else {
+		if (mMove == LEFT)
+			car = carLeft2;
+		else
+			car = carRight2;
+	}
+	CVEHICLE::drawVehicle(car, mMove);	//vẽ xe
 }

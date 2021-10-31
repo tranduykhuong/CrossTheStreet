@@ -1,31 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Main.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  CCAR.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CCAR.cpp(27,24): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CCAR.cpp(31,27): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CCAR.cpp(59,32): warning C4267: '=': conversion from 'size_t' to 'short', possible loss of data
-  CDRAW.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CDRAW.cpp(126,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  CGAME.cpp
-  CMENU.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CMENU.cpp(60,94): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CMENU.cpp(107,107): warning C4267: 'argument': conversion from 'size_t' to 'SHORT', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CMENU.cpp(120,29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  CONSOLE.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CONSOLE.cpp(59,21): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CONSOLE.cpp(59,24): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
-  CPEOPLE.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(14,26): warning C4267: 'initializing': conversion from 'size_t' to 'const short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(15,27): warning C4267: 'initializing': conversion from 'size_t' to 'const short', possible loss of data
-  CTRUCK.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CTRUCK.cpp(23,29): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CTRUCK.cpp(27,26): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CTRUCK.cpp(55,34): warning C4267: '=': conversion from 'size_t' to 'short', possible loss of data
-  CVEHICLE.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CVEHICLE.cpp(39,35): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CVEHICLE.cpp(40,37): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
   Main.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(14,26): warning C4267: 'initializing': conversion from 'size_t' to 'const short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(15,27): warning C4267: 'initializing': conversion from 'size_t' to 'const short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\Main.cpp(20,11): warning C4101: 'cd': unreferenced local variable
-  Generating Code...
+F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(43,32): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
+F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(44,31): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
   Main.vcxproj -> F:\HK1 nam 2\OOP\CrossTheStreet\x64\Debug\CrossTheStreet.exe

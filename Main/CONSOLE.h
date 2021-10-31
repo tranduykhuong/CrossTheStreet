@@ -1,11 +1,13 @@
 #pragma once
 #pragma execution_character_set("utf-8")
+#pragma comment (lib, "winmm.lib")
 #include<iostream>
 #include<Windows.h>
 #include<conio.h>
 #include<fstream>
 #include<string>
 #include<vector>
+#include <mmsystem.h>
 using namespace std;
 
 // Information of Window size and Screen Buffer size 
@@ -17,7 +19,7 @@ using namespace std;
 // Information of game screen
 #define SCREEN_GAME_WIDTH 110 //number of column
 #define SCREEN_GAME_HEIGHT 40 //number of row
-#define SCREEN_GAME_RECT_X 0
+#define SCREEN_GAME_RECT_X 4
 #define SCREEN_GAME_RECT_Y 0
 #define NUMBER_ROAD 8
 

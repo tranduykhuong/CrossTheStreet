@@ -13,6 +13,7 @@ private:
 	short mType;
 	short mMove;
 
+	short countSpeed;
 public:
 	CCAR();
 	~CCAR();
@@ -22,4 +23,5 @@ public:
 	short getWidth() const;
 
 	void move();
+	void draw();
 };
