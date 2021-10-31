@@ -127,3 +127,141 @@ void CDRAW::printString(string content, COORD coord, SHORT color, SHORT width) {
 	CONSOLE::gotoXY(new_x, coord.Y);
 	cout << content;
 }
+
+
+/*******************************************************************
+* Hàm vẽ logo (bổ trợ cho hàm drawLogo ở dưới)
+* Các tham số:
+* fiName	: Tên file đầu vào.
+* coord		: Tọa độ.
+* speed		: Tốc độ vẽ, tốc độ xóa.
+* delay		: Thời gian tồn tại trước khi bị xóa.
+* color		: Màu sắc.
+*********************************************************************/
+void DrawLogo(string fiName, COORD coord, SHORT speed, SHORT delay, SHORT color) {
+	ifstream fi(fiName);
+	if (fi.fail()) return;
+
+	// Vẽ logo:
+	string s;
+	CONSOLE::textcolor(color);
+
+	PlaySound(TEXT("Wind-Shoowsh-Fast-www.fesliyanstudios.com.wav"), NULL, SND_ASYNC);
+	for (int i = 0; !fi.eof(); i++) {
+		getline(fi, s);
+		CONSOLE::gotoXY(coord.X, coord.Y + i);
+		cout << s;
+		Sleep(speed);
+	}
+
+	Sleep(delay);
+
+	// Xóa logo:
+	fi.seekg(0, ios::beg);
+	CONSOLE::textcolor(0);
+
+	PlaySound(TEXT("mixkit-arrow-whoosh-1491.wav"), NULL, SND_ASYNC);
+	for (int i = 0; !fi.eof(); i++) {
+		getline(fi, s);
+		CONSOLE::gotoXY(coord.X, coord.Y + i);
+		cout << s;
+		Sleep(speed);
+	}
+
+	Sleep(delay);
+	system("cls");
+	fi.close();
+}
+/*******************************************************************
+* Hàm vẽ logo HCMUS và team5
+* coord		: Tọa độ.
+* speed		: Tốc độ vẽ, tốc độ xóa.
+* delay		: Thời gian tồn tại trước khi bị xóa của mỗi logo.
+*
+********************************************************************/
+void CDRAW::drawLogo(COORD coord, SHORT speed, SHORT delay) {
+	system("color 0e");
+	DrawLogo("HCMUS.txt", coord, speed, delay, 1);
+	DrawLogo("Team5.txt", coord, speed, delay, 3);
+}
+
+
+/******************************************************************
+* Hàm vẽ title game
+* Các tham số:
+* coord		: Tọa độ.
+* color		: Màu sắc.
+*******************************************************************/
+void CDRAW::drawTitle(COORD coord, SHORT color) {
+	ifstream fi("Title.txt");
+
+	if (fi.fail()) return;
+
+	int x, y;
+	CONSOLE::textcolor(color);
+
+	PlaySound(TEXT("Writing.wav"), NULL, SND_ASYNC);
+	//Sleep(200);
+	while (!fi.eof()) {
+		fi >> x >> y;
+		CONSOLE::gotoXY(coord.X + x, coord.Y + y);
+		cout << char(254);
+		Sleep(7);
+	}
+
+	for (int i = 0; i < 127; i++) {
+		CONSOLE::gotoXY(i + coord.X, 6 + coord.Y);
+		cout << char(254);
+		Sleep(3);
+	}
+
+	PlaySound(TEXT("ForestWalk.wav"), NULL, SND_ASYNC);
+	CONSOLE::textcolor(15);
+	fi.close();
+}
+
+
+/**************************************************************
+* Hàm vẽ màn hình game over
+* Các tham số:
+* coord		: Tọa độ.
+* color		: Màu sắc.
+***************************************************************/
+void CDRAW::drawGameOverScreen(COORD coord, SHORT color) {
+	ifstream fi("GameOver.txt");
+	if (fi.fail()) return;
+
+	PlaySound(TEXT("mixkit-game-over-dark-orchestra.wav"), NULL, SND_ASYNC);
+	CONSOLE::textcolor(color);
+	int x, y;
+
+	// Vẽ chữ game over:
+	while (!fi.eof()) {
+		fi >> x >> y;
+		CONSOLE::gotoXY(coord.X + x, coord.Y + y);
+		cout << char(254);
+		Sleep(2);
+	}
+
+	CONSOLE::textcolor(15);
+	Sleep(500);
+	fi.close();
+
+	//******************************
+
+	// Viết dòng chữ "Don't give up! :))":
+	fi.open("Ease.txt");
+	if (fi.fail()) return;
+
+	char c;
+	CONSOLE::gotoXY(coord.X + 53, coord.Y + 11);
+
+	PlaySound(TEXT("Switch3.wav"), NULL, SND_ASYNC);
+	for (int i = 0; i < 18; i++) {
+		fi.get(c);
+		cout << c;
+		Sleep(75);
+	}
+
+	fi.close();
+}

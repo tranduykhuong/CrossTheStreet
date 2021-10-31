@@ -14,13 +14,18 @@ int main()
     CONSOLE::ShowCur(false);
     CONSOLE::SetConsoleOutput(437);
     CONSOLE::SetTitleCosole("CROSS THE STREET");
-    system("color 7a");
+    //system("color 7a");
 
     CGAME cg;
     CDRAW cd;
-    //cg.runApp();
-    cg.drawGame();
-    cg.drawGuide();
+
+    cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
+    cd.drawTitle(COORD{ 10, 4 }, 151);
+    //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
+
+    cg.runApp();
+    //cg.drawGame();
+    //cg.drawGuide();
 
     /*CPEOPLE cn;
     cn.draw(LEFT);*/
