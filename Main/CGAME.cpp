@@ -6,6 +6,8 @@ CGAME::CGAME() {
 }
 
 void CGAME::drawGame() {
+	system("color 7a");
+
 	short colorText = ColorGame::navi;
 	short heightRoad = SCREEN_GAME_HEIGHT / NUMBER_ROAD;
 

@@ -1,6 +1,5 @@
 #pragma once
 #pragma execution_character_set("utf-8")
-#pragma comment (lib, "winmm.lib")
 #include<iostream>
 #include<Windows.h>
 #include<conio.h>
@@ -8,10 +7,8 @@
 #include<string>
 #include<vector>
 #include <mmsystem.h>
-<<<<<<< HEAD
 #pragma comment (lib, "winmm.lib")
-=======
->>>>>>> duykhuong
+
 using namespace std;
 
 // Information of Window size and Screen Buffer size 

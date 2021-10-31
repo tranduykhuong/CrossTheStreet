@@ -31,28 +31,17 @@ int main()
     CONSOLE::HiddenScrollBar();
     CONSOLE::ShowCur(false);
     CONSOLE::SetConsoleOutput(437);
-<<<<<<< HEAD
     CONSOLE::SetTitleCosole("CROSS THE STREET");
-    //system("color 7a");
 
-    CGAME cg;
     CDRAW cd;
-
-    cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
+    //cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
     cd.drawTitle(COORD{ 10, 4 }, 151);
+    cg.runApp();
     //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
 
-    cg.runApp();
-    //cg.drawGame();
-    //cg.drawGuide();
-=======
-    CONSOLE::SetTitleCosole("Game CROSS THE STREET");
-    system("color 7a");
-
-    //cg.runApp();
-    cg.drawGame();
-    cg.drawGuide();
->>>>>>> duykhuong
+    
+    /*cg.drawGame();
+    cg.drawGuide();*/
 
    /* CHORSE h;
     h.set(5, 16, 112, 3, LEFT);
