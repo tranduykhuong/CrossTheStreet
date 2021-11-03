@@ -8,7 +8,6 @@ bool isMusic;
 
 void runGame() {
     while (cg.isRunning()) {
-
         if (!cg.getPeople().isDead()) {
             cg.updatePosPeople(MOVING);
         }
@@ -24,7 +23,6 @@ void runGame() {
 
 int main()
 {
-
     CONSOLE::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     CONSOLE::FixConsoleWindow();
     CONSOLE::SreenConsole_Top_Left();
@@ -35,15 +33,14 @@ int main()
 
     CDRAW cd;
     //cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
-    cd.drawTitle(COORD{ 10, 4 }, 151);
-    cg.runApp();
+    //cd.drawTitle(COORD{ 10, 4 }, 151);
+    //cg.runApp();
     //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
 
-    
-    /*cg.drawGame();
-    cg.drawGuide();*/
+    cg.drawGame();
+    //cg.drawGuide();
 
-   /* CHORSE h;
+    /*CHORSE h;
     h.set(5, 16, 112, 3, LEFT);
     CRABBIT r;
     r.set(5, 11, 114, 2, RIGHT);
@@ -66,9 +63,9 @@ int main()
 
     cg.resetGame(4);
     char key;
-
+    //runGame();
     thread run(runGame);
-    while (1) 
+    while (1)
     {
         key = toupper(_getch());
         // Người còn sống

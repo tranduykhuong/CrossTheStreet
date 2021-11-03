@@ -28,29 +28,29 @@ using namespace std;
 
 // Border coordinates of the game screen
 enum GameScreen {
-	sLEFT   = SCREEN_GAME_RECT_X,
-	sRIGHT  = SCREEN_GAME_RECT_X + SCREEN_GAME_WIDTH,
-	sTOP    = SCREEN_GAME_RECT_Y,
+	sLEFT = SCREEN_GAME_RECT_X,
+	sRIGHT = SCREEN_GAME_RECT_X + SCREEN_GAME_WIDTH,
+	sTOP = SCREEN_GAME_RECT_Y,
 	sBOTTOM = SCREEN_GAME_RECT_Y + SCREEN_GAME_HEIGHT
 };
 
 enum ColorGame {
-	black	= 112,
-	blue	= 113,
-	green	= 114,
-	teal	= 115,
-	maroon	= 116,
-	purple	= 117,
-	olive	= 118,
-	silver	= 119,
-	grey	= 120,
-	navi	= 121,
-	lime	= 122,
-	aqua	= 123,
-	red		= 124,
-	pink	= 125,
-	yellow	= 126,
-	white	= 127
+	black = 112,
+	blue = 113,
+	green = 114,
+	teal = 115,
+	maroon = 116,
+	purple = 117,
+	olive = 118,
+	silver = 119,
+	grey = 120,
+	navi = 121,
+	lime = 122,
+	aqua = 123,
+	red = 124,
+	pink = 125,
+	yellow = 126,
+	white = 127
 };
 
 enum Key {
@@ -74,5 +74,6 @@ public:
 	static void ShowCur(bool CursorVisibility);
 	static void gotoXY(int, int);
 	static void textcolor(int x);
+	static int getConsoleCharacter(const int&, const int&);
 };
 

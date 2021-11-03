@@ -30,14 +30,14 @@ void CGAME::drawGame() {
 				cout << char(32);
 			}
 		}
-		else if (i==2)
+		else if (i == 2)
 			CDRAW::drawHorizontalLine(COORD{ x, tempY }, width, 61, colorText);
 	}
 }
 
 short CGAME::randomDistance(short x_before, short num, short widthObs, short screenRight) {
 	short delta = num * (widthObs + 3);
-	while(1) {
+	while (1) {
 		int ran = rand() % 40 + 3;
 		if (x_before + ran + 2 * widthObs + delta + 2 < screenRight)
 			return ran;
@@ -157,9 +157,9 @@ void CGAME::resetGame(short level) {
 			// xác định tọa độ x theo chiều xe chạy
 			if (move == LEFT)
 				x_cur = sRIGHT + 1;
-			else 
+			else
 				x_cur = sLEFT - horse[0].getWidth();
-			
+
 			// làn đường số 1
 			horse[i].set(x_cur, 1 + heightLane,
 				randomColor(ColorGame::black, ColorGame::olive), 120 - deltaSpeed, move);
@@ -167,7 +167,7 @@ void CGAME::resetGame(short level) {
 		}
 		else {
 			before_x = horse[i - 1].getX();
-			distance = randomDistance(before_x, numHorse - i - 1, horse[i].getWidth() , sRIGHT + SCREEN_GAME_WIDTH);
+			distance = randomDistance(before_x, numHorse - i - 1, horse[i].getWidth(), sRIGHT + SCREEN_GAME_WIDTH);
 
 			if (move == LEFT)
 				x_cur = before_x + horse[i].getWidth() + distance;
@@ -318,21 +318,23 @@ void CGAME::drawObjects(short key) {
 }
 
 void CGAME::updatePosPeople(short key) {
+	int check = false;
 	switch (key) {
 	case Key::UP:
-		people.up();
+		check = people.up();
 		break;
 	case Key::DOWN:
-		people.down();
+		check = people.down();
 		break;
 	case Key::LEFT:
-		people.left();
+		check = people.left();
 		break;
 	case Key::RIGHT:
-		people.right();
+		check = people.right();
 		break;
 	default:
 		break;
 	}
-	people.draw(key);
+	if (check)
+		people.draw(key);
 }

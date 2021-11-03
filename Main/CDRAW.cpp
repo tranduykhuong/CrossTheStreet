@@ -54,7 +54,7 @@ void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT 
 	short y_bottom = coord.Y + height;
 	short x_right = coord.X + width;
 	drawHorizontalLine(coord, width, horizo, textColor);
-	drawHorizontalLine(COORD{ coord.X, y_bottom}, width, horizo, textColor);
+	drawHorizontalLine(COORD{ coord.X, y_bottom }, width, horizo, textColor);
 
 	drawVerticalLine(COORD{ coord.X, coord.Y }, height, vertical, textColor);
 	drawVerticalLine(COORD{ x_right, coord.Y }, height, vertical, textColor);
@@ -76,7 +76,7 @@ void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT 
 *	filename	: name of file txt
 *	coord		: coordinates of the left end
 *   textColor	: the color of the character
-*	delay		: delay while printing each line	
+*	delay		: delay while printing each line
 ****************************************************************/
 void CDRAW::drawGameTXT(string filename, COORD coord, SHORT color, int delay) {
 	ifstream fin(filename);
@@ -202,7 +202,7 @@ void CDRAW::drawTitle(COORD coord, SHORT color) {
 
 	PlaySound(TEXT("Writing.wav"), NULL, SND_ASYNC);
 	//Sleep(200);
-	while (!fi.eof()) {
+	/*while (!fi.eof()) {
 		fi >> x >> y;
 		CONSOLE::gotoXY(coord.X + x, coord.Y + y);
 		cout << char(254);
@@ -213,7 +213,7 @@ void CDRAW::drawTitle(COORD coord, SHORT color) {
 		CONSOLE::gotoXY(i + coord.X, 6 + coord.Y);
 		cout << char(254);
 		Sleep(3);
-	}
+	}*/
 
 	PlaySound(TEXT("ForestWalk.wav"), NULL, SND_ASYNC);
 	CONSOLE::textcolor(15);
