@@ -1,9 +1,18 @@
 ﻿#include "CCAR.h"
 
 CCAR::CCAR() {
-	mType = 1;
 	mMove = LEFT;
 	countSpeed = MAX_SPEED;
+	form = { {} };
+}
+
+CCAR::CCAR(short x, short y, short color, short speed, short move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
+	mMove = move;
+	form = { {} };
 }
 
 CCAR::~CCAR() {
@@ -11,25 +20,23 @@ CCAR::~CCAR() {
 	mY = 0;
 	mColor = 0;
 	mSpeed = 0;
-	mType = 0;
 	mMove = 0;
 }
 
-void CCAR::set(short x, short y, short color, short speed, short type, short move) {
+void CCAR::set(short x, short y, short color, short speed, short move) {
 	mX = x;
 	mY = y;
 	mColor = color;
 	mSpeed = speed;
-	mType = type;
 	mMove = move;
 }
 
 short CCAR::getHeight() const {
-	return carLeft1.size();
+	return form.size();
 }
 
 short CCAR::getWidth() const {
-	return carLeft1[0].size();
+	return form[0].size();
 }
 
 void CCAR::move() {
@@ -51,19 +58,11 @@ void CCAR::move() {
 	countSpeed = MAX_SPEED;
 }
 
-void CCAR::draw() {
-	vector<vector<short>> car;
-	if (mType == 1) {
-		if (mMove == LEFT)
-			car = carLeft1;
-		else
-			car = carRight1;
-	}
-	else {
-		if (mMove == LEFT)
-			car = carLeft2;
-		else
-			car = carRight2;
-	}
-	CVEHICLE::drawVehicle(car, mMove);	//vẽ xe
+void CCAR::draw() const {
+	CVEHICLE::drawVehicle(form, mMove);	//vẽ xe
+}
+
+void CCAR::setForm(const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+{
+	form = form1;
 }

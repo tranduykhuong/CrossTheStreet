@@ -4,6 +4,14 @@ CVEHICLE::CVEHICLE() {
 	mX = mY = mSpeed = 0;
 	mColor = ColorGame::black;
 }
+
+CVEHICLE::CVEHICLE(const CVEHICLE& src) {
+	mX = src.mX;
+	mY = src.mY;
+	mColor = src.mColor;
+	mSpeed = src.mSpeed;
+}
+
 CVEHICLE::~CVEHICLE() {
 	mX = mY = mSpeed = 0;
 	mColor = ColorGame::black;
@@ -33,7 +41,7 @@ int CVEHICLE::getColor() const {
 }
 
 //move là hướng xe chạy qua trái hay phải
-void CVEHICLE::drawVehicle(vector<vector<short>> form, short move) {
+void CVEHICLE::drawVehicle(vector<vector<short>> form, short move) const {
 
 	CONSOLE::textcolor(mColor);
 	short heightVehicle = form.size();		//chiều cao của xe
@@ -41,29 +49,28 @@ void CVEHICLE::drawVehicle(vector<vector<short>> form, short move) {
 	short startX, endX, idx;
 	// bắt đầu vẽ từ điểm nào trên chiếc xe, kết thúc vẽ từ điểm nào trên chiếc xe và vị trí xuất xe
 
+	//xử lý va chạm biên
+	if (mX - SCREEN_GAME_RECT_X < 0) {				//xử lý biên trái
+		startX = -(mX - SCREEN_GAME_RECT_X);
+		endX = widthVehicle;
+		idx = SCREEN_GAME_RECT_X + 1;
+	}
+	else if (mX + widthVehicle >= sRIGHT) {	//xử lý biên phải
+		startX = 0;
+		endX = sRIGHT - mX - 1;
+		idx = mX + 1;
+	}
+	else {						//lúc bình thường
+		startX = 0;
+		endX = widthVehicle;
+		idx = mX + 1;
+	}
+	//xuất xe
 	switch (move) {
 	case Key::RIGHT: {
 
-		//xử lý biên trái
-		if (mX < 0) {
-			startX = -mX;
-			endX = widthVehicle;
-			idx = 1;
-		}
-		else if (mX + widthVehicle >= sRIGHT) {	//xử lý biên phải
-			startX = 0;
-			endX = sRIGHT - mX - 1;
-			idx = mX + 1;
-		}
-		else {						//lúc bình thường
-			startX = 0;
-			endX = widthVehicle;
-			idx = mX + 1;
-		}
-
-		//xuất xe
 		for (int i = 0; i < heightVehicle; i++) {
-			if (idx != 1) {
+			if (idx != SCREEN_GAME_RECT_X + 1) {
 				CONSOLE::gotoXY(idx - 1, mY + i);	//xóa vết nếu nó không chạm biên trái
 				cout << " ";
 			}
@@ -75,25 +82,6 @@ void CVEHICLE::drawVehicle(vector<vector<short>> form, short move) {
 		break;
 	}
 	case Key::LEFT: {
-
-		//xử lý va chạm biên
-		if (mX + widthVehicle >= sRIGHT) {	//xử lý biên phải
-			startX = 0;
-			endX = sRIGHT - mX - 1;
-			idx = mX + 1;
-		}
-		else if (mX < 0) {				//xử lý biên trái
-			startX = -mX;
-			endX = widthVehicle;
-			idx = 1;
-		}
-		else {							//lúc bình thường
-			startX = 0;
-			endX = widthVehicle;
-			idx = mX + 1;
-		}
-
-		//xuất xe
 		for (int i = 0; i < heightVehicle; i++) {
 			CONSOLE::gotoXY(idx, mY + i);
 

@@ -2,39 +2,22 @@
 #include "CANIMAL.h"
 class CHORSE : public CANIMAL
 {
-	vector<vector<char>> horseLeft_1 = { {'.',' ',' ',' ',' ',' '},
-											{'<',')',' ',' ',' ',' '},
-											{'(','#','#','#',')','~'},
-											{'|','|',' ','|','|',' '}
-	};
-	vector<vector<char>> horseLeft_2 = { {'.',' ',' ',' ',' ',' '},
-											{'<',')',' ',' ',' ',' '},
-											{'(','#','#','#',')','~'},
-											{' ','\\','\\',' ','\\','\\'}
-	};
-
-	vector<vector<char>> horseRight_1 = { {' ',' ',' ',' ',' ','.'},
-											{' ',' ',' ',' ','(','>'},
-											{'~','(','#','#','#',')'},
-											{' ','|','|',' ','|','|'}
-	};
-	vector<vector<char>> horseRight_2 = { {' ',' ',' ',' ',' ','.'},
-											{' ',' ',' ',' ','(','>'},
-											{'~','(','#','#','#',')'},
-											{'/','/',' ','/','/',' '}
-	};
+	vector<vector<short>> form1;
+	vector<vector<short>> form2;
 
 	short mMove;
 	short countSpeed;
 public:
 	CHORSE();
+	CHORSE(const short&, const short&, const int&, const short&, const short&);
 	~CHORSE();
 
 	void set(const short&, const short&, const int&, const short&, const short&);
-	int getHeight();
-	int getWidth();
+	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
+	short getHeight() const;
+	short getWidth() const;
 
 	void tell();
 	void move();
-	void draw();
+	void draw() const;
 };

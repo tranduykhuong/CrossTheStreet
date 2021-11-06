@@ -159,6 +159,7 @@
     <ClInclude Include="CDRAW.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CHORSE.h" />
+    <ClInclude Include="CLANE.h" />
     <ClInclude Include="CMENU.h" />
     <ClInclude Include="CONSOLE.h" />
     <ClInclude Include="CPEOPLE.h" />

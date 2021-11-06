@@ -86,5 +86,8 @@
     <ClInclude Include="CRABBIT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CLANE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

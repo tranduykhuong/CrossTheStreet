@@ -3,40 +3,22 @@
 
 class CRABBIT : public CANIMAL
 {
-	vector<vector<char>> rabbitLeft_1 = { {'(' ,'\\' ,'_','/',')',' '},
-											{'(','\'','~','\'',')',' '},
-											{' ','\\',char(167),char(167),'\\','o'},
-											{' ',' ',' ','o','o',' '}
-	};
-	vector<vector<char>> rabbitLeft_2 = { {'(' ,'\\' ,'_','/',')',' '},
-											{'(','\'','~','\'',')',' '},
-											{' ','\\',char(167),char(167),'\\','o'},
-											{' ','o','o',' ',' ',' '}
-	};
-
-	vector<vector<char>> rabbitRight_1 = { {' ','(' ,'\\' ,'_','/',')'},
-											{' ','(','\'','~','\'',')'},
-											{'o','/',char(167),char(167),'/',' '},
-											{' ','o','o',' ',' ',' '}
-	};
-	vector<vector<char>> rabbitRight_2 = { {' ','(' ,'\\' ,'_','/',')'},
-											{' ','(','\'','~','\'',')'},
-											{'o','/',char(167),char(167),'/',' '},
-											{' ',' ',' ','o','o',' '}
-	};
+	vector<vector<short>> form1;
+	vector<vector<short>> form2;
 
 	short mMove;
 	short countSpeed;
 public:
 	CRABBIT();
+	CRABBIT(const short&, const short&, const int&, const short&, const short&);
 	~CRABBIT();
 
 	void set(const short&, const short&, const int&, const short&, const short&);
-	int getHeight();
-	int getWidth();
+	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
+	short getHeight() const;
+	short getWidth() const;
 
-	const vector<vector<char>>& getDraw(const int&);
 	void tell();
 	void move();
-	void draw();
+	void draw() const;
 };
