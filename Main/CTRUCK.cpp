@@ -6,7 +6,17 @@ CTRUCK::CTRUCK() {
 	form = { {} };
 }
 
-CTRUCK::CTRUCK(short x, short y, short color, short speed, short move) {
+CTRUCK::CTRUCK(const CTRUCK& tr)
+{
+	mX = tr.mX;
+	mY = tr.mY;
+	mColor = tr.mColor;
+	mSpeed = tr.mSpeed;
+	mMove = tr.mMove;
+	form = tr.form;
+}
+
+CTRUCK::CTRUCK(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -19,7 +29,7 @@ CTRUCK::~CTRUCK() {
 	mMove = 0;
 }
 
-void CTRUCK::set(short x, short y, short color, short speed, short move) {
+void CTRUCK::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -54,7 +64,7 @@ void CTRUCK::move() {
 	countSpeed = MAX_SPEED;
 }
 
-void CTRUCK::draw() const {	
+void CTRUCK::draw() const {
 	CVEHICLE::drawVehicle(form, mMove);	//vẽ xe
 }
 

@@ -7,14 +7,14 @@ class CTRUCK : public CVEHICLE
 private:
 	vector<vector<short>> form;
 
-	short mMove;
 	short countSpeed;
 public:
 	CTRUCK();
-	CTRUCK(short, short, short, short, short);
+	CTRUCK(const CTRUCK&);
+	CTRUCK(const short&, const short&, const short&, const short&, const short&);
 	~CTRUCK();
 
-	void set(short, short, short, short, short);
+	void set(const short&, const short&, const short&, const short&, const short&);
 	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
 
 	short getWidth() const;

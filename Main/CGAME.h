@@ -58,34 +58,34 @@ static vector<vector<short>> horseRight_2 =
 , {47,47,32,47,47,32} };
 
 // Form Truck
-static vector<vector<short>> truckFormLeft1 = 
+static vector<vector<short>> truckFormLeft1 =
 { {32,32,32,32,95,95,32,32,32,32,32,32,32,32,32,32,32,32}
 , {32,95,95,47,95,95,179,95,95,95,95,95,95,95,95,95,95,47}
 , {47,248,95,95,95,95,179,32,32,32,32,32,32,32,32,32,32,179}
 , {96,45,40,15,41,45,45,45,45,45,45,45,40,15,41,45,45,39} };
-static vector<vector<short>> truckFormRight1 = 
+static vector<vector<short>> truckFormRight1 =
 { {32,32,32,32,32,32,32,32,32,32,32,32,95,95,32,32,32,32}
 , {92,95,95,95,95,95,95,95,95,95,95,179,95,95,92,95,95,32}
 , {179,32,32,32,32,32,32,32,32,32,32,179,95,95,95,95,248,92}
 , {96,45,45,40,15,41,45,45,45,45,45,45,45,40,15,41,45,39} };
-static vector<vector<short>> truckFormLeft2 = 
+static vector<vector<short>> truckFormLeft2 =
 { {32,32,32,32,95,95,32,95,95,95,95,95,95,95,95,95,95,32}
 , {32,95,95,47,95,95,179,61,61,61,61,61,61,61,61,61,61,179}
 , {47,248,95,95,95,95,179,95,95,95,95,95,95,95,95,95,95,179}
 , {96,45,45,40,15,41,45,45,45,45,45,45,40,15,41,45,45,39} };
-static vector<vector<short>> truckFormRight2 = 
+static vector<vector<short>> truckFormRight2 =
 { {32,95,95,95,95,95,95,95,95,95,95,32,95,95,32,32,32,32}
 , {179,61,61,61,61,61,61,61,61,61,61,179,95,95,92,95,95,32}
 , {179,95,95,95,95,95,95,95,95,95,95,179,95,95,95,95,248,92}
 , {96,45,45,40,15,41,45,45,45,45,45,45,40,15,41,45,45,39} };
 
 // Form Car
-static vector<vector<short>> carFormLeft1 = 
+static vector<vector<short>> carFormLeft1 =
 { {32,32,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,32}
 , {32,47,32,32,32,179,95,95,179,95,95,179,95,95,179,95,95,179}
 , {179,248,95,95,179,32,32,32,32,32,32,32,32,32,32,32,32,179}
 , {96,45,40,15,41,45,45,45,45,45,45,45,40,15,41,45,45,39} };
-static vector<vector<short>> carFormRight1 = 
+static vector<vector<short>> carFormRight1 =
 { {32,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,32,32}
 , {179,95,95,179,95,95,179,95,95,179,95,95,179,32,32,32,92,32}
 , {179,32,32,32,32,32,32,32,32,32,32,32,179,95,95,95,248,179}
@@ -95,7 +95,7 @@ static vector<vector<short>> carFormLeft2 =
 , {32,95,95,95,47,95,95,179,95,95,179,95,95,95,92,95,95,32}
 , {47,248,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,179}
 , {96,45,45,40,15,41,45,45,45,45,45,45,40,15,41,45,45,39} };
-static vector<vector<short>> carFormRight2 = 
+static vector<vector<short>> carFormRight2 =
 { {32,32,32,32,95,95,95,95,95,95,95,95,95,32,32,32,32,32}
 , {32,95,95,47,95,95,95,179,95,95,179,95,95,92,95,95,95,32}
 , {179,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,248,92}
@@ -103,7 +103,7 @@ static vector<vector<short>> carFormRight2 =
 
 
 class CGAME {
-private:	
+private:
 	CLANE<CANIMAL, CHORSE>* lane1 = new CLANE<CANIMAL, CHORSE>(sLEFT, HEIGHT_ROAD);
 	CLANE<CANIMAL, CRABBIT>* lane2 = new CLANE<CANIMAL, CRABBIT>(sLEFT, 2 * HEIGHT_ROAD);
 	CLANE<CVEHICLE, CCAR>* lane3 = new CLANE<CVEHICLE, CCAR>(sLEFT, 3 * HEIGHT_ROAD);
@@ -132,6 +132,8 @@ public:
 	void runApp();
 	void drawGame();
 	void resetGame(short);
+	void saveGame(fstream&);
+	void loadGame(fstream&);
 
 	CPEOPLE getPeople() const { return people; }
 	vector<CANIMAL*> getHorses() const { return lane1->getListObjs(); }

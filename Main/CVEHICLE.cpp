@@ -3,6 +3,15 @@
 CVEHICLE::CVEHICLE() {
 	mX = mY = mSpeed = 0;
 	mColor = ColorGame::black;
+	mMove = LEFT;
+}
+
+CVEHICLE::CVEHICLE(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
+	mMove = move;
 }
 
 CVEHICLE::CVEHICLE(const CVEHICLE& src) {
@@ -36,8 +45,18 @@ short CVEHICLE::getX() const {
 short CVEHICLE::getY() const {
 	return mY;
 };
-int CVEHICLE::getColor() const {
+short CVEHICLE::getColor() const {
 	return mColor;
+}
+
+short CVEHICLE::getSpeed() const
+{
+	return mSpeed;
+}
+
+short CVEHICLE::getMove() const
+{
+	return mMove;
 }
 
 //move là hướng xe chạy qua trái hay phải

@@ -8,7 +8,18 @@ CHORSE::CHORSE() {
 	form2 = { {} };
 }
 
-CHORSE::CHORSE(const short& x, const short& y, const int& color, const short& speed, const short& move) {
+CHORSE::CHORSE(const CHORSE& ho)
+{
+	mX = ho.mX;
+	mY = ho.mY;
+	mColor = ho.mColor;
+	mSpeed = ho.mSpeed;
+	mMove = ho.mMove;
+	form1 = ho.form1;
+	form2 = ho.form2;
+}
+
+CHORSE::CHORSE(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -26,7 +37,7 @@ CHORSE::~CHORSE() {
 	mMove = 0;
 }
 
-void CHORSE::set(const short& x, const short& y, const int& color, const short& speed, const short& move) {
+void CHORSE::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;

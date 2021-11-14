@@ -8,7 +8,18 @@ CRABBIT::CRABBIT()
 	form2 = { {} };
 }
 
-CRABBIT::CRABBIT(const short& x, const short& y, const int& color, const short& speed, const short& move) {
+CRABBIT::CRABBIT(const CRABBIT& ra)
+{
+	mX = ra.mX;
+	mY = ra.mY;
+	mColor = ra.mColor;
+	mSpeed = ra.mSpeed;
+	mMove = ra.mMove;
+	form1 = ra.form1;
+	form2 = ra.form2;
+}
+
+CRABBIT::CRABBIT(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -27,7 +38,7 @@ CRABBIT::~CRABBIT()
 	mMove = 0;
 }
 
-void CRABBIT::set(const short& x, const short& y, const int& color, const short& speed, const short& move) {
+void CRABBIT::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;

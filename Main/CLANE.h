@@ -7,13 +7,14 @@ class CLANE {
 
 	short X, Y;
 
-	short randomColor(short, short); 
+	short randomColor(short, short);
 	short randomDistance(short, short, short, short);
 public:
 	CLANE(short, short);
 	~CLANE();
 
-	void setLane(short, short, short, const vector<vector<short>>, const vector<vector<short>>);
+	void pushObj(const short&, const short&, const short&, const short&, const short&, const vector<vector<short>>&, const vector<vector<short>>&);
+	void setLane(short, short, short, const vector<vector<short>>&, const vector<vector<short>>&);
 	vector<T*> getListObjs() { return listObjs; }
 	void drawObj() const;
 	void moveObj();
@@ -56,6 +57,14 @@ short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, sho
 	}
 }
 
+template<class T, class U>
+inline void CLANE<T, U>::pushObj(const short& mX, const short& mY, const short& mColor,
+	const short& mMove, const short& mSpeed, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+{
+	listObjs.push_back(new U(mX, mY, mColor, mSpeed, mMove));
+	listObjs[listObjs.size() - 1]->setForm(form1, form2);
+}
+
 /// <summary>
 /// Set các đối tượng trên Lane
 /// ---------------------------
@@ -66,15 +75,15 @@ short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, sho
 ///		form2	: ma trận hình dáng 2 của đối tượng (nếu có)
 /// </summary>
 template<class T, class U>
-void CLANE<T, U>::setLane(short num, short speed, short move, 
-	const vector<vector<short>> form1, const vector<vector<short>> form2)
+void CLANE<T, U>::setLane
+(short num, short speed, short move, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
 {
 	short heightObj = form1.size();
 	short widthObj = form1[0].size();
 
 	for (short i = 0; i < num; i++) {
 		// set Object đầu tiên trong mảng
-		if (i == 0) { 
+		if (i == 0) {
 			// xe đi sang trái
 			if (move == LEFT) {
 				listObjs.push_back(new U(sRIGHT + 1, Y + HEIGHT_ROAD - heightObj,
@@ -89,7 +98,7 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 			}
 		}
 		// set các Object còn lại dựa theo tọa độ Car đầu tiên
-		else {		  
+		else {
 			// lấy tọa độ x của Obj phía trước
 			short before_x = listObjs[i - 1]->getX();
 
@@ -104,11 +113,11 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 					randomColor(ColorGame::black, ColorGame::olive), speed, LEFT));
 				listObjs[i]->setForm(form1, form2);
 			}
-				// xe đi sang trái
+			// xe đi sang trái
 			else {
 				// lấy khoảng các ngẫu nhiên so với xe trước
 				short distance = randomDistance(-(before_x + widthObj), num - i - 1, widthObj, -(sLEFT - SCREEN_GAME_WIDTH));
-				
+
 				// Push object vào listObjs
 				listObjs.push_back(new U(listObjs[i - 1]->getX() - widthObj - distance, Y + HEIGHT_ROAD - heightObj,
 					randomColor(ColorGame::black, ColorGame::olive), speed, RIGHT));

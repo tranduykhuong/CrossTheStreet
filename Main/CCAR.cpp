@@ -6,7 +6,17 @@ CCAR::CCAR() {
 	form = { {} };
 }
 
-CCAR::CCAR(short x, short y, short color, short speed, short move) {
+CCAR::CCAR(const CCAR& ca)
+{
+	mX = ca.mX;
+	mY = ca.mY;
+	mColor = ca.mColor;
+	mSpeed = ca.mSpeed;
+	mMove = ca.mMove;
+	form = ca.form;
+}
+
+CCAR::CCAR(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -23,7 +33,7 @@ CCAR::~CCAR() {
 	mMove = 0;
 }
 
-void CCAR::set(short x, short y, short color, short speed, short move) {
+void CCAR::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
