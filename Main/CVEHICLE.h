@@ -17,10 +17,11 @@ public:
 	CVEHICLE(const CVEHICLE&);
 	~CVEHICLE();
 
-	void setX(short X);
-	void setY(short Y);
-	void setColor(short);
-	void setSpeed(short);
+	void setX(const short& X);
+	void setY(const short& Y);
+	void setColor(const short&);
+	void setSpeed(const short&);
+	void setMove(const short&);
 	virtual void set(const short&, const short&, const short&, const short&, const short&) = 0;
 	virtual void setForm(const vector<vector<short>>&, const vector<vector<short>>&) = 0;
 

@@ -26,17 +26,22 @@ CVEHICLE::~CVEHICLE() {
 	mColor = ColorGame::black;
 }
 
-void CVEHICLE::setX(short X) {
+void CVEHICLE::setX(const short& X) {
 	mX = X;
 }
-void CVEHICLE::setY(short Y) {
+void CVEHICLE::setY(const short& Y) {
 	mY = Y;
 }
-void CVEHICLE::setColor(short color) {
+void CVEHICLE::setColor(const short& color) {
 	mColor = color;
 }
-void CVEHICLE::setSpeed(short speed) {
+void CVEHICLE::setSpeed(const short& speed) {
 	mSpeed = speed;
+}
+
+void CVEHICLE::setMove(const short& _move)
+{
+	mMove = _move;
 }
 
 short CVEHICLE::getX() const {
