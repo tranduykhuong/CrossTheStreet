@@ -1,5 +1,2 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Main.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  CPEOPLE.cpp
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(51,32): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-F:\HK1 nam 2\OOP\CrossTheStreet\Main\CPEOPLE.h(52,31): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data
-  Main.vcxproj -> F:\HK1 nam 2\OOP\CrossTheStreet\x64\Debug\CrossTheStreet.exe
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Main.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Main.vcxproj -> C:\Users\ACER\Desktop\CrossTheStreet\x64\Debug\CrossTheStreet.exe

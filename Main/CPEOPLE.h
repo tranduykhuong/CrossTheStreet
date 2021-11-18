@@ -26,10 +26,10 @@ public:
 	CPEOPLE();
 	CPEOPLE(short, short);
 
-	void up();
-	void down();
-	void left();
-	void right();
+	bool up();
+	bool down();
+	bool left();
+	bool right();
 
 	bool isWin() const;
 	bool isDead() const;
@@ -42,7 +42,7 @@ public:
 	void setShade(vector<vector<int>> shade) {
 		this->peopleShade = shade;
 	}
-	
+
 	short getSpeed() const;
 	short getX() const;
 	short getY() const;

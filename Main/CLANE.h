@@ -1,21 +1,35 @@
 ﻿#pragma once
 #include"CONSOLE.h"
+#include "CTRAFFIC_LIGHT.h"
+#include <ctime>
 
 template<class T, class U>
-class CLANE {
+class CLANE : public CTRAFFIC_LIGHT {
 	vector<T*> listObjs;
 
 	short X, Y;
 
-	short randomColor(short, short); 
+	short randomColor(short, short);
 	short randomDistance(short, short, short, short);
+	int countSpeed = 0;
+	int actionSpeed = -1;
+	int stopSpeed = -1;
+
+	CTRAFFIC_LIGHT light;
 public:
 	CLANE(short, short);
 	~CLANE();
 
+	void setSpeed(int newActionSpeed, int newStopSpeed) {
+		actionSpeed = newActionSpeed;
+		stopSpeed = newStopSpeed;
+	}
+	void setLightColor(const int& color) {
+		light.setLight(color);
+	}
 	void setLane(short, short, short, const vector<vector<short>>, const vector<vector<short>>);
 	vector<T*> getListObjs() { return listObjs; }
-	void drawObj() const;
+	void drawObj();
 	void moveObj();
 	void clearObjs();
 };
@@ -66,7 +80,7 @@ short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, sho
 ///		form2	: ma trận hình dáng 2 của đối tượng (nếu có)
 /// </summary>
 template<class T, class U>
-void CLANE<T, U>::setLane(short num, short speed, short move, 
+void CLANE<T, U>::setLane(short num, short speed, short move,
 	const vector<vector<short>> form1, const vector<vector<short>> form2)
 {
 	short heightObj = form1.size();
@@ -74,7 +88,7 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 
 	for (short i = 0; i < num; i++) {
 		// set Object đầu tiên trong mảng
-		if (i == 0) { 
+		if (i == 0) {
 			// xe đi sang trái
 			if (move == LEFT) {
 				listObjs.push_back(new U(sRIGHT + 1, Y + HEIGHT_ROAD - heightObj,
@@ -89,7 +103,7 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 			}
 		}
 		// set các Object còn lại dựa theo tọa độ Car đầu tiên
-		else {		  
+		else {
 			// lấy tọa độ x của Obj phía trước
 			short before_x = listObjs[i - 1]->getX();
 
@@ -104,11 +118,11 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 					randomColor(ColorGame::black, ColorGame::olive), speed, LEFT));
 				listObjs[i]->setForm(form1, form2);
 			}
-				// xe đi sang trái
+			// xe đi sang trái
 			else {
 				// lấy khoảng các ngẫu nhiên so với xe trước
 				short distance = randomDistance(-(before_x + widthObj), num - i - 1, widthObj, -(sLEFT - SCREEN_GAME_WIDTH));
-				
+
 				// Push object vào listObjs
 				listObjs.push_back(new U(listObjs[i - 1]->getX() - widthObj - distance, Y + HEIGHT_ROAD - heightObj,
 					randomColor(ColorGame::black, ColorGame::olive), speed, RIGHT));
@@ -120,20 +134,40 @@ void CLANE<T, U>::setLane(short num, short speed, short move,
 
 // Draw các đối tượng trong listObjs
 template<class T, class U>
-void CLANE<T, U>::drawObj() const
+void CLANE<T, U>::drawObj()
 {
 	short num = listObjs.size();
 	for (short i = 0; i < num; i++)
 		listObjs[i]->draw();
+
 }
 
 // Move các đối tượng trong listObjs
 template<class T, class U>
 void CLANE<T, U>::moveObj()
 {
-	short num = listObjs.size();
-	for (short i = 0; i < num; i++)
-		listObjs[i]->move();
+	light.drawLight(sRIGHT + 2, Y + HEIGHT_ROAD - 3);
+	if (light.getLightColor() == 1) {
+		short num = listObjs.size();
+		for (short i = 0; i < num; i++)
+			listObjs[i]->move();
+		if (countSpeed == actionSpeed) {
+			countSpeed = 0;
+			light.setLightColor(0);
+		}
+		else
+			if (actionSpeed != -1)
+				countSpeed++;
+	}
+	else {
+		if (countSpeed == stopSpeed) {
+			countSpeed = 0;
+			light.setLightColor(1);
+		}
+		else
+			if (actionSpeed != -1)
+				countSpeed++;
+	}
 }
 
 // Remove các đối tượng trong listObjs

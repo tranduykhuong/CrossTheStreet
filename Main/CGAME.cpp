@@ -33,14 +33,14 @@ void CGAME::drawGame() {
 				cout << char(32);
 			}
 		}
-		else if (i==2)
+		else if (i == 2)
 			CDRAW::drawHorizontalLine(COORD{ x, tempY }, width, 61, colorText);
 	}
 }
 
 short CGAME::randomDistance(short x_before, short num, short widthObs, short screenRight) {
 	short delta = num * (widthObs + 3);
-	while(1) {
+	while (1) {
 		int ran = rand() % 40 + 3;
 		if (x_before + ran + 2 * widthObs + delta + 2 < screenRight)
 			return ran;
@@ -86,7 +86,7 @@ void CGAME::resetGame(short level) {
 		numRabbit = 0;
 	}
 
-	// set Car
+	// set Car	
 	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, { {} });
 	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, { {} });
 
@@ -180,9 +180,13 @@ void CGAME::drawGuide() {
 }
 
 void CGAME::updatePosVehicle() {
+	lane3->setSpeed(500, 50);
 	lane3->moveObj();
+	lane4->setSpeed(400, 50);
 	lane4->moveObj();
+	lane5->setSpeed(500, 50);
 	lane5->moveObj();
+	lane6->setSpeed(300, 70);
 	lane6->moveObj();
 }
 
@@ -203,19 +207,32 @@ void CGAME::drawObjects(short key) {
 void CGAME::updatePosPeople(short key) {
 	switch (key) {
 	case Key::UP:
-		people.up();
+		if (people.up())
+			people.draw(key);
 		break;
 	case Key::DOWN:
-		people.down();
+		if (people.down())
+			people.draw(key);
 		break;
 	case Key::LEFT:
-		people.left();
+		if (people.left())
+			people.draw(key);
 		break;
 	case Key::RIGHT:
-		people.right();
+		if (people.right())
+			people.draw(key);
 		break;
 	default:
+		people.draw(key);
 		break;
 	}
-	people.draw(key);
+
+}
+
+void CGAME::pauseGame() {
+	is_Running = false;
+}
+
+void CGAME::resumeGame() {
+	is_Running = true;
 }
