@@ -3,8 +3,7 @@
 
 CGAME cg;
 char MOVING;
-bool isSound;
-bool isMusic;
+
 
 void runGame() {
     while (cg.isRunning()) {
@@ -50,38 +49,40 @@ int main()
     CONSOLE::SetTitleCosole("CROSS THE STREET");
 
     CDRAW cd;
-    //cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
-    //cd.drawTitle(COORD{ 10, 4 }, 151);
-    //cg.runApp();
-    //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
+    cd.drawLogo(COORD{ 47, 5 }, 15, 1500, cg.getSound());
+    cd.drawTitle(COORD{ 10, 4 }, 151, cg.getSound());
+    cg.runApp();
+    //cd.drawGameOverScreen(COORD{ 19, 4 }, 4, cg.getSound());
+    //cd.drawLevelCompleteScreen(COORD{ 9, 4 }, 10, cg.getSound());
+    
+    //cg.drawGame();
+    //cg.drawGuide();
 
-    cg.drawGame();
-    cg.drawGuide();
+    //cg.resetGame(4);
+    //char key;
 
-    cg.resetGame(4);
-    char key;
+    //thread run(runGame);
+    //while (1) 
+    //{
+    //    key = toupper(_getch());
+    //    // Người còn sống
+    //    if (!cg.getPeople().isDead()) {
+    //        if (key == 27) {
+    //            //xử lý exit
+    //        }
+    //        //.....
+    //        else {
+    //            if (cg.isRunning())
+    //                MOVING = key;
+    //        }
 
-    thread run(runGame);
-    while (1) 
-    {
-        key = toupper(_getch());
-        // Người còn sống
-        if (!cg.getPeople().isDead()) {
-            if (key == 27) {
-                //xử lý exit
-            }
-            //.....
-            else {
-                if (cg.isRunning())
-                    MOVING = key;
-            }
+    //    }
+    //    // Người đã chết
+    //    else {
 
-        }
-        // Người đã chết
-        else {
+    //    }
+    //}
 
-        }
-    }
 
     _getch();
 }

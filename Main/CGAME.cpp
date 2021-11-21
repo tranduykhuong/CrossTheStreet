@@ -3,6 +3,21 @@
 CGAME::CGAME() {
 	is_Running = true;
 	srand(time(NULL));
+
+	// Đọc các cài đặt âm thanh từ file
+	ifstream fi("Text/OST.txt");
+	if (fi.fail()) return;
+
+	char c;
+	fi >> c;
+	if (c == '1') isSound = true;
+	else isSound = false;
+
+	fi >> c;
+	if (c == '1') isMusic = true;
+	else isMusic = false;
+
+	fi.close();
 }
 
 // Vẽ màn hình Game
@@ -277,12 +292,25 @@ void CGAME::runApp() {
 	choice = cmenu.getSelectFromUser();*/
 
 	// Menu setting Music and Sound
-	CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 2 }, 26);
+	CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 2 }, 26, isSound);
 	cmenu.addItem("Sound");
 	cmenu.addItem("Music");
 	cmenu.addItem("Apply");
-	bool a = false, b;
-	cmenu.getSettingFromUser(a, b);
+	//bool a = , b = 1;
+	cmenu.getSettingFromUser(isSound, isMusic);
+
+
+	// Music
+	if (isMusic) {
+		mciSendString(TEXT("open \"OST/ForestWalk.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
+		mciSendString(TEXT("play mp3 repeat"), NULL, 0, NULL);
+	}
+	else mciSendString(TEXT("close mp3"), NULL, 0, NULL);
+
+	// Lưu các cài đặt âm thanh ra file
+	ofstream fo("Text/OST.txt");
+	fo << isSound << endl << isMusic;
+	fo.close();
 }
 
 // Vẽ hướng dẫn trò chơi

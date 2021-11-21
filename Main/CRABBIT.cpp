@@ -64,7 +64,7 @@ short CRABBIT::getWidth() const
 
 void CRABBIT::tell()
 {
-	PlaySound(TEXT("VoiceRabbit.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("OST/VoiceRabbit.wav"), NULL, SND_SYNC);
 }
 
 void CRABBIT::move()

@@ -60,7 +60,7 @@ short CHORSE::getWidth() const {
 }
 
 void CHORSE::tell() {
-	PlaySound(TEXT("VoiceHorse.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("OST/VoiceHorse.wav"), NULL, SND_SYNC);
 }
 
 void CHORSE::move() {
