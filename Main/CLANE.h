@@ -1,22 +1,35 @@
 ﻿#pragma once
 #include"CONSOLE.h"
+#include "CTRAFFIC_LIGHT.h"
+#include <ctime>
 
 template<class T, class U>
-class CLANE {
+class CLANE : public CTRAFFIC_LIGHT {
 	vector<T*> listObjs;
 
 	short X, Y;
 
 	short randomColor(short, short);
 	short randomDistance(short, short, short, short);
+	int countSpeed = 0;
+	int actionSpeed = -1;
+	int stopSpeed = -1;
+
+	CTRAFFIC_LIGHT light;
 public:
 	CLANE(short, short);
 	~CLANE();
 
-	void pushObj(const short&, const short&, const short&, const short&, const short&, const vector<vector<short>>&, const vector<vector<short>>&);
-	void setLane(short, short, short, const vector<vector<short>>&, const vector<vector<short>>&);
+	void setSpeed(int newActionSpeed, int newStopSpeed) {
+		actionSpeed = newActionSpeed;
+		stopSpeed = newStopSpeed;
+	}
+	void setLightColor(const int& color) {
+		light.setLight(color);
+	}
+	void setLane(short, short, short, const vector<vector<short>>, const vector<vector<short>>);
 	vector<T*> getListObjs() { return listObjs; }
-	void drawObj() const;
+	void drawObj();
 	void moveObj();
 	void clearObjs();
 };
@@ -57,14 +70,6 @@ short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, sho
 	}
 }
 
-template<class T, class U>
-inline void CLANE<T, U>::pushObj(const short& mX, const short& mY, const short& mColor,
-	const short& mMove, const short& mSpeed, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
-{
-	listObjs.push_back(new U(mX, mY, mColor, mSpeed, mMove));
-	listObjs[listObjs.size() - 1]->setForm(form1, form2);
-}
-
 /// <summary>
 /// Set các đối tượng trên Lane
 /// ---------------------------
@@ -75,8 +80,8 @@ inline void CLANE<T, U>::pushObj(const short& mX, const short& mY, const short& 
 ///		form2	: ma trận hình dáng 2 của đối tượng (nếu có)
 /// </summary>
 template<class T, class U>
-void CLANE<T, U>::setLane
-(short num, short speed, short move, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+void CLANE<T, U>::setLane(short num, short speed, short move,
+	const vector<vector<short>> form1, const vector<vector<short>> form2)
 {
 	short heightObj = form1.size();
 	short widthObj = form1[0].size();
@@ -129,20 +134,40 @@ void CLANE<T, U>::setLane
 
 // Draw các đối tượng trong listObjs
 template<class T, class U>
-void CLANE<T, U>::drawObj() const
+void CLANE<T, U>::drawObj()
 {
 	short num = listObjs.size();
 	for (short i = 0; i < num; i++)
 		listObjs[i]->draw();
+
 }
 
 // Move các đối tượng trong listObjs
 template<class T, class U>
 void CLANE<T, U>::moveObj()
 {
-	short num = listObjs.size();
-	for (short i = 0; i < num; i++)
-		listObjs[i]->move();
+	light.drawLight(sRIGHT + 2, Y + HEIGHT_ROAD - 3);
+	if (light.getLightColor() == 1) {
+		short num = listObjs.size();
+		for (short i = 0; i < num; i++)
+			listObjs[i]->move();
+		if (countSpeed == actionSpeed) {
+			countSpeed = 0;
+			light.setLightColor(0);
+		}
+		else
+			if (actionSpeed != -1)
+				countSpeed++;
+	}
+	else {
+		if (countSpeed == stopSpeed) {
+			countSpeed = 0;
+			light.setLightColor(1);
+		}
+		else
+			if (actionSpeed != -1)
+				countSpeed++;
+	}
 }
 
 // Remove các đối tượng trong listObjs
