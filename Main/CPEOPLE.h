@@ -42,7 +42,7 @@ public:
 	void setShade(vector<vector<int>> shade) {
 		this->peopleShade = shade;
 	}
-	
+
 	short getSpeed() const;
 	short getX() const;
 	short getY() const;

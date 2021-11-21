@@ -4,6 +4,24 @@ CANIMAL::CANIMAL()
 {
 	mY = mX = mSpeed = 0;
 	mColor = ColorGame::black;
+	mMove = LEFT;
+}
+
+CANIMAL::CANIMAL(const CANIMAL& an)
+{
+	mX = an.mX;
+	mY = an.mY;
+	mColor = an.mColor;
+	mSpeed = an.mSpeed;
+	mMove = an.mMove;
+}
+
+CANIMAL::CANIMAL(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
+	mMove = move;
 }
 
 CANIMAL::~CANIMAL()
@@ -22,9 +40,14 @@ void CANIMAL::setY(const short& Y)
 	mY = Y;
 }
 
-void CANIMAL::setColor(const int& color)
+void CANIMAL::setColor(const short& color)
 {
 	mColor = color;
+}
+
+void CANIMAL::setMove(const short& _move)
+{
+	mMove = _move;
 }
 
 void CANIMAL::setSpeed(const short& speed)
@@ -42,7 +65,7 @@ short CANIMAL::getY() const
 	return mY;
 }
 
-int CANIMAL::getColor() const
+short CANIMAL::getColor() const
 {
 	return mColor;
 }
@@ -50,6 +73,11 @@ int CANIMAL::getColor() const
 short CANIMAL::getSpeed() const
 {
 	return mSpeed;
+}
+
+short CANIMAL::getMove() const
+{
+	return mMove;
 }
 
 //move : Hướng di chuyển của đối tượng 

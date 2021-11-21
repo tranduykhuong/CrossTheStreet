@@ -3,6 +3,15 @@
 CVEHICLE::CVEHICLE() {
 	mX = mY = mSpeed = 0;
 	mColor = ColorGame::black;
+	mMove = LEFT;
+}
+
+CVEHICLE::CVEHICLE(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
+	mMove = move;
 }
 
 CVEHICLE::CVEHICLE(const CVEHICLE& src) {
@@ -17,17 +26,22 @@ CVEHICLE::~CVEHICLE() {
 	mColor = ColorGame::black;
 }
 
-void CVEHICLE::setX(short X) {
+void CVEHICLE::setX(const short& X) {
 	mX = X;
 }
-void CVEHICLE::setY(short Y) {
+void CVEHICLE::setY(const short& Y) {
 	mY = Y;
 }
-void CVEHICLE::setColor(short color) {
+void CVEHICLE::setColor(const short& color) {
 	mColor = color;
 }
-void CVEHICLE::setSpeed(short speed) {
+void CVEHICLE::setSpeed(const short& speed) {
 	mSpeed = speed;
+}
+
+void CVEHICLE::setMove(const short& _move)
+{
+	mMove = _move;
 }
 
 short CVEHICLE::getX() const {
@@ -36,8 +50,18 @@ short CVEHICLE::getX() const {
 short CVEHICLE::getY() const {
 	return mY;
 };
-int CVEHICLE::getColor() const {
+short CVEHICLE::getColor() const {
 	return mColor;
+}
+
+short CVEHICLE::getSpeed() const
+{
+	return mSpeed;
+}
+
+short CVEHICLE::getMove() const
+{
+	return mMove;
 }
 
 //move là hướng xe chạy qua trái hay phải

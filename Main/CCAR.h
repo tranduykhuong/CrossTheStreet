@@ -7,14 +7,14 @@ class CCAR : public CVEHICLE
 private:
 	vector<vector<short>> form;
 
-	short mMove;
 	short countSpeed;
 public:
 	CCAR();
-	CCAR(short, short, short, short, short);
+	CCAR(const CCAR&);
+	CCAR(const short&, const short&, const short&, const short&, const short&);
 	~CCAR();
 
-	void set(short, short, short, short, short);
+	void set(const short&, const short&, const short&, const short&, const short&);
 	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
 
 	short getHeight() const;
