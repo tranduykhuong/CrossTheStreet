@@ -125,6 +125,9 @@ private:
 	short randomDistance(short, short, short, short);
 	short randomDistance_RIGHT(short, short, short, short);
 	short randomColor(short, short);
+
+	bool isSound;
+	bool isMusic;
 public:
 	CGAME();
 	~CGAME() {};
@@ -154,4 +157,6 @@ public:
 	bool isRunning() const { return is_Running; };
 
 	void drawGuide();
+
+	bool getSound() { return isSound; }
 };
