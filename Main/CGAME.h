@@ -125,6 +125,9 @@ private:
 	short randomDistance(short, short, short, short);
 	short randomDistance_RIGHT(short, short, short, short);
 	short randomColor(short, short);
+
+	bool isSound;
+	bool isMusic;
 public:
 	CGAME();
 	~CGAME() {};
@@ -132,6 +135,8 @@ public:
 	void runApp();
 	void drawGame();
 	void resetGame(short);
+	void saveGame(fstream&);
+	void loadGame(fstream&);
 
 	CPEOPLE getPeople() const { return people; }
 	vector<CANIMAL*> getHorses() const { return lane1->getListObjs(); }
@@ -152,7 +157,8 @@ public:
 	void drawObjects(short);
 
 	bool isRunning() const { return is_Running; };
-	void pauseGame();
-	void resumeGame();
+
 	void drawGuide();
+
+	bool getSound() { return isSound; }
 };

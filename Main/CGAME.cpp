@@ -3,6 +3,21 @@
 CGAME::CGAME() {
 	is_Running = true;
 	srand(time(NULL));
+
+	// Đọc các cài đặt âm thanh từ file
+	ifstream fi("Text/OST.txt");
+	if (fi.fail()) return;
+
+	char c;
+	fi >> c;
+	if (c == '1') isSound = true;
+	else isSound = false;
+
+	fi >> c;
+	if (c == '1') isMusic = true;
+	else isMusic = false;
+
+	fi.close();
 }
 
 // Vẽ màn hình Game
@@ -86,7 +101,7 @@ void CGAME::resetGame(short level) {
 		numRabbit = 0;
 	}
 
-	// set Car	
+	// set Car
 	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, { {} });
 	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, { {} });
 
@@ -116,6 +131,125 @@ void CGAME::resetGame(short level) {
 		// train
 
 	}
+}
+
+void CGAME::saveGame(fstream& save)
+{
+
+	//Score
+	save << currentLevel << endl;
+	save << people.getX() << " " << people.getY() << endl;
+
+	//Save objects of lane1
+	vector<CANIMAL*> animals;
+	vector<CVEHICLE*> vehicles;
+	int size;
+
+	for (int i = 1; i <= 6; i++) {
+		switch (i)
+		{
+		case 1:
+			animals = lane1->getListObjs();
+			size = numHorse;
+			break;
+		case 2:
+			animals = lane2->getListObjs();
+			size = numRabbit;
+			break;
+		case 3:
+			vehicles = lane3->getListObjs();
+			size = numCar;
+			break;
+		case 4:
+			vehicles = lane4->getListObjs();
+			size = numCar;
+			break;
+		case 5:
+			vehicles = lane5->getListObjs();
+			size = numTruck;
+			break;
+		case 6:
+			vehicles = lane6->getListObjs();
+			size = numTruck;
+			break;
+		}
+
+		save << size << endl;
+
+		if (i < 3) {
+
+			for (int j = 0; j < size; j++) {
+				save << animals[j]->getX() << " " << animals[j]->getY() << " "
+					<< animals[j]->getColor() << " " << animals[j]->getMove() << " "
+					<< animals[j]->getSpeed() << endl;
+			}
+			animals.clear();
+		}
+		else {
+			for (int j = 0; j < size; j++) {
+				save << vehicles[j]->getX() << " " << vehicles[j]->getY() << " "
+					<< vehicles[j]->getColor() << " " << vehicles[j]->getMove() << " "
+					<< vehicles[j]->getSpeed();
+				if (j != size - 1) save << endl;
+			}
+			vehicles.clear();
+		}
+	}
+
+	save.close();
+}
+
+void CGAME::loadGame(fstream& load)
+{
+	short xPeople, yPeople, size;
+	short xObj, yObj, colorO, moveO, speedO;
+
+	load >> currentLevel;
+	load.get();
+
+	load >> xPeople >> yPeople;
+	people.setPosition(xPeople, yPeople);
+	load.get();
+
+	for (int i = 1; i <= 6; i++) {
+		load >> size;
+		load.get();
+
+		for (int j = 0; j < size; j++)
+		{
+			load >> xObj >> yObj >> colorO >> moveO >> speedO;
+			load.get();
+			switch (i)
+			{
+			case 1:
+				if (moveO == LEFT)	lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseLeft_1, horseLeft_2);
+				else				lane1->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
+				break;
+			case 2:
+				if (moveO == LEFT)	lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitLeft_1, rabbitLeft_2);
+				else				lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
+				break;
+			case 3:
+				if (moveO == LEFT)	lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
+				else				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight1, carFormRight2);
+				break;
+			case 4:
+				if (moveO == LEFT)	lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
+				else				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight1, carFormRight2);
+				break;
+			case 5:
+				if (moveO == LEFT)	lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft1);
+				else				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
+				break;
+			case 6:
+				if (moveO == LEFT)	lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft1);
+				else				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
+				break;
+			}
+		}
+	}
+
+	load.close();
 }
 
 // Remove các đối tượng
@@ -158,12 +292,25 @@ void CGAME::runApp() {
 	choice = cmenu.getSelectFromUser();*/
 
 	// Menu setting Music and Sound
-	CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 2 }, 26);
+	CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 2 }, 26, isSound);
 	cmenu.addItem("Sound");
 	cmenu.addItem("Music");
 	cmenu.addItem("Apply");
-	bool a = false, b;
-	cmenu.getSettingFromUser(a, b);
+	//bool a = , b = 1;
+	cmenu.getSettingFromUser(isSound, isMusic);
+
+
+	// Music
+	if (isMusic) {
+		mciSendString(TEXT("open \"OST/ForestWalk.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
+		mciSendString(TEXT("play mp3 repeat"), NULL, 0, NULL);
+	}
+	else mciSendString(TEXT("close mp3"), NULL, 0, NULL);
+
+	// Lưu các cài đặt âm thanh ra file
+	ofstream fo("Text/OST.txt");
+	fo << isSound << endl << isMusic;
+	fo.close();
 }
 
 // Vẽ hướng dẫn trò chơi
@@ -180,13 +327,9 @@ void CGAME::drawGuide() {
 }
 
 void CGAME::updatePosVehicle() {
-	lane3->setSpeed(500, 50);
 	lane3->moveObj();
-	lane4->setSpeed(400, 50);
 	lane4->moveObj();
-	lane5->setSpeed(500, 50);
 	lane5->moveObj();
-	lane6->setSpeed(300, 70);
 	lane6->moveObj();
 }
 
@@ -207,32 +350,19 @@ void CGAME::drawObjects(short key) {
 void CGAME::updatePosPeople(short key) {
 	switch (key) {
 	case Key::UP:
-		if (people.up())
-			people.draw(key);
+		people.up();
 		break;
 	case Key::DOWN:
-		if (people.down())
-			people.draw(key);
+		people.down();
 		break;
 	case Key::LEFT:
-		if (people.left())
-			people.draw(key);
+		people.left();
 		break;
 	case Key::RIGHT:
-		if (people.right())
-			people.draw(key);
+		people.right();
 		break;
 	default:
-		people.draw(key);
 		break;
 	}
-
-}
-
-void CGAME::pauseGame() {
-	is_Running = false;
-}
-
-void CGAME::resumeGame() {
-	is_Running = true;
+	people.draw(key);
 }
