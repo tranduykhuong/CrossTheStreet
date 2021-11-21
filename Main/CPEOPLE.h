@@ -26,10 +26,10 @@ public:
 	CPEOPLE();
 	CPEOPLE(short, short);
 
-	bool up();
-	bool down();
-	bool left();
-	bool right();
+	void up();
+	void down();
+	void left();
+	void right();
 
 	bool isWin() const;
 	bool isDead() const;
@@ -57,3 +57,4 @@ public:
 	void draw(int);
 
 };
+

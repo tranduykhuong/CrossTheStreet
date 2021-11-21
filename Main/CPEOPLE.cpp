@@ -25,36 +25,24 @@ CPEOPLE::CPEOPLE(short x, short y) {
 	colorShade = ColorGame::black;
 }
 
-bool CPEOPLE::up() {
-	if (mY - mSpeed > GameScreen::sTOP) {
+void CPEOPLE::up() {
+	if (mY - mSpeed > GameScreen::sTOP)
 		mY -= mSpeed;
-		return true;
-	}
-	return false;
 }
 
-bool CPEOPLE::down() {
-	if (mY + mSpeed + getHeightPeople() - 1 < GameScreen::sBOTTOM) {
+void CPEOPLE::down() {
+	if (mY + mSpeed + getHeightPeople() - 1 < GameScreen::sBOTTOM)
 		mY += mSpeed;
-		return true;
-	}
-	return false;
 }
 
-bool CPEOPLE::left() {
-	if (mX - mSpeed > GameScreen::sLEFT) {
+void CPEOPLE::left() {
+	if (mX - mSpeed > GameScreen::sLEFT)
 		mX -= mSpeed;
-		return true;
-	}
-	return false;
 }
 
-bool CPEOPLE::right() {
-	if (mX + mSpeed + getWidthPeople() - 1 < GameScreen::sRIGHT) {
+void CPEOPLE::right() {
+	if (mX + mSpeed + getWidthPeople() - 1 < GameScreen::sRIGHT)
 		mX += mSpeed;
-		return true;
-	}
-	return false;
 }
 
 void CPEOPLE::setState(bool state) {
