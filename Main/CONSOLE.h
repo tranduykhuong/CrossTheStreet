@@ -6,6 +6,7 @@
 #include<fstream>
 #include<string>
 #include<vector>
+#include <algorithm>
 #include <mmsystem.h>
 #pragma comment (lib, "winmm.lib")
 
@@ -25,7 +26,6 @@ using namespace std;
 #define HEIGHT_ROAD 5
 
 #define BACKGROUND_GAME_COLOR 7
-
 // Border coordinates of the game screen
 enum GameScreen {
 	sLEFT   = SCREEN_GAME_RECT_X,
