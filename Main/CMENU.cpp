@@ -1,12 +1,13 @@
 ﻿#include"CMENU.h"
 
-CMENU::CMENU(COORD coord, SHORT width) {
+CMENU::CMENU(COORD coord, SHORT width, bool sound) {
 	this->coord = coord;
 	this->y_ptr = coord.Y;
 	this->width = width;
 	this->height = 2;
 	this->boxColor = BOX_COLOR;
 	this->charColor = CHAR_COLOR;
+	this->isSound = sound;
 }
 
 CMENU::~CMENU() {
@@ -133,8 +134,10 @@ int CMENU::getSelectFromUser() {
 	while (true) {		//sử dụng 2 phím (lên, xuống) để điều kiển
 		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
 			char c = _getch();
-			if (c == 13)		//khi nhập enter sẽ kết thúc while
+			if (c == 13) {		//khi nhập enter sẽ kết thúc while
+				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
 				return index;
+			}
 			else
 				if (c == -32) {
 					c = _getch();
@@ -149,6 +152,7 @@ int CMENU::getSelectFromUser() {
 							index = 0;
 						}
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
+						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 					}
 					else if (c == 72) { //đi lên
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);		//vẽ chồng màu lên option
@@ -161,6 +165,7 @@ int CMENU::getSelectFromUser() {
 							index = sizeOps - 1;
 						}
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
+						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 					}
 				}
 		}
@@ -195,8 +200,11 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 	while (true) {			//sử dụng 2 phím (lên, xuống) để điều kiển
 		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
 			char c = _getch();
-			if (c == 13 && y_ptr == coord.Y + height * 2)		//khi nhập enter sẽ kết thúc while
+			if (c == 13 && y_ptr == coord.Y + height * 2) {		//khi nhập enter sẽ kết thúc while
+				if (isSound)
+					PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
 				return;
+			}
 			else
 				if (c == -32) {
 					c = _getch();
@@ -236,6 +244,8 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
 						}
 					}
+					if (isSound)
+						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 				}
 		}
 	}
