@@ -4,6 +4,29 @@ CRABBIT::CRABBIT()
 {
 	mMove = LEFT;
 	countSpeed = MAX_SPEED;
+	form1 = { {} };
+	form2 = { {} };
+}
+
+CRABBIT::CRABBIT(const CRABBIT& ra)
+{
+	mX = ra.mX;
+	mY = ra.mY;
+	mColor = ra.mColor;
+	mSpeed = ra.mSpeed;
+	mMove = ra.mMove;
+	form1 = ra.form1;
+	form2 = ra.form2;
+}
+
+CRABBIT::CRABBIT(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
+	mMove = move;
+	form1 = { {} };
+	form2 = { {} };
 }
 
 CRABBIT::~CRABBIT()
@@ -15,7 +38,7 @@ CRABBIT::~CRABBIT()
 	mMove = 0;
 }
 
-void CRABBIT::set(const short& x, const short& y, const int& color, const short& speed, const short& move) {
+void CRABBIT::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -23,35 +46,25 @@ void CRABBIT::set(const short& x, const short& y, const int& color, const short&
 	mMove = move;
 }
 
-int CRABBIT::getHeight()
+void CRABBIT::setForm(const vector<vector<short>>& _form1, const vector<vector<short>>& _form2)
 {
-	return rabbitLeft_1.size();
+	form1 = _form1;
+	form2 = _form2;
 }
 
-int CRABBIT::getWidth()
+short CRABBIT::getHeight() const
 {
-	return rabbitLeft_1[0].size();
+	return form1.size();
 }
 
-const vector<vector<char>>& CRABBIT::getDraw(const int& n)
+short CRABBIT::getWidth() const
 {
-	switch (n)
-	{
-	case 1:
-		return rabbitLeft_1;
-	case 2:
-		return rabbitLeft_2;
-	case 3:
-		return rabbitRight_1;
-	default:
-		return rabbitRight_2;
-		break;
-	}
+	return form1[0].size();
 }
 
 void CRABBIT::tell()
 {
-	PlaySound(TEXT("VoiceRabbit.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("OST/VoiceRabbit.wav"), NULL, SND_SYNC);
 }
 
 void CRABBIT::move()
@@ -64,31 +77,23 @@ void CRABBIT::move()
 	if (mMove == RIGHT) {
 		mX++;
 
-		//nếu con thỏ chạm biên phải thì cho xuất phát lại
-		if (mX == sRIGHT)
-			setX((getWidth() * (-1)));
+		//nếu Rabbit chạm biên phải thì cho xuất phát lại
+		if (mX > sRIGHT)
+			setX(sLEFT - getWidth());
 	}
 	else {
 		mX--;
 
-		//nếu con thỏ chạm biên trái thì cho xuất phát lại
-		if (mX == sLEFT - getWidth() - 1)
-			setX(sRIGHT);
+		//nếu Rabbit chạm biên trái thì cho xuất phát lại
+		if (mX < sLEFT - getWidth() + 1)
+			setX(sRIGHT - 1);
 	}
 	countSpeed = MAX_SPEED;
 }
 
-void CRABBIT::draw() {
-	if (mMove == RIGHT) {
-		if (mX % 2 == 0)
-			CANIMAL::drawAnimal(rabbitRight_1, mMove);
-		else
-			CANIMAL::drawAnimal(rabbitRight_2, mMove);
-	}
-	else {
-		if (mX % 2 == 0)
-			CANIMAL::drawAnimal(rabbitLeft_1, mMove);
-		else
-			CANIMAL::drawAnimal(rabbitLeft_2, mMove);
-	}
+void CRABBIT::draw() const {
+	if (mX % 2 == 0)
+		CANIMAL::drawAnimal(form1, mMove);
+	else
+		CANIMAL::drawAnimal(form2, mMove);
 }

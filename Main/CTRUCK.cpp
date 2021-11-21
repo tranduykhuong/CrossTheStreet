@@ -1,31 +1,48 @@
 ﻿#include "CTRUCK.h"
 
 CTRUCK::CTRUCK() {
-	mType = 1;
 	mMove = RIGHT;
 	countSpeed = MAX_SPEED;
+	form = { {} };
 }
 
-CTRUCK::~CTRUCK() {
-	mType = 0;
-	mMove = 0;
+CTRUCK::CTRUCK(const CTRUCK& tr)
+{
+	mX = tr.mX;
+	mY = tr.mY;
+	mColor = tr.mColor;
+	mSpeed = tr.mSpeed;
+	mMove = tr.mMove;
+	form = tr.form;
 }
 
-void CTRUCK::set(short x, short y, short color, short speed, short type, short move) {
+CTRUCK::CTRUCK(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
 	mSpeed = speed;
-	mType = type;
+	mMove = move;
+	form = { {} };
+}
+
+CTRUCK::~CTRUCK() {
+	mMove = 0;
+}
+
+void CTRUCK::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+	mX = x;
+	mY = y;
+	mColor = color;
+	mSpeed = speed;
 	mMove = move;
 }
 
 short CTRUCK::getWidth() const {
-	return truckLeft1[0].size();
+	return form[0].size();
 }
 
 short CTRUCK::getHeight() const {
-	return truckLeft1.size();
+	return form.size();
 }
 
 void CTRUCK::move() {
@@ -47,20 +64,11 @@ void CTRUCK::move() {
 	countSpeed = MAX_SPEED;
 }
 
-void CTRUCK::draw() {
-	vector<vector<short>> truck;
-	if (mType == 1) {
-		if (mMove == LEFT)
-			truck = truckLeft1;
-		else
-			truck = truckRight1;
-	}
-	else {
-		if (mMove == LEFT)
-			truck = truckLeft2;
-		else
-			truck = truckRight2;
-	}
-	
-	CVEHICLE::drawVehicle(truck, mMove);	//vẽ xe
+void CTRUCK::draw() const {
+	CVEHICLE::drawVehicle(form, mMove);	//vẽ xe
+}
+
+void CTRUCK::setForm(const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+{
+	form = form1;
 }

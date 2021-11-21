@@ -12,12 +12,14 @@ class CMENU {
 	SHORT boxColor, charColor;
 	vector<string> opsArr;
 
+	bool isSound;
+
 	void cornerAmongBox(SHORT y_cur);
 	void dataBox(COORD coord_data, string& content, SHORT newColor = -1);
 	void dataBoxTrueFalse(COORD coord_data, string& content, bool& set, SHORT opsColor = -1, SHORT newColor = -1);
 public:
 
-	CMENU(COORD, SHORT width);
+	CMENU(COORD, SHORT width, bool sound = true);
 	~CMENU();
 
 	void setColorTable(SHORT boxColor, SHORT charColor);

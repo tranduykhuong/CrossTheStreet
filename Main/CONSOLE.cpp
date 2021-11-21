@@ -65,3 +65,22 @@ void CONSOLE::textcolor(int x) {
     HANDLE  h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, x);
 }
+
+// Function get int of character at x, y from screen console
+int CONSOLE::getConsoleCharacter(const int& x, const int& y) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    char characterFromConsole;
+
+    COORD positionInBuffer;
+    positionInBuffer.X = x; // Column number
+    positionInBuffer.Y = y; // Row number
+
+    DWORD numberOfCharactersReaded = 0;
+
+    DWORD numberOfCharactersToRead = 1;
+
+    ReadConsoleOutputCharacterA(consoleHandle, &characterFromConsole, numberOfCharactersToRead, positionInBuffer, &numberOfCharactersReaded);
+
+    return characterFromConsole;
+}

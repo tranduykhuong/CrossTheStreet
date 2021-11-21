@@ -1,17 +1,19 @@
 #pragma once
 #pragma execution_character_set("utf-8")
-#pragma comment (lib, "winmm.lib")
 #include<iostream>
 #include<Windows.h>
 #include<conio.h>
 #include<fstream>
 #include<string>
 #include<vector>
+#include <algorithm>
 #include <mmsystem.h>
+#pragma comment (lib, "winmm.lib")
+
 using namespace std;
 
 // Information of Window size and Screen Buffer size 
-#define WINDOW_WIDTH 1200		 //pixel
+#define WINDOW_WIDTH 1210		 //pixel
 #define WINDOW_HEIGHT 695		 //pixel
 #define SCREEN_CONSOLE_WIDTH 146 //number of column
 #define SCREEN_CONSOLE_HEIGHT 40 //number of row
@@ -21,10 +23,9 @@ using namespace std;
 #define SCREEN_GAME_HEIGHT 40 //number of row
 #define SCREEN_GAME_RECT_X 4
 #define SCREEN_GAME_RECT_Y 0
-#define NUMBER_ROAD 8
+#define HEIGHT_ROAD 5
 
 #define BACKGROUND_GAME_COLOR 7
-
 // Border coordinates of the game screen
 enum GameScreen {
 	sLEFT   = SCREEN_GAME_RECT_X,
@@ -34,22 +35,22 @@ enum GameScreen {
 };
 
 enum ColorGame {
-	black	= 112,
-	blue	= 113,
-	green	= 114,
-	teal	= 115,
-	maroon	= 116,
-	purple	= 117,
-	olive	= 118,
-	silver	= 119,
-	grey	= 120,
-	navi	= 121,
-	lime	= 122,
-	aqua	= 123,
-	red		= 124,
-	pink	= 125,
-	yellow	= 126,
-	white	= 127
+	black	= 224,
+	blue	= 225,
+	green	= 226,
+	teal	= 227,
+	maroon	= 228,
+	purple	= 229,
+	olive	= 230,
+	silver	= 231,
+	grey	= 232,
+	navi	= 233,
+	lime	= 234,
+	aqua	= 235,
+	red		= 236,
+	pink	= 237,
+	yellow	= 238,
+	white	= 239
 };
 
 enum Key {
@@ -73,5 +74,6 @@ public:
 	static void ShowCur(bool CursorVisibility);
 	static void gotoXY(int, int);
 	static void textcolor(int x);
+	static int getConsoleCharacter(const int&, const int&);
 };
 

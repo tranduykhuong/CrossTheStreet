@@ -5,24 +5,22 @@
 class CTRUCK : public CVEHICLE
 {
 private:
-	vector<vector<short>> truckLeft1 = { {32,32,32,32,95,95,32,32,32,32,32,32,32,32,32,32,32,32},{32,95,95,47,95,95,179,95,95,95,95,95,95,95,95,95,95,47}, {47,248,95,95,95,95,179,32,32,32,32,32,32,32,32,32,32,179},{96,45,40,15,41,45,45,45,45,45,45,45,40,15,41,45,45,39} };
-	vector<vector<short>> truckRight1 = { {32,32,32,32,32,32,32,32,32,32,32,32,95,95,32,32,32,32},{92,95,95,95,95,95,95,95,95,95,95,179,95,95,92,95,95,32}, {179,32,32,32,32,32,32,32,32,32,32,179,95,95,95,95,248,92},{96,45,45,40,15,41,45,45,45,45,45,45,45,40,15,41,45,39} };
-	vector<vector<short>> truckLeft2 = { {32,32,32,32,95,95,32,95,95,95,95,95,95,95,95,95,95,32},{32,95,95,47,95,95,179,61,61,61,61,61,61,61,61,61,61,179},{47,248,95,95,95,95,179,95,95,95,95,95,95,95,95,95,95,179},{96,45,45,40,15,41,45,45,45,45,45,45,40,15,41,45,45,39} };
-	vector<vector<short>> truckRight2 = { {32,95,95,95,95,95,95,95,95,95,95,32,95,95,32,32,32,32},{179,61,61,61,61,61,61,61,61,61,61,179,95,95,92,95,95,32},{179,95,95,95,95,95,95,95,95,95,95,179,95,95,95,95,248,92},{96,45,45,40,15,41,45,45,45,45,45,45,40,15,41,45,45,39} };
-
-	short mType;
-	short mMove;
+	vector<vector<short>> form;
 
 	short countSpeed;
 public:
 	CTRUCK();
+	CTRUCK(const CTRUCK&);
+	CTRUCK(const short&, const short&, const short&, const short&, const short&);
 	~CTRUCK();
 
-	void set(short, short, short, short, short, short);
+	void set(const short&, const short&, const short&, const short&, const short&);
+	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
+
 	short getWidth() const;
 	short getHeight() const;
 
 	void move();
-	void draw();
+	void draw() const;
 };
 

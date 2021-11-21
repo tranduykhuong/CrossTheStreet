@@ -1,2 +1,0 @@
-# CrossTheStreet
-Project OOP

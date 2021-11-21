@@ -9,18 +9,34 @@ bool isMusic;
 void runGame() {
     while (cg.isRunning()) {
 
+        // Update tọa độ people khi còn sống
         if (!cg.getPeople().isDead()) {
             cg.updatePosPeople(MOVING);
         }
         MOVING = ' ';
 
+        // Update các đối tượng Vehicles, Animals
         cg.updatePosAnimal();
         cg.updatePosVehicle();
+        // Draw các đối tượng ra screen
         cg.drawObjects(MOVING);
+
+        // Xử lý va chạm
+        if (cg.getPeople().isImpact(cg.getTruckLefts(), cg.getNumOfTructs()) ||
+            cg.getPeople().isImpact(cg.getTruckRights(), cg.getNumOfTructs()) ||
+            cg.getPeople().isImpact(cg.getCarLefts(), cg.getNumOfCars()) ||
+            cg.getPeople().isImpact(cg.getCarRights(), cg.getNumOfCars()) ||
+            cg.getPeople().isImpact(cg.getHorses(), cg.getNumOfHorses()) ||
+            cg.getPeople().isImpact(cg.getRabbits(), cg.getNumOfRabbits()))
+        {
+            CONSOLE::gotoXY(sRIGHT - 10, 8);
+            cout << "THUA";
+        }
 
         Sleep(2);
     }
 }
+
 
 int main()
 {
@@ -31,39 +47,22 @@ int main()
     CONSOLE::HiddenScrollBar();
     CONSOLE::ShowCur(false);
     CONSOLE::SetConsoleOutput(437);
-    CONSOLE::SetTitleCosole("Game CROSS THE STREET");
-    system("color 7a");
+    CONSOLE::SetTitleCosole("CROSS THE STREET");
 
+    CDRAW cd;
+    //cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
+    //cd.drawTitle(COORD{ 10, 4 }, 151);
     //cg.runApp();
+    //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
+
     cg.drawGame();
     cg.drawGuide();
-
-   /* CHORSE h;
-    h.set(5, 16, 112, 3, LEFT);
-    CRABBIT r;
-    r.set(5, 11, 114, 2, RIGHT);
-    CCAR car;
-    car.set(5, 1, 113, 1, 2, RIGHT);
-    CTRUCK truck;
-    truck.set(5, 6, 113, 4, 2, RIGHT);
-
-    while (1) {
-        car.move();
-        car.draw();
-        r.move();
-        r.draw();
-        h.move();
-        h.draw();
-        truck.move();
-        truck.draw();
-        Sleep(5);
-    }*/
 
     cg.resetGame(4);
     char key;
 
     thread run(runGame);
-    while (1) 
+    while (1)
     {
         key = toupper(_getch());
         // Người còn sống
