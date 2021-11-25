@@ -83,6 +83,10 @@ int main()
                     cg.drawGame();
                     cg.resumeGame(runGame, &run);
                 }
+                else {
+                    cg.Exit_game();
+                    return 0;
+                }
             }
             
             // exit
@@ -111,7 +115,10 @@ int main()
                     cg.drawGame();
                     cg.resumeGame(runGame, &run);
                 }
-                else isExit = true;
+                else {
+                    cg.Exit_game();
+                    return 0;
+                }
             }
 
             // Settings

@@ -163,7 +163,7 @@ template<class T, class U>
 inline void CLANE<T, U>::tellObj()
 {
 	if (listObjs.size() > 0)
-		if (rand() % 500 == 0)
+		if (rand() % 400 == 0)
 			listObjs[0]->tell();
 }
 
