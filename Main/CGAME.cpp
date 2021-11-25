@@ -328,6 +328,7 @@ bool CGAME::runApp() {
 		}
 		case 5:
 			// exit
+			system("cls");
 			return false;
 		}
 	}
@@ -485,8 +486,8 @@ void CGAME::startMusic()
 {
 	mciSendString(TEXT("close mp3"), NULL, 0, NULL);
 
+	mciSendString(TEXT("open \"OST/ForestWalk.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
 	if (isMusic) {
-		mciSendString(TEXT("open \"OST/ForestWalk.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
 		mciSendString(TEXT("play mp3"), NULL, 0, NULL);
 	}
 }
@@ -637,4 +638,5 @@ void CGAME::Exit_game(thread* run)
 	if (run != nullptr)
 		run->join();
 	system("cls");
+	system("color 0e");
 }
