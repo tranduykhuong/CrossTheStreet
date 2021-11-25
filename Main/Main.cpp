@@ -1,12 +1,11 @@
 ﻿#include"CGAME.h"
-#include<thread>
 
 CGAME cg;
 char MOVING;
-bool isSound;
-bool isMusic;
+bool isExit = false;
 
 void runGame() {
+
     while (cg.isRunning()) {
 
         // Update tọa độ people khi còn sống
@@ -26,11 +25,12 @@ void runGame() {
             cg.getPeople().isImpact(cg.getTruckRights(), cg.getNumOfTructs()) ||
             cg.getPeople().isImpact(cg.getCarLefts(), cg.getNumOfCars()) ||
             cg.getPeople().isImpact(cg.getCarRights(), cg.getNumOfCars()) ||
+            cg.getPeople().isImpact(cg.getTrain(), cg.getNumOfTrains()) ||
             cg.getPeople().isImpact(cg.getHorses(), cg.getNumOfHorses()) ||
             cg.getPeople().isImpact(cg.getRabbits(), cg.getNumOfRabbits()))
         {
-            CONSOLE::gotoXY(sRIGHT - 10, 8);
-            cout << "THUA";
+            cg.getPeople().setState(false);
+            cg.pauseGame();
         }
 
         Sleep(2);
@@ -40,7 +40,6 @@ void runGame() {
 
 int main()
 {
-
     CONSOLE::SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     CONSOLE::FixConsoleWindow();
     CONSOLE::SreenConsole_Top_Left();
@@ -49,39 +48,131 @@ int main()
     CONSOLE::SetConsoleOutput(437);
     CONSOLE::SetTitleCosole("CROSS THE STREET");
 
-    CDRAW cd;
-    //cd.drawLogo(COORD{ 47, 5 }, 15, 1500);
-    //cd.drawTitle(COORD{ 10, 4 }, 151);
-    //cg.runApp();
-    //cd.drawGameOverScreen(COORD{ 17, 4 }, 151);
+    if (cg.runApp() == false)
+        return 0;
+    system("cls");
 
+    cg.resetGame();
     cg.drawGame();
-    cg.drawGuide();
+    cg.startMusic();
 
-    cg.resetGame(4);
     char key;
 
     thread run(runGame);
-    while (1)
+
+    while (1) 
     {
-        key = toupper(_getch());
+        if (cg.isRunning())
+            key = toupper(_getch());
+        else key = ' ';
+
         // Người còn sống
         if (!cg.getPeople().isDead()) {
+            
+            // Press ESC
             if (key == 27) {
-                //xử lý exit
+                cg.pauseGame(&run);
+                cg.MusicStatus(false);
+                Sleep(500);
+
+                isExit = cg.ESC();
+                if (!isExit) {
+                    cg.MusicStatus(true);
+                    Sleep(300);
+                    system("cls");
+                    cg.drawGame();
+                    cg.resumeGame(runGame, &run);
+                }
             }
-            //.....
+            
+            // exit
+            else if (isExit) {
+                cg.Exit_game();
+                return 0;
+            }
+            
+            // pause
+            else if (key == 'P') {
+                int choice;
+                cg.MusicStatus(false);
+                cg.pauseGame(&run);
+                Sleep(500);
+
+                CMENU pauseForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
+                pauseForm.addItem("Resume");
+                pauseForm.addItem("Quit");
+                pauseForm.displayTableLine();
+                choice = pauseForm.getSelectFromUser();
+
+                if (choice == 0) {
+                    cg.MusicStatus(true);
+                    Sleep(300);
+                    system("cls");
+                    cg.drawGame();
+                    cg.resumeGame(runGame, &run);
+                }
+                else isExit = true;
+            }
+
+            // Settings
+            else if (key == 'U') {
+                cg.pauseGame(&run);
+                cg.Settings();
+
+                system("cls");
+                Sleep(300);
+                cg.drawGame();
+                cg.resumeGame(runGame, &run);
+            }
+            
+            // xử lý Save_game
+            else if (key == 'L') {
+            }
+            
+            // xử lý Load_game
+            else if (key == 'T') {
+            }
+
+            // Di chuyển người
             else {
                 if (cg.isRunning())
                     MOVING = key;
             }
 
         }
-        // Người đã chết
-        else {
 
+        // Khi người chết
+        if (cg.getPeople().isDead() || !cg.isRunning()) {
+            mciSendString(TEXT("close mp3"), NULL, 0, NULL);
+
+            cg.pauseGame(&run);
+            Sleep(1000);
+            isExit = cg.Game_over();
+
+            if (!isExit) {
+                cg.startMusic();
+                system("cls");
+                Sleep(300);
+                cg.drawGame();
+                cg.resumeGame(runGame, &run);
+            }
+        }
+
+        // Khi người qua được đường
+        else if (cg.getPeople().isWin()) {
+            mciSendString(TEXT("close mp3"), NULL, 0, NULL);
+
+            cg.pauseGame(&run);
+            Sleep(200);
+            isExit = cg.Win_nextLevel();
+
+            if (!isExit) {
+                cg.startMusic();
+                system("cls");
+                Sleep(300);
+                cg.drawGame();
+                cg.resumeGame(runGame, &run);
+            }
         }
     }
-
-    _getch();
 }

@@ -11,19 +11,13 @@ protected:
 	short mSpeed;
 	short mMove;
 
+	void drawVehicle(vector<vector<short>>, short) const;
+
 public:
 	CVEHICLE();
 	CVEHICLE(const short&, const short&, const short&, const short&, const short&);
 	CVEHICLE(const CVEHICLE&);
 	~CVEHICLE();
-
-	void setX(const short& X);
-	void setY(const short& Y);
-	void setColor(const short&);
-	void setSpeed(const short&);
-	void setMove(const short&);
-	virtual void set(const short&, const short&, const short&, const short&, const short&) = 0;
-	virtual void setForm(const vector<vector<short>>&, const vector<vector<short>>&) = 0;
 
 	short getX() const;
 	short getY() const;
@@ -31,12 +25,20 @@ public:
 	short getSpeed() const;
 	short getMove() const;
 
+	void setX(const short& X);
+	void setY(const short& Y);
+	void setColor(const short&);
+	void setSpeed(const short&);
+	void setMove(const short&);
+
+	virtual void set(const short&, const short&, const short&, const short&, const short&) = 0;
+	virtual void setForm(const vector<vector<short>>&, const vector<vector<short>>&) = 0;
+
 	virtual short getHeight() const = 0;
 	virtual short getWidth() const = 0;
 
-	//move là hướng xe chạy qua trái hay phải
-	void drawVehicle(vector<vector<short>>, short) const;
-	virtual void move() = 0;
+	virtual void tell() const = 0;
 	virtual void draw() const = 0;
+	virtual void move() = 0;
 };
 

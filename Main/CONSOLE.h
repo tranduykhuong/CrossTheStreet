@@ -1,6 +1,7 @@
 #pragma once
 #pragma execution_character_set("utf-8")
 #include<iostream>
+#include<thread>
 #include<Windows.h>
 #include<conio.h>
 #include<fstream>

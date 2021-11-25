@@ -4,8 +4,8 @@
 CHORSE::CHORSE() {
 	mMove = LEFT;
 	countSpeed = MAX_SPEED;
-	form1 = { {} };
-	form2 = { {} };
+	form1 = { {17, 220}, {32, 219} };
+	form2 = { {17, 220}, {32, 178} };
 }
 
 CHORSE::CHORSE(const CHORSE& ho)
@@ -25,8 +25,8 @@ CHORSE::CHORSE(const short& x, const short& y, const short& color, const short& 
 	mColor = color;
 	mSpeed = speed;
 	mMove = move;
-	form1 = { {} };
-	form2 = { {} };
+	form1 = { {17, 220}, {32, 219} };
+	form2 = { {17, 220}, {32, 178} };
 }
 
 CHORSE::~CHORSE() {
@@ -37,6 +37,7 @@ CHORSE::~CHORSE() {
 	mMove = 0;
 }
 
+// set các số liệu của đối tượng
 void CHORSE::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
@@ -45,6 +46,7 @@ void CHORSE::set(const short& x, const short& y, const short& color, const short
 	mMove = move;
 }
 
+// set form hình của đối tượng
 void CHORSE::setForm(const vector<vector<short>>& _form1, const vector<vector<short>>& _form2)
 {
 	form1 = _form1;
@@ -60,7 +62,7 @@ short CHORSE::getWidth() const {
 }
 
 void CHORSE::tell() {
-	PlaySound(TEXT("OST/VoiceHorse.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("OST/VoiceHorse.wav"), NULL, SND_ASYNC);
 }
 
 void CHORSE::move() {

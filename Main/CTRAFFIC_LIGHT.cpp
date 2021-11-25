@@ -1,35 +1,25 @@
 ﻿#include "CTRAFFIC_LIGHT.h"
 
-int CTRAFFIC_LIGHT::getLightColor()
+short CTRAFFIC_LIGHT::getLightColor()
 {
 	return this->mColor;
 }
-int CTRAFFIC_LIGHT::getLightSleep()
-{
-	return this->mSleep;
-}
 
-void CTRAFFIC_LIGHT::setLightX(int X) {
+void CTRAFFIC_LIGHT::setLightX(short X) {
 	this->mX = X;
 }
-void CTRAFFIC_LIGHT::setLightY(int Y) {
+
+void CTRAFFIC_LIGHT::setLightY(short Y) {
 	this->mY = Y;
 }
-void CTRAFFIC_LIGHT::setLightColor(int color)
+
+void CTRAFFIC_LIGHT::setLightColor(short color)
 {
 	this->mColor = color;
 }
-void CTRAFFIC_LIGHT::setLightSleep(int sleep)
-{
-	this->mSleep = sleep;
-}
-void CTRAFFIC_LIGHT::setLight(int color)
-{
-	this->mColor = color;
-	//this->mSleep = sleep;
-}
-void CTRAFFIC_LIGHT::drawLight(int mX, int mY) {
-	if (this->mColor == 1) // mŕu xanh
+
+void CTRAFFIC_LIGHT::drawLight(short mX, short mY) {
+	if (this->mColor == 1) // mau xanh
 	{
 		CONSOLE::textcolor(ColorGame::black);
 		CONSOLE::gotoXY(mX + 1, mY + 1);

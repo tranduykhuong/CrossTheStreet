@@ -4,8 +4,8 @@ CRABBIT::CRABBIT()
 {
 	mMove = LEFT;
 	countSpeed = MAX_SPEED;
-	form1 = { {} };
-	form2 = { {} };
+	form1 = { {17, 220}, {32, 219} };
+	form2 = { {17, 220}, {32, 178} };
 }
 
 CRABBIT::CRABBIT(const CRABBIT& ra)
@@ -25,8 +25,8 @@ CRABBIT::CRABBIT(const short& x, const short& y, const short& color, const short
 	mColor = color;
 	mSpeed = speed;
 	mMove = move;
-	form1 = { {} };
-	form2 = { {} };
+	form1 = { {17, 220}, {32, 219} };
+	form2 = { {17, 220}, {32, 178} };
 }
 
 CRABBIT::~CRABBIT()
@@ -38,6 +38,7 @@ CRABBIT::~CRABBIT()
 	mMove = 0;
 }
 
+// set các số liệu của đối tượng
 void CRABBIT::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
@@ -46,6 +47,7 @@ void CRABBIT::set(const short& x, const short& y, const short& color, const shor
 	mMove = move;
 }
 
+// set form hình của đối tượng
 void CRABBIT::setForm(const vector<vector<short>>& _form1, const vector<vector<short>>& _form2)
 {
 	form1 = _form1;
@@ -64,7 +66,7 @@ short CRABBIT::getWidth() const
 
 void CRABBIT::tell()
 {
-	PlaySound(TEXT("OST/VoiceRabbit.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("OST/VoiceRabbit.wav"), NULL, SND_ASYNC);
 }
 
 void CRABBIT::move()

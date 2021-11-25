@@ -9,13 +9,13 @@ class CMENU {
 	COORD coord;
 	SHORT y_ptr;
 	SHORT width, height;
-	SHORT boxColor, charColor;
+	SHORT boxColor, charColor, titleColor;
 	vector<string> opsArr;
 
 	bool isSound;
 
 	void cornerAmongBox(SHORT y_cur);
-	void dataBox(COORD coord_data, string& content, SHORT newColor = -1);
+	void dataBox(COORD coord_data, string content, SHORT newColor = -1);
 	void dataBoxTrueFalse(COORD coord_data, string& content, bool& set, SHORT opsColor = -1, SHORT newColor = -1);
 public:
 
@@ -23,7 +23,9 @@ public:
 	~CMENU();
 
 	void setColorTable(SHORT boxColor, SHORT charColor);
+	void setColorTitle(SHORT);
 	void setPosition_Width(COORD, SHORT width);
+
 	void addItem(string ops);
 	void displayTableLine();
 	void displayTableNoneLine();
@@ -32,4 +34,5 @@ public:
 	
 	void getSettingFromUser(bool& a1, bool& a2);
 	int getSelectFromUser();
+	string getInputString();
 };

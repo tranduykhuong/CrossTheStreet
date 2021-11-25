@@ -14,12 +14,13 @@ public:
 	CCAR(const short&, const short&, const short&, const short&, const short&);
 	~CCAR();
 
-	void set(const short&, const short&, const short&, const short&, const short&);
-	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
+	virtual void set(const short&, const short&, const short&, const short&, const short&);
+	virtual void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
 
-	short getHeight() const;
-	short getWidth() const;
+	virtual short getHeight() const;
+	virtual short getWidth() const;
 
-	void move();
-	void draw() const;
+	virtual void move();
+	virtual void draw() const;
+	virtual void tell() const;
 };
