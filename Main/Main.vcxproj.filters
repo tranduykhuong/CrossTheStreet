@@ -51,6 +51,12 @@
     <ClCompile Include="CRABBIT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CTRAFFIC_LIGHT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTRAIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CGAME.h">
@@ -87,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CLANE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTRAFFIC_LIGHT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTRAIN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

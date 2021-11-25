@@ -1,4 +1,5 @@
 ﻿#include"CMENU.h"
+#include<string>
 
 CMENU::CMENU(COORD coord, SHORT width, bool sound) {
 	this->coord = coord;
@@ -7,6 +8,7 @@ CMENU::CMENU(COORD coord, SHORT width, bool sound) {
 	this->height = 2;
 	this->boxColor = BOX_COLOR;
 	this->charColor = CHAR_COLOR;
+	this->titleColor = 31;
 	this->isSound = sound;
 }
 
@@ -52,7 +54,7 @@ void CMENU::insertItem(string content, int idx) {
 }
 
 // DRAWING BACKGROUND AND CONTENT OF AN OPTION (ITEM)
-void CMENU::dataBox(COORD coord_data, string& content, SHORT newColor) {
+void CMENU::dataBox(COORD coord_data, string content, SHORT newColor) {
 	short textColor = this->charColor;
 	if (newColor != -1)
 		textColor = newColor;
@@ -97,6 +99,13 @@ void CMENU::setColorTable(SHORT boxColor, SHORT charColor) {
 	this->charColor = charColor;
 }
 
+// SET COLOR OF TITLE TABLE NONE LINE
+void CMENU::setColorTitle(SHORT newColor)
+{
+	if (newColor > 0)
+		titleColor = newColor;
+}
+
 
 // DISPLAY OPTIONAL TABLE 
 void CMENU::displayTableLine() {
@@ -113,9 +122,10 @@ void CMENU::displayTableLine() {
 // DISPLAY MENU NONE LINE
 void CMENU::displayTableNoneLine() {
 	short tempY = coord.Y;
-	CDRAW::drawBox(COORD{ coord.X, tempY }, width, opsArr.size() +  1, 196, 179, 218, 191, 192, 217, boxColor);
-	for (auto e : opsArr) {
-		dataBox(COORD{ coord.X, tempY }, e);
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, opsArr.size() +  1, 205, 186, 201, 187, 200, 188, boxColor);
+	dataBox(COORD{ coord.X, tempY++ }, opsArr[0], titleColor);
+	for (int i = 1; i < opsArr.size(); i++) {
+		dataBox(COORD{ coord.X, tempY }, opsArr[i]);
 		//tempY += height;
 		tempY++;
 	}
@@ -135,7 +145,8 @@ int CMENU::getSelectFromUser() {
 		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
 			char c = _getch();
 			if (c == 13) {		//khi nhập enter sẽ kết thúc while
-				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
+				if (isSound)
+					PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
 				return index;
 			}
 			else
@@ -152,7 +163,8 @@ int CMENU::getSelectFromUser() {
 							index = 0;
 						}
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
-						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
+						if (isSound)
+							PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 					}
 					else if (c == 72) { //đi lên
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);		//vẽ chồng màu lên option
@@ -165,14 +177,44 @@ int CMENU::getSelectFromUser() {
 							index = sizeOps - 1;
 						}
 						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
-						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
+						if (isSound)
+							PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 					}
 				}
 		}
 	}
 }
 
-// GET SETTING OPTIONS FROM USER
+// GET INPUT STRING FROM USER
+string CMENU::getInputString()
+{
+	short tempY = coord.Y;
+	string str;
+
+	// Title
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, height, 196, 179, 218, 191, 192, 217, boxColor);
+	dataBox(COORD{ coord.X, tempY }, opsArr[0], titleColor);
+	tempY += height;
+
+	// Header
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, height, 196, 179, 218, 191, 192, 217, boxColor);
+	dataBox(COORD{ coord.X, tempY }, opsArr[1], 113);
+	cornerAmongBox(tempY);
+	tempY += height;
+
+	// input
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, height, 196, 179, 218, 191, 192, 217, boxColor);
+	dataBox(COORD{ coord.X, tempY }, "", 113);
+	cornerAmongBox(tempY);
+	CONSOLE::gotoXY(coord.X + 5, tempY + 1);
+	CONSOLE::ShowCur(true);
+	getline(cin, str);
+	CONSOLE::ShowCur(false);
+
+	return str;
+}
+
+// GET SETTING OPTIONS (2 PARAMETERS) FROM USER
 void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 	short tempY = coord.Y;
 
@@ -203,6 +245,7 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 			if (c == 13 && y_ptr == coord.Y + height * 2) {		//khi nhập enter sẽ kết thúc while
 				if (isSound)
 					PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
+				this->isSound = a1;
 				return;
 			}
 			else

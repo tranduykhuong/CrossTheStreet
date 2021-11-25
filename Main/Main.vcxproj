@@ -149,6 +149,8 @@
     <ClCompile Include="CONSOLE.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
     <ClCompile Include="CRABBIT.cpp" />
+    <ClCompile Include="CTRAFFIC_LIGHT.cpp" />
+    <ClCompile Include="CTRAIN.cpp" />
     <ClCompile Include="CTRUCK.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="CONSOLE.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CRABBIT.h" />
+    <ClInclude Include="CTRAFFIC_LIGHT.h" />
+    <ClInclude Include="CTRAIN.h" />
     <ClInclude Include="CTRUCK.h" />
     <ClInclude Include="CVEHICLE.h" />
   </ItemGroup>

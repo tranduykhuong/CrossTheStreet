@@ -116,30 +116,39 @@ void CDRAW::backroundBox(COORD coord, SHORT width, SHORT height, SHORT backgroud
 	}
 }
 
-void CDRAW::printString(string content, COORD coord, SHORT color, SHORT width) {
+/*********************************************************
+* FUNCTION TO CLEAR A BOX
+* Parameters:
+*	coord		: coordinates of the left end
+*	width		: width of box
+*	height		: heigth of box
+*	color		: color of background
+**********************************************************/
+void CDRAW::clearBox(COORD coord, SHORT color, SHORT width, SHORT height) {
 	CONSOLE::textcolor(color);
-	if (width == 0) {
-		CONSOLE::gotoXY(coord.X, coord.Y);
-		cout << content;
-		return;
+	
+	CONSOLE::gotoXY(coord.X, coord.Y);
+	string w = "";
+	for (int i = 0; i < width; i++)
+		w += ' ';
+	for (int i = 0; i < height; i++) {
+		CONSOLE::gotoXY(coord.X, coord.Y + i);
+		cout << w;
 	}
-	int new_x = (coord.X + width - content.length()) / 2;
-	CONSOLE::gotoXY(new_x, coord.Y);
-	cout << content;
 }
 
 
 /*******************************************************************
 * Hàm vẽ logo (bổ trợ cho hàm drawLogo ở dưới)
 * Các tham số:
-* fiName	: Tên file đầu vào.
-* coord		: Tọa độ.
-* speed		: Tốc độ vẽ, tốc độ xóa.
-* delay		: Thời gian tồn tại trước khi bị xóa.
-* color		: Màu sắc.
-* isSound	: Âm thanh.
+*    fiName		: Tên file đầu vào.
+*    coord		: Tọa độ.
+*    speed		: Tốc độ vẽ, tốc độ xóa.
+*    delay		: Thời gian tồn tại trước khi bị xóa.
+*    color		: Màu sắc.
+*    isSound	: Âm thanh.
 *********************************************************************/
-void DrawLogo(string fiName, COORD coord, SHORT speed, SHORT delay, SHORT color, bool isSound) {
+void CDRAW::DrawLogo(string fiName, COORD coord, SHORT speed, SHORT delay, SHORT color, bool isSound) {
 	ifstream fi(fiName);
 	if (fi.fail()) return;
 
@@ -148,6 +157,10 @@ void DrawLogo(string fiName, COORD coord, SHORT speed, SHORT delay, SHORT color,
 	CONSOLE::textcolor(color);
 
 	if (isSound) PlaySound(TEXT("OST/Wind-Shoowsh-Fast-www.fesliyanstudios.com.wav"), NULL, SND_ASYNC);
+	short charType = 219;
+	drawBox(COORD{ 1,1 }, SCREEN_CONSOLE_WIDTH - 1, SCREEN_CONSOLE_HEIGHT - 2,
+		charType, charType, charType, charType, charType, charType, 11);
+
 	for (int i = 0; !fi.eof(); i++) {
 		getline(fi, s);
 		CONSOLE::gotoXY(coord.X, coord.Y + i);
@@ -182,6 +195,7 @@ void DrawLogo(string fiName, COORD coord, SHORT speed, SHORT delay, SHORT color,
 ********************************************************************/
 void CDRAW::drawLogo(COORD coord, SHORT speed, SHORT delay, bool isSound) {
 	system("color 0e");
+	
 	DrawLogo("Text/HCMUS.txt", coord, speed, delay, 1, isSound);
 	DrawLogo("Text/Team5.txt", coord, speed, delay, 3, isSound);
 }
@@ -195,9 +209,17 @@ void CDRAW::drawLogo(COORD coord, SHORT speed, SHORT delay, bool isSound) {
 * isSound	: Âm thanh.
 *******************************************************************/
 void CDRAW::drawTitle(COORD coord, SHORT color, bool isSound) {
+	if (isSound) {
+		mciSendString(TEXT("open \"OST/title.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
+		mciSendString(TEXT("play mp3 repeat"), NULL, 0, NULL);
+	}
+
 	ifstream fi("Text/Title.txt");
 
 	if (fi.fail()) return;
+	short charType = 219;
+	drawBox(COORD{ 1,1 }, SCREEN_CONSOLE_WIDTH - 1, SCREEN_CONSOLE_HEIGHT - 2,
+		charType, charType, charType, charType, charType, charType, 11);
 
 	int x, y;
 	CONSOLE::textcolor(color);
@@ -208,18 +230,13 @@ void CDRAW::drawTitle(COORD coord, SHORT color, bool isSound) {
 		fi >> x >> y;
 		CONSOLE::gotoXY(coord.X + x, coord.Y + y);
 		cout << char(254);
-		Sleep(7);
+		Sleep(12);
 	}
 
 	for (int i = 0; i < 127; i++) {
 		CONSOLE::gotoXY(i + coord.X, 6 + coord.Y);
 		cout << char(254);
-		Sleep(3);
-	}
-
-	if (isSound) {
-		mciSendString(TEXT("open \"OST/ForestWalk.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
-		mciSendString(TEXT("play mp3 repeat"), NULL, 0, NULL);
+		Sleep(7);
 	}
 
 	CONSOLE::textcolor(15);
@@ -278,8 +295,6 @@ void CDRAW::drawGameOverScreen(COORD coord, SHORT color, bool isSound) {
 
 	fi.close();
 }
-
-
 
 /**************************************************************
 * Hàm vẽ màn hình level complete

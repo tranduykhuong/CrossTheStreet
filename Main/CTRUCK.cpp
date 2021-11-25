@@ -3,7 +3,7 @@
 CTRUCK::CTRUCK() {
 	mMove = RIGHT;
 	countSpeed = MAX_SPEED;
-	form = { {} };
+	form = { {219, 32}, {219, 219} };
 }
 
 CTRUCK::CTRUCK(const CTRUCK& tr)
@@ -22,13 +22,14 @@ CTRUCK::CTRUCK(const short& x, const short& y, const short& color, const short& 
 	mColor = color;
 	mSpeed = speed;
 	mMove = move;
-	form = { {} };
+	form = { {219, 32}, {219, 219} };
 }
 
 CTRUCK::~CTRUCK() {
 	mMove = 0;
 }
 
+// set các thông số cho đối tượng
 void CTRUCK::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
@@ -66,6 +67,11 @@ void CTRUCK::move() {
 
 void CTRUCK::draw() const {
 	CVEHICLE::drawVehicle(form, mMove);	//vẽ xe
+}
+
+void CTRUCK::tell() const
+{
+	PlaySound(TEXT("OST/tructhorn.wav"), NULL, SND_ASYNC);
 }
 
 void CTRUCK::setForm(const vector<vector<short>>& form1, const vector<vector<short>>& form2)

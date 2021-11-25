@@ -1,12 +1,12 @@
-﻿#include "CCAR.h"
+﻿#include "CTRAIN.h"
 
-CCAR::CCAR() {
+CTRAIN::CTRAIN() {
 	mMove = LEFT;
 	countSpeed = MAX_SPEED;
-	form = { {219, 32}, {219, 219} };
+	form = { {219,219,219,219} };
 }
 
-CCAR::CCAR(const CCAR& ca)
+CTRAIN::CTRAIN(const CTRAIN& ca)
 {
 	mX = ca.mX;
 	mY = ca.mY;
@@ -16,16 +16,16 @@ CCAR::CCAR(const CCAR& ca)
 	form = ca.form;
 }
 
-CCAR::CCAR(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+CTRAIN::CTRAIN(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
 	mSpeed = speed;
 	mMove = move;
-	form = { {219, 32}, {219, 219} };
+	form = { {219,219,219,219} };
 }
 
-CCAR::~CCAR() {
+CTRAIN::~CTRAIN() {
 	mX = 0;
 	mY = 0;
 	mColor = 0;
@@ -34,7 +34,7 @@ CCAR::~CCAR() {
 }
 
 // set các thông số cho đối tượng
-void CCAR::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
+void CTRAIN::set(const short& x, const short& y, const short& color, const short& speed, const short& move) {
 	mX = x;
 	mY = y;
 	mColor = color;
@@ -42,15 +42,15 @@ void CCAR::set(const short& x, const short& y, const short& color, const short& 
 	mMove = move;
 }
 
-short CCAR::getHeight() const {
+short CTRAIN::getHeight() const {
 	return form.size();
 }
 
-short CCAR::getWidth() const {
+short CTRAIN::getWidth() const {
 	return form[0].size();
 }
 
-void CCAR::move() {
+void CTRAIN::move() {
 	if (countSpeed > mSpeed) {
 		countSpeed--;
 		return;
@@ -69,16 +69,16 @@ void CCAR::move() {
 	countSpeed = MAX_SPEED;
 }
 
-void CCAR::draw() const {
+void CTRAIN::draw() const {
 	CVEHICLE::drawVehicle(form, mMove);	//vẽ xe
 }
 
-void CCAR::tell() const
+void CTRAIN::tell() const
 {
-	PlaySound(TEXT("OST/carhorn.wav"), NULL, SND_ASYNC);
+	PlaySound(TEXT("OST/trainhorn.wav"), NULL, SND_ASYNC);
 }
 
-void CCAR::setForm(const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+void CTRAIN::setForm(const vector<vector<short>>& form1, const vector<vector<short>>& form2)
 {
 	form = form1;
 }

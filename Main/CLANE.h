@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"CONSOLE.h"
+#include "CTRAFFIC_LIGHT.h"
 
 template<class T, class U>
 class CLANE {
@@ -7,15 +8,29 @@ class CLANE {
 
 	short X, Y;
 
+	int countTimer;
+	int actionSpeed;
+	int stopSpeed;
+
+	CTRAFFIC_LIGHT light;
+
 	short randomColor(short, short);
 	short randomDistance(short, short, short, short);
 public:
 	CLANE(short, short);
 	~CLANE();
 
+	void setTimerLight(int newActionSpeed, int newStopSpeed);
+	void setLightColor(const int& color) {
+		light.setLight(color);
+	}
+	void tellObj();
+
 	void pushObj(const short&, const short&, const short&, const short&, const short&, const vector<vector<short>>&, const vector<vector<short>>&);
-	void setLane(short, short, short, const vector<vector<short>>&, const vector<vector<short>>&);
+	void setLane(const short&, const short&, const short&, const vector<vector<short>>&, const vector<vector<short>>&);
 	vector<T*> getListObjs() { return listObjs; }
+	short getNumObjs() const { return listObjs.size(); }
+
 	void drawObj() const;
 	void moveObj();
 	void clearObjs();
@@ -26,6 +41,9 @@ CLANE<T, U>::CLANE(short x, short y)
 {
 	X = x;
 	Y = y;
+	countTimer = 1;
+	actionSpeed = -1;
+	stopSpeed = -1;
 }
 
 template<class T, class U>
@@ -34,9 +52,21 @@ CLANE<T, U>::~CLANE()
 	clearObjs();
 }
 
+template<class T, class U>
+inline void CLANE<T, U>::setTimerLight(int newActionSpeed, int newStopSpeed)
+{
+	if (listObjs[0]->getMove() == RIGHT)
+		light.drawLight(sRIGHT + 1, Y + HEIGHT_ROAD - 3);
+	else
+		light.drawLight(sLEFT - 4, Y + HEIGHT_ROAD - 3);
+
+	actionSpeed = newActionSpeed;
+	stopSpeed = newStopSpeed;
+}
+
 // Lấy màu ngẫu nhiên
 template<class T, class U>
-short CLANE<T, U>::randomColor(short start, short end)
+inline short CLANE<T, U>::randomColor(short start, short end)
 {
 	while (1) {
 		int ran = rand() % (end - start + 1) + start;
@@ -47,7 +77,7 @@ short CLANE<T, U>::randomColor(short start, short end)
 
 // Lấy khoảng cách ngẫu nhiên so với đối tượng phía trước
 template<class T, class U>
-short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, short screenRight)
+inline short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, short screenRight)
 {
 	short delta = num * (widthObs + 3);
 	while (1) {
@@ -57,6 +87,7 @@ short CLANE<T, U>::randomDistance(short x_before, short num, short widthObs, sho
 	}
 }
 
+// Thêm 1 object vào danh sách
 template<class T, class U>
 inline void CLANE<T, U>::pushObj(const short& mX, const short& mY, const short& mColor,
 	const short& mMove, const short& mSpeed, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
@@ -75,8 +106,8 @@ inline void CLANE<T, U>::pushObj(const short& mX, const short& mY, const short& 
 ///		form2	: ma trận hình dáng 2 của đối tượng (nếu có)
 /// </summary>
 template<class T, class U>
-void CLANE<T, U>::setLane
-(short num, short speed, short move, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
+inline void CLANE<T, U>::setLane
+(const short& num, const short& speed, const short& move, const vector<vector<short>>& form1, const vector<vector<short>>& form2)
 {
 	short heightObj = form1.size();
 	short widthObj = form1[0].size();
@@ -127,9 +158,18 @@ void CLANE<T, U>::setLane
 	}
 }
 
+// tell object
+template<class T, class U>
+inline void CLANE<T, U>::tellObj()
+{
+	if (listObjs.size() > 0)
+		if (rand() % 500 == 0)
+			listObjs[0]->tell();
+}
+
 // Draw các đối tượng trong listObjs
 template<class T, class U>
-void CLANE<T, U>::drawObj() const
+inline void CLANE<T, U>::drawObj() const
 {
 	short num = listObjs.size();
 	for (short i = 0; i < num; i++)
@@ -138,11 +178,30 @@ void CLANE<T, U>::drawObj() const
 
 // Move các đối tượng trong listObjs
 template<class T, class U>
-void CLANE<T, U>::moveObj()
+inline void CLANE<T, U>::moveObj()
 {
-	short num = listObjs.size();
-	for (short i = 0; i < num; i++)
-		listObjs[i]->move();
+	if (light.getLightColor() == 1) {
+		short num = listObjs.size();
+
+		for (short i = 0; i < num; i++)
+			listObjs[i]->move();
+		if (countTimer == actionSpeed) {
+			countTimer = 1;
+			light.setLightColor(0);
+		}
+		else
+			if (actionSpeed != -1)
+				countTimer++;
+	}
+	else {
+		if (countTimer == stopSpeed) {
+			countTimer = 1;
+			light.setLightColor(1);
+		}
+		else
+			if (actionSpeed != -1)
+				countTimer++;
+	}
 }
 
 // Remove các đối tượng trong listObjs

@@ -25,24 +25,41 @@ CPEOPLE::CPEOPLE(short x, short y) {
 	colorShade = ColorGame::black;
 }
 
-void CPEOPLE::up() {
-	if (mY - mSpeed > GameScreen::sTOP)
+bool CPEOPLE::up() {
+	if (mY - mSpeed > GameScreen::sTOP) {
 		mY -= mSpeed;
+		return true;
+	}
+	return false;
 }
 
-void CPEOPLE::down() {
-	if (mY + mSpeed + getHeightPeople() - 1 < GameScreen::sBOTTOM)
+bool CPEOPLE::down() {
+	if (mY + mSpeed + getHeightPeople() - 1 < GameScreen::sBOTTOM) {
 		mY += mSpeed;
+		return true;
+	}
+	return false;
 }
 
-void CPEOPLE::left() {
-	if (mX - mSpeed > GameScreen::sLEFT)
+bool CPEOPLE::left() {
+	if (mX - mSpeed > GameScreen::sLEFT) {
 		mX -= mSpeed;
+		return true;
+	}
+	return false;
 }
 
-void CPEOPLE::right() {
-	if (mX + mSpeed + getWidthPeople() - 1 < GameScreen::sRIGHT)
+bool CPEOPLE::right() {
+	if (mX + mSpeed + getWidthPeople() - 1 < GameScreen::sRIGHT) {
 		mX += mSpeed;
+		return true;
+	}
+	return false;
+}
+
+void CPEOPLE::setSound(bool sound)
+{
+	isSound = sound;
 }
 
 void CPEOPLE::setState(bool state) {
@@ -50,10 +67,11 @@ void CPEOPLE::setState(bool state) {
 }
 
 void CPEOPLE::setPosition(short x, short y) {
-	if (x<GameScreen::sRIGHT && x>GameScreen::sLEFT)
+	if (x < GameScreen::sRIGHT && x > GameScreen::sLEFT)
 		mX = x;
 	if (y + getHeightPeople() >= GameScreen::sBOTTOM && y + getHeightPeople() - HEIGHT_ROAD >= GameScreen::sTOP)
 		mY = y;
+	peopleShade = { {32,32,32},{32,32,32},{32,32,32} };
 }
 
 void CPEOPLE::setSpeed(short speed) {
@@ -61,12 +79,12 @@ void CPEOPLE::setSpeed(short speed) {
 		mSpeed = speed;
 }
 
-void CPEOPLE::setColor(int newColor) {
+void CPEOPLE::setColor(short newColor) {
 	if (newColor >= 0 && newColor < 256)
 		mColor = newColor;
 }
 
-void CPEOPLE::setColorShade(int newColorShade) {
+void CPEOPLE::setColorShade(short newColorShade) {
 	if (newColorShade >= 0 && newColorShade < 256)
 		colorShade = newColorShade;
 }
@@ -83,20 +101,24 @@ short CPEOPLE::getY() const {
 	return mY;
 }
 
-int CPEOPLE::getColor() const {
+short CPEOPLE::getColor() const {
 	return mColor;
 }
 
-int CPEOPLE::getColorShade() const {
+short CPEOPLE::getColorShade() const {
 	return colorShade;
 }
 
 bool CPEOPLE::isDead() const {
-	return mState == false;
+	if (mState == false)
+		return true;
+	return false;
 }
 
 bool CPEOPLE::isWin() const {
-	return mY < (GameScreen::sTOP + HEIGHT_ROAD);
+	if (mY + getHeightPeople() <= sTOP + HEIGHT_ROAD)
+		return true;
+	return false;
 }
 
 void CPEOPLE::draw(int key) {
@@ -105,15 +127,15 @@ void CPEOPLE::draw(int key) {
 
 	switch (key) {
 	case Key::UP: {
-		form = peopleUp;
+		form = peopleUp;		// Lấy form người
 
 		vector<int> shade;
-		for (int i = 0; i < getWidthPeople(); i++)
+		for (int i = 0; i < getWidthPeople(); i++)		// Lấy các ký tự phía trên con người
 			shade.push_back(CONSOLE::getConsoleCharacter(mX + i, mY));
 		peopleShade.insert(peopleShade.begin(), shade);
 
 		CONSOLE::gotoXY(mX, mY + getHeightPeople());
-		for (auto e : peopleShade[getHeightPeople()])
+		for (auto e : peopleShade[getHeightPeople()])	// Vẽ lại các ký tự phía dưới con người
 			cout << (char)e;
 		peopleShade.erase(peopleShade.begin() + getHeightPeople());
 
@@ -123,12 +145,12 @@ void CPEOPLE::draw(int key) {
 		form = peopleDown;
 
 		vector<int> shade;
-		for (int i = 0; i < getWidthPeople(); i++)
+		for (int i = 0; i < getWidthPeople(); i++)		// Lấy các ký tự phía dưới people
 			shade.push_back(CONSOLE::getConsoleCharacter(mX + i, mY + getHeightPeople() - 1));
 		peopleShade.push_back(shade);
 
 		CONSOLE::gotoXY(mX, mY - 1);
-		for (auto e : peopleShade[0])
+		for (auto e : peopleShade[0])					// Vẽ lại các ký tự phía trên people
 			cout << char(e);
 		peopleShade.erase(peopleShade.begin());
 
@@ -183,6 +205,11 @@ void CPEOPLE::draw(int key) {
 	}
 }
 
+void CPEOPLE::tell()
+{
+	PlaySound(TEXT("OST/ouch.wav"), NULL, SND_ASYNC);
+}
+
 bool CPEOPLE::isImpact(const vector<CVEHICLE*>& objs, short n) {
 	// Lấy tọa độ people
 	short L = mX;
@@ -199,14 +226,20 @@ bool CPEOPLE::isImpact(const vector<CVEHICLE*>& objs, short n) {
 
 		// Va chạm cạnh trên của object với people
 		if (B > t && B < b) {
-			if ((R > l && R < r) || (L < r && L > l))
+			if ((R > l && R < r) || (L < r && L > l)) {
+				if (isSound)
+					tell();
 				return true;
+			}
 		}
 
 		// Va chạm cạnh dưới của object với people
 		if (T < b && T > t) {
-			if ((R > l && R < r) || (L > l && L < r))
+			if ((R > l && R < r) || (L > l && L < r)) {
+				if (isSound)
+					tell();
 				return true;
+			}
 		}
 	}
 	return false;
@@ -228,14 +261,20 @@ bool CPEOPLE::isImpact(const vector<CANIMAL*>& objs, short n) {
 
 		// Va chạm cạnh trên của object với people
 		if (B > t && B < b) {
-			if ((R > l && R < r) || (L < r && L > l))
+			if ((R > l && R < r) || (L < r && L > l)) {
+				if (isSound)
+					objs[i]->tell();
 				return true;
+			}
 		}
 
 		// Va chạm cạnh dưới của object với people
 		if (T < b && T > t) {
-			if ((R > l && R < r) || (L > l && L < r))
+			if ((R > l && R < r) || (L > l && L < r)) {
+				if (isSound) 
+					objs[i]->tell();
 				return true;
+			}
 		}
 	}
 	return false;

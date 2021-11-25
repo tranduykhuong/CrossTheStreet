@@ -13,12 +13,12 @@ public:
 	CRABBIT(const short&, const short&, const short&, const short&, const short&);
 	~CRABBIT();
 
-	void set(const short&, const short&, const short&, const short&, const short&);
-	void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
-	short getHeight() const;
-	short getWidth() const;
+	virtual void set(const short&, const short&, const short&, const short&, const short&);
+	virtual void setForm(const vector<vector<short>>&, const vector<vector<short>>&);
+	virtual short getHeight() const;
+	virtual short getWidth() const;
 
-	void tell();
-	void move();
-	void draw() const;
+	virtual void tell();
+	virtual void move();
+	virtual void draw() const;
 };
