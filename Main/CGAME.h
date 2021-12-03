@@ -46,7 +46,7 @@ public:
 	CGAME();
 	~CGAME() {};
 
-	bool runApp();
+	bool runApp(bool check = true);
 	void drawGame();
 	void resetGame(short level = 0);
 	void saveGame(fstream&);
@@ -86,7 +86,7 @@ public:
 	bool ESC();
 	void Settings();
 	void Save_game();
-	void Load_game();
+	void Load_game(bool&, string&);
 	void Exit_game(thread* run = nullptr);
 
 	void drawGuide();

@@ -97,15 +97,15 @@ void CGAME::resetGame(short level) {
 	}
 
 	// set Car
-	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, { {} });
-	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, { {} });
+	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, carFormLeft2);
+	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, carFormRight2);
 
 	// set Truck
-	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft1, { {} });
-	lane6->setLane(numTruck, (level + 3) / 3 % 4 + 2, RIGHT, truckFormRight2, { {} });
+	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft1, truckFormLeft2);
+	lane6->setLane(numTruck, (level + 3) / 3 % 4 + 2, RIGHT, truckFormRight2, truckFormRight2);
 
 	// set Horse
-	short move = level % 2 == 0 ? LEFT : RIGHT;	// chạy qua trái hoặc phải phụ thuộc vào level
+	short move = (level % 2) == 0 ? LEFT : RIGHT;	// chạy qua trái hoặc phải phụ thuộc vào level
 	if (move == LEFT)
 		lane1->setLane(numHorse, ((level * 2 + 1) / 3) % 3 + 3, move, horseLeft_1, horseLeft_2);
 	else
@@ -133,17 +133,16 @@ void CGAME::resetGame(short level) {
 
 void CGAME::saveGame(fstream& save)
 {
-
-	//Score
-	save << currentLevel << endl;
+	save << currentLevel << " " << score << endl;
 	save << people.getX() << " " << people.getY() << endl;
 
-	//Save objects of lane1
+	//Save objects of lane
 	vector<CANIMAL*> animals;
 	vector<CVEHICLE*> vehicles;
-	int size;
+	int size, sizeLane = 7;
+	if (currentLevel <= 4) sizeLane--;
 
-	for (int i = 1; i <= 6; i++) {
+	for (int i = 1; i <= sizeLane; i++) {
 		switch (i)
 		{
 		case 1:
@@ -170,6 +169,10 @@ void CGAME::saveGame(fstream& save)
 			vehicles = lane6->getListObjs();
 			size = numTruck;
 			break;
+		case 7:
+			size = 1;
+			vehicles = laneTrain->getListObjs();
+			break;
 		}
 
 		save << size << endl;
@@ -187,8 +190,7 @@ void CGAME::saveGame(fstream& save)
 			for (int j = 0; j < size; j++) {
 				save << vehicles[j]->getX() << " " << vehicles[j]->getY() << " "
 					<< vehicles[j]->getColor() << " " << vehicles[j]->getMove() << " "
-					<< vehicles[j]->getSpeed();
-				if (j != size - 1) save << endl;
+					<< vehicles[j]->getSpeed() << endl;
 			}
 			vehicles.clear();
 		}
@@ -202,8 +204,8 @@ void CGAME::loadGame(fstream& load)
 	short xPeople, yPeople, size;
 	short xObj, yObj, colorO, moveO, speedO;
 
-	load >> currentLevel;
-	load.get();
+	load >> currentLevel >> score;
+	//load.get();
 
 	load >> xPeople >> yPeople;
 	people.setPosition(xPeople, yPeople);
@@ -223,7 +225,7 @@ void CGAME::loadGame(fstream& load)
 				if (moveO == LEFT)	
 					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseLeft_1, horseLeft_2);
 				else				
-					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
+					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseRight_1, horseRight_2);
 				break;
 			case 2:
 				if (moveO == LEFT)	
@@ -245,7 +247,7 @@ void CGAME::loadGame(fstream& load)
 				break;
 			case 5:
 				if (moveO == LEFT)	
-					lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft1);
+					lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
 				else				
 					lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
 				break;
@@ -254,6 +256,14 @@ void CGAME::loadGame(fstream& load)
 					lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft1);
 				else				
 					lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
+				break;
+			case 7:
+				if (currentLevel > 4 && numRabbit == 0) {
+					if (moveO == LEFT)
+						laneTrain->pushObj(xObj, yObj, colorO, moveO, speedO, trainFormLeft, { {} });
+					else
+						laneTrain->pushObj(xObj, yObj, colorO, moveO, speedO, trainFormRight, { {} });
+				}
 				break;
 			}
 		}
@@ -274,7 +284,7 @@ void CGAME::clearGame() {
 }
 
 // Vẽ Title, Menu.... khi mở game
-bool CGAME::runApp() {
+bool CGAME::runApp(bool check) {
 	system("color 0e");
 	short charType = 219;
 
@@ -282,8 +292,10 @@ bool CGAME::runApp() {
 	CDRAW::drawBox(COORD{ 1,1 }, SCREEN_CONSOLE_WIDTH - 1, SCREEN_CONSOLE_HEIGHT - 2,
 		charType, charType, charType, charType, charType, charType, 11);
 
-	// Vẽ trailer
-	CDRAW::drawLogo(COORD{ 36, 5 }, 10, 500, isSound);
+	if (check == true) {
+		// Vẽ trailer
+		CDRAW::drawLogo(COORD{ 36, 5 }, 10, 500, isSound);
+	}
 	CDRAW::drawTitle(COORD{ 10, 4 }, 151, isSound);
 
 	int choice;
@@ -558,8 +570,18 @@ bool CGAME::Game_over()
 		resetGame();
 	}
 	else if (choice == 1) {
-		Load_game();
-
+		bool checkFile = true; string str;
+		Load_game(checkFile, str);
+		while (!checkFile)
+		{
+			CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, getSound());
+			loadForm.addItem("Wrong filename!!!");
+			loadForm.addItem("\"Cancel\": to resume");
+			//loadForm.setColorTable(236, 239);
+			loadForm.displayTableLine();
+			Load_game(checkFile, str);
+			if (str == "Cancel") break;
+		}
 	}
 	else if (choice == 2) {
 		// exit
@@ -585,7 +607,6 @@ bool CGAME::ESC()
 	}
 	else if (choice == 1) {
 		Save_game();
-		
 		return false;
 	}
 	return true;
@@ -608,27 +629,50 @@ void CGAME::Settings()
 // Process Save game
 void CGAME::Save_game()
 {
-	CMENU inputFileName = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, isSound);
-	inputFileName.addItem("SAVE GAME");
-	inputFileName.addItem("Enter file' name");
-	inputFileName.setColorTitle(46);
-	string filename = inputFileName.getInputString();
+	CMENU saveForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, this->getSound());
+	saveForm.addItem("SAVE GAME");
+	saveForm.addItem("Enter file \"name\".txt");
+	saveForm.setColorTitle(46);
+	string filename = saveForm.getInputString();
 
 	// xử lý save game
-
+	if (filename.find(".txt", 0) != 0) filename += ".txt";
+	fstream saveG;
+	saveG.open(filename, ios::out);
+	saveGame(saveG);
 }
 
 // Process Load game
-void CGAME::Load_game()
+void CGAME::Load_game(bool& check, string& str)
 {
 	CMENU inputFileName = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
 	inputFileName.addItem("LOAD GAME");
-	inputFileName.addItem("Enter file' name");
+	inputFileName.addItem("Enter file \"name\".txt");
 	inputFileName.setColorTitle(46);
 	string filename = inputFileName.getInputString();
+	str = filename;
 
 	// xử lý load game
+	if (filename.find(".txt", 0) != 0) filename += ".txt";
 
+	fstream loadG;
+	loadG.open(filename, ios::in);
+
+	if (!loadG) {
+		check = false;
+		return;
+	}
+	else check = true;
+	//Clear objects on the lane
+	lane1->clearObjs();
+	lane2->clearObjs();
+	lane3->clearObjs();
+	lane4->clearObjs();
+	lane5->clearObjs();
+	lane6->clearObjs();
+	laneTrain->clearObjs();
+             
+	loadGame(loadG);
 }
 
 // Exit game
