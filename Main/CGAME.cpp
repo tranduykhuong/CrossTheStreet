@@ -234,28 +234,16 @@ void CGAME::loadGame(fstream& load)
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
 				break;
 			case 3:
-				if (moveO == LEFT)	
-					lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
-				else				
-					lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight1, carFormRight2);
+				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
 				break;
-			case 4:
-				if (moveO == LEFT)	
-					lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
-				else				
-					lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight1, carFormRight2);
+			case 4:			
+				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight2, carFormRight2);
 				break;
 			case 5:
-				if (moveO == LEFT)	
-					lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
-				else				
-					lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
+				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
 				break;
-			case 6:
-				if (moveO == LEFT)	
-					lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft1);
-				else				
-					lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight2);
+			case 6:			
+				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight2, truckFormRight2);
 				break;
 			case 7:
 				if (currentLevel > 4 && numRabbit == 0) {
@@ -311,6 +299,8 @@ bool CGAME::runApp(bool check) {
 		cmenu.addItem("Quit");
 		choice = cmenu.getSelectFromUser();
 		CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 1, 32, 5 * 2 + 1);
+		
+		bool checkFile = true; string str;
 
 		choice++;
 		switch (choice) 
@@ -326,9 +316,19 @@ bool CGAME::runApp(bool check) {
 			return true;
 		}
 		case 2:
-			// Load game
+			Load_game(checkFile, str);
 
-			break;
+			while (!checkFile)
+			{
+				CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, getSound());
+				loadForm.addItem("Wrong filename!!!");
+				loadForm.addItem("\"Cancel\": to resume");
+				loadForm.displayTableLine();
+				Load_game(checkFile, str);
+				if (str == "Cancel") break;
+			}
+			mciSendString(TEXT("close mp3"), NULL, 0, NULL);
+			return true;
 		case 3:
 			// high score
 
@@ -577,7 +577,6 @@ bool CGAME::Game_over()
 			CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, getSound());
 			loadForm.addItem("Wrong filename!!!");
 			loadForm.addItem("\"Cancel\": to resume");
-			//loadForm.setColorTable(236, 239);
 			loadForm.displayTableLine();
 			Load_game(checkFile, str);
 			if (str == "Cancel") break;

@@ -48,9 +48,9 @@ int main()
     CONSOLE::SetConsoleOutput(437);
     CONSOLE::SetTitleCosole("CROSS THE STREET");
 
-  /* if (cg.runApp() == false)
+   if (cg.runApp() == false)
         return 0;
-    system("cls");*/
+    system("cls");
 
     cg.resetGame();
     cg.drawGame();
@@ -138,7 +138,7 @@ int main()
                 cg.MusicStatus(false);
                 cg.pauseGame(&run);
                 Sleep(500);
-
+                cg.Save_game();
                 CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
                 saveFormComplete.addItem("Save complete");
                 saveFormComplete.displayTableNoneLine();
@@ -184,7 +184,6 @@ int main()
                     CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
                     loadForm.addItem("Wrong filename!!!");
                     loadForm.addItem("\"Cancel\": to resume");
-                    //loadForm.setColorTable(236, 239);
                     loadForm.displayTableLine();
                     cg.Load_game(checkFile, str);
                     if (str == "Cancel") break;
@@ -210,7 +209,7 @@ int main()
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
 
             cg.pauseGame(&run);
-            Sleep(1000);
+            Sleep(500);
             isExit = cg.Game_over();
 
             if (!isExit) {
