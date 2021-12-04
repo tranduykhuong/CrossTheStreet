@@ -222,27 +222,33 @@ void CGAME::loadGame(fstream& load)
 			switch (i)
 			{
 			case 1:
+				numHorse = size;
 				if (moveO == LEFT)	
 					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseLeft_1, horseLeft_2);
 				else				
 					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseRight_1, horseRight_2);
 				break;
 			case 2:
+				numRabbit = size;
 				if (moveO == LEFT)	
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitLeft_1, rabbitLeft_2);
 				else				
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
 				break;
 			case 3:
+				numCar = size;
 				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
 				break;
-			case 4:			
+			case 4:		
+				numCar = size;
 				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight2, carFormRight2);
 				break;
 			case 5:
+				numTruck = size;
 				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
 				break;
-			case 6:			
+			case 6:	
+				numTruck = size;
 				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight2, truckFormRight2);
 				break;
 			case 7:
@@ -663,13 +669,7 @@ void CGAME::Load_game(bool& check, string& str)
 	}
 	else check = true;
 	//Clear objects on the lane
-	lane1->clearObjs();
-	lane2->clearObjs();
-	lane3->clearObjs();
-	lane4->clearObjs();
-	lane5->clearObjs();
-	lane6->clearObjs();
-	laneTrain->clearObjs();
+	clearGame();
              
 	loadGame(loadG);
 }

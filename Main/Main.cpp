@@ -51,8 +51,8 @@ int main()
    if (cg.runApp() == false)
         return 0;
     system("cls");
-
-    cg.resetGame();
+    if (cg.getNumOfCars() == 0)
+        cg.resetGame();
     cg.drawGame();
     cg.startMusic();
 
