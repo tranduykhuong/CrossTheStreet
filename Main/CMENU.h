@@ -1,9 +1,9 @@
 #pragma once
 #include"CDRAW.h"
 
-#define BOX_COLOR 121
-#define CHAR_COLOR 224
-#define OPTION_COLOR 206
+#define BOX_COLOR 121  //121
+#define CHAR_COLOR 241  //224
+#define OPTION_COLOR 151  //206
 
 class CMENU {
 	COORD coord;
