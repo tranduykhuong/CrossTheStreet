@@ -337,7 +337,7 @@ bool CGAME::runApp(bool check) {
 			return true;
 		case 3:
 			// high score
-
+			Input_HightScore("Text/HightScore.txt", COORD{ 80, 4 });
 			break;
 		case 4: {
 			// Menu setting
@@ -590,6 +590,7 @@ bool CGAME::Game_over()
 	}
 	else if (choice == 2) {
 		// exit
+		
 		return true;
 	}
 	return false;
@@ -677,9 +678,79 @@ void CGAME::Load_game(bool& check, string& str)
 // Exit game
 void CGAME::Exit_game(thread* run)
 {
+	Input_HightScore("Text/HightScore.txt", COORD{ 80, 4 });
+	Insert();
+	Output_HightScore("Text/HightScore.txt");
 	is_Running = false;
 	if (run != nullptr)
 		run->join();
 	system("cls");
 	system("color 0e");
 }
+
+void CGAME::Input_HightScore(string filename, COORD coord)
+{
+	fstream infile;
+	infile.open(filename, ios::in);
+	hightScore.clear();
+	CONSOLE::gotoXY(coord.X - 30, coord.Y + 8);
+	cout << "                ~#TOP SERVER#~                 ";
+	CONSOLE::gotoXY(coord.X - 20, coord.Y + 9);
+	cout << "Name";
+	CONSOLE::gotoXY(coord.X , coord.Y + 9);
+	cout << "Level";
+	CONSOLE::gotoXY(coord.X + 20, coord.Y + 9);
+	cout << "Score";
+	int size = 1;
+	while (!infile.eof()) {
+		Top top;
+		getline(infile, top.name);
+		infile >> top.Level;
+		infile.ignore();
+		infile >> top.Score;
+		infile.ignore();
+		if (!infile.eof())
+			hightScore.emplace_back(top);
+	}
+	for (int i = 0; i < hightScore.size(); i++)
+	{
+		CONSOLE::textcolor(5);
+		CONSOLE::gotoXY(coord.X + -35, coord.Y + 10 + i);
+		cout << "Top " << i + 1;
+		CONSOLE::gotoXY(coord.X - 20, coord.Y + 10 + i);
+		cout << hightScore[i].name;
+		CONSOLE::gotoXY(coord.X, coord.Y + 10 + i);
+		cout << hightScore[i].Level;
+		CONSOLE::gotoXY(coord.X + 20, coord.Y + 10 + i);
+		cout << hightScore[i].Score;
+	}
+	infile.close();
+}
+
+
+void CGAME::Output_HightScore(string filename)
+{
+	for (int i = 0; i < hightScore.size() - 1; i++)
+		for (int j = i + 1; j < hightScore.size() - 1; j++)
+			if (hightScore[i].Score < hightScore[j].Score)
+				swap(hightScore[i], hightScore[j]);
+
+	fstream outfile;
+	outfile.open(filename, ios::out);
+	for (int i = 0; i < hightScore.size() - 1; i++) {
+		outfile << hightScore[i].name << endl;
+		outfile << hightScore[i].Level << endl;
+		outfile << hightScore[i].Score << endl;
+	}
+	outfile.close();
+}
+
+void CGAME::Insert()
+{
+	Top a;
+	a.name = username;
+	a.Level = currentLevel;
+	a.Score = score;
+	hightScore.emplace_back(a);
+}
+

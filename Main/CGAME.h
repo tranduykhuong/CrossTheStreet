@@ -23,22 +23,24 @@ private:
 	CLANE<CVEHICLE, CTRUCK>* lane5 = new CLANE<CVEHICLE, CTRUCK>(sLEFT, 5 * HEIGHT_ROAD);
 	CLANE<CVEHICLE, CTRUCK>* lane6 = new CLANE<CVEHICLE, CTRUCK>(sLEFT, 6 * HEIGHT_ROAD);
 	CLANE<CVEHICLE, CTRAIN>* laneTrain = new CLANE<CVEHICLE, CTRAIN>(sLEFT, 2 * HEIGHT_ROAD);
-
+	struct Top {
+		string name;
+		long long Level;
+		long long Score;
+	};
+	vector<Top>hightScore;
 	CPEOPLE people;
 	string username;
-
-	bool is_Running;
 	short currentLevel;
 	unsigned short score;
-
+	bool is_Running;
+	
 	short numCar;
 	short numTruck;
 	short numHorse;
 	short numRabbit;
-
 	void clearGame();
 	short randomColor(short, short);
-
 	bool isSound;
 	bool isMusic;
 
@@ -88,6 +90,9 @@ public:
 	void Save_game();
 	void Load_game(bool&, string&);
 	void Exit_game(thread* run = nullptr);
+	void Input_HightScore(string, COORD );
+	void Output_HightScore(string);
+	void Insert();
 
 	void drawGuide();
 	void drawInforLevel();

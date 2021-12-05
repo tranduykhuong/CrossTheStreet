@@ -84,6 +84,7 @@ int main()
                     cg.resumeGame(runGame, &run);
                 }
                 else {
+                    
                     cg.Exit_game();
                     return 0;
                 }
@@ -116,6 +117,7 @@ int main()
                     cg.resumeGame(runGame, &run);
                 }
                 else {
+                    
                     cg.Exit_game();
                     return 0;
                 }
@@ -207,11 +209,9 @@ int main()
         // Khi người chết
         if (cg.getPeople().isDead() || !cg.isRunning()) {
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
-
             cg.pauseGame(&run);
             Sleep(500);
             isExit = cg.Game_over();
-
             if (!isExit) {
                 cg.startMusic();
                 system("cls");
