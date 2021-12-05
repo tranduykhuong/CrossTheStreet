@@ -32,6 +32,7 @@ public:
 	bool removeItem(int);
 	void insertItem(string, int);
 	
+	int getSizeOpsArr();
 	void getSettingFromUser(bool& a1, bool& a2);
 	int getSelectFromUser();
 	string getInputString();

@@ -214,6 +214,11 @@ string CMENU::getInputString()
 	return str;
 }
 
+int CMENU::getSizeOpsArr()
+{
+	return opsArr.size();
+}
+
 // GET SETTING OPTIONS (2 PARAMETERS) FROM USER
 void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 	short tempY = coord.Y;

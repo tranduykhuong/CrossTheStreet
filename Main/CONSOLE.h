@@ -63,8 +63,6 @@ enum Key {
 
 class CONSOLE
 {
-private:
-
 public:
 	static void FixConsoleWindow();
 	static void SetWindowSize(SHORT, SHORT);

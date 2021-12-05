@@ -48,11 +48,11 @@ int main()
     CONSOLE::SetConsoleOutput(437);
     CONSOLE::SetTitleCosole("CROSS THE STREET");
 
-    if (cg.runApp() == false)
+   if (cg.runApp() == false)
         return 0;
     system("cls");
-
-    cg.resetGame();
+    if (cg.getNumOfCars() == 0)
+        cg.resetGame();
     cg.drawGame();
     cg.startMusic();
 
@@ -134,10 +134,66 @@ int main()
             
             // xử lý Save_game
             else if (key == 'L') {
+                int choice;
+                cg.MusicStatus(false);
+                cg.pauseGame(&run);
+                Sleep(500);
+                cg.Save_game();
+                CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
+                saveFormComplete.addItem("Save complete");
+                saveFormComplete.displayTableNoneLine();
+                Sleep(1500);
+
+                saveFormComplete.removeItem(0);
+                saveFormComplete.addItem("Continue");
+                saveFormComplete.addItem("Back to menu");
+                saveFormComplete.addItem("Quit");
+                saveFormComplete.displayTableLine();
+
+                choice = saveFormComplete.getSelectFromUser();
+
+                if (choice == 0) {
+                    cg.MusicStatus(true);
+                    Sleep(300);
+                    system("cls");
+                    cg.drawGame();
+                    cg.resumeGame(runGame, &run);
+                }
+                else if (choice == 1) {
+                    system("cls");
+                    cg.runApp(false);
+                }
+                else {
+                    cg.Exit_game();
+                    return 0;
+                }
             }
             
             // xử lý Load_game
             else if (key == 'T') {
+
+                cg.MusicStatus(false);
+                cg.pauseGame(&run);
+                Sleep(500);
+
+                bool checkFile = true; string str;
+                cg.Load_game(checkFile, str);
+
+                while (!checkFile)
+                {
+                    CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
+                    loadForm.addItem("Wrong filename!!!");
+                    loadForm.addItem("\"Cancel\": to resume");
+                    loadForm.displayTableLine();
+                    cg.Load_game(checkFile, str);
+                    if (str == "Cancel") break;
+                }
+                system("cls");
+                Sleep(300);
+                cg.MusicStatus(true);
+                cg.drawGame();
+                cg.resumeGame(runGame, &run);
+
             }
 
             // Di chuyển người
@@ -153,7 +209,7 @@ int main()
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
 
             cg.pauseGame(&run);
-            Sleep(1000);
+            Sleep(500);
             isExit = cg.Game_over();
 
             if (!isExit) {
