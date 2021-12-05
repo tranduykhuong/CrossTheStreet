@@ -359,7 +359,7 @@ bool CGAME::runApp(bool check) {
 
 // Vẽ hướng dẫn trò chơi
 void CGAME::drawGuide() {
-	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 2 + 2 }, 24);
+	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 24);
 	guide.addItem("GUIDE");
 	guide.addItem("");
 	guide.addItem("W: up  ");
@@ -379,7 +379,7 @@ void CGAME::drawGuide() {
 
 void CGAME::drawInforLevel()
 {
-	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 + 2 }, 24);
+	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 - 2}, 24);
 	information.addItem(username);
 	information.addItem("");
 	information.addItem("Level: " + to_string(currentLevel));
@@ -527,18 +527,18 @@ bool CGAME::Win_nextLevel()
 	system("cls");
 
 	// Vẽ màn hình Win
-	CDRAW::drawLevelCompleteScreen(COORD{ 9, 4 }, 10, isSound);
+	CDRAW::drawLevelCompleteScreen(COORD{ 12, 5 }, 10, isSound);
 	currentLevel++;
 	score += currentLevel * 50;
 
 	// menu
-	CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
+	CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 24, isSound);
 	menu.addItem("Next Level");
 	menu.addItem("Save game");
 	menu.addItem("Quit");
 	menu.displayTableLine();
 	short choice = menu.getSelectFromUser();
-	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 236, 26, 2 * 3 + 1);
+	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 236, 26, 2 * 3 + 1);
 
 	if (choice == 0) {
 		resetGame();
@@ -559,16 +559,16 @@ bool CGAME::Game_over()
 	system("cls");
 
 	// Vẽ 
-	CDRAW::drawGameOverScreen(COORD{ 19, 4 }, 4, isSound);
+	CDRAW::drawGameOverScreen(COORD{ 33, 5 }, 4, isSound);
 
 	// menu
-	CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
+	CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 24, isSound);
 	menu.addItem("Play again");
 	menu.addItem("Load game");
 	menu.addItem("Quit");
 	menu.displayTableLine();
 	short choice = menu.getSelectFromUser();
-	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 236, 26, 2 * 3 + 1);
+	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 236, 26, 2 * 3 + 1);
 
 	if (choice == 0) {
 		setLevel(1);

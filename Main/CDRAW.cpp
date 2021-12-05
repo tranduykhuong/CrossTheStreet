@@ -261,6 +261,14 @@ void CDRAW::drawGameOverScreen(COORD coord, SHORT color, bool isSound) {
 		mciSendString(TEXT("play mp3"), NULL, 0, NULL);
 	}
 
+	// Đổi lại màu màn hình thành màu đen
+	system("color 0e");
+
+	// Vẽ khung
+	CDRAW::drawBox(COORD{ 1,1 }, SCREEN_CONSOLE_WIDTH - 1, SCREEN_CONSOLE_HEIGHT - 2,
+		219, 219, 219, 219, 219, 219, 11);
+
+	// Đổi màu kí tự:
 	CONSOLE::textcolor(color);
 	string s;
 
@@ -311,6 +319,14 @@ void CDRAW::drawLevelCompleteScreen(COORD coord, SHORT color, bool isSound)
 		mciSendString(TEXT("play mp3"), NULL, 0, NULL);
 	}
 
+	// Đổi lại màu màn hình thành màu đen
+	system("color 0e");
+
+	// Vẽ khung
+	CDRAW::drawBox(COORD{ 1,1 }, SCREEN_CONSOLE_WIDTH - 1, SCREEN_CONSOLE_HEIGHT - 2,
+		219, 219, 219, 219, 219, 219, 11);
+
+	// Đổi màu kí tự:
 	CONSOLE::textcolor(color);
 	string s;
 
