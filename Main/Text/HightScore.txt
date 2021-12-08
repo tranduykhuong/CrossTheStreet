@@ -1,15 +1,12 @@
-Le Van Dat
-122
-125535
-Ngo Vinh Long
-117
-112550
-Ho Thi Ky
-115
-108450
+Duy Khuong
+3
+150
+Thanh Lam
+3
+150
 La Tinh Toan
-108
-98675
-Nguyen Ba Nam
-102
-91470
+3
+100
+Ho Thi Ky
+3
+100

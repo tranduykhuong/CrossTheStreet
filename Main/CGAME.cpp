@@ -84,7 +84,7 @@ void CGAME::resetGame(short level) {
 	people.setSound(isSound);
 
 	// xác định số lượng object ở mỗi level
-	numCar = ((level + 1) / 2 + 1) % 4 + 2;
+	numCar = ((level + 1) / 2) % 5 + 1;
 	numTruck = ((numCar + 2) / 2) % 6;
 	numHorse = (level - 1) / 3 * 3 % 7;
 	numRabbit = numHorse / 2 + 3;
@@ -97,11 +97,11 @@ void CGAME::resetGame(short level) {
 	}
 
 	// set Car
-	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, carFormLeft2);
+	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, carFormLeft1);
 	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, carFormRight2);
 
 	// set Truck
-	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft1, truckFormLeft2);
+	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft1, truckFormLeft1);
 	lane6->setLane(numTruck, (level + 3) / 3 % 4 + 2, RIGHT, truckFormRight2, truckFormRight2);
 
 	// set Horse
@@ -135,6 +135,16 @@ void CGAME::saveGame(fstream& save)
 {
 	save << currentLevel << " " << score << endl;
 	save << people.getX() << " " << people.getY() << endl;
+
+	vector<vector<int>> peopleShade = people.getPeopleShade();
+
+	for (int i = 0; i < peopleShade.size(); i++) {
+		for (int j = 0; j < peopleShade[i].size(); j++) {
+			save << peopleShade[i][j];
+			if (j != peopleShade[i].size() - 1) save << " ";
+		}
+		save << endl;
+	}
 
 	//Save objects of lane
 	vector<CANIMAL*> animals;
@@ -205,16 +215,43 @@ void CGAME::loadGame(fstream& load)
 	short xObj, yObj, colorO, moveO, speedO;
 
 	load >> currentLevel >> score;
-	//load.get();
+	load.get();
 
 	load >> xPeople >> yPeople;
 	people.setPosition(xPeople, yPeople);
 	load.get();
 
+	vector<vector<int>> peopleShade;
+
+	peopleShade.resize(3);
+	for (int i = 0; i < 3; i++) {
+		peopleShade[i].resize(3);
+		for (int j = 0; j < 3; j++)
+		{
+			load >> peopleShade[i][j];
+		}
+		load.get();
+	}
+	people.setShade(peopleShade);
+
 	for (int i = 1; i <= 6; i++) {
 		load >> size;
 		load.get();
-
+		switch (i)
+		{
+		case 1:
+			numHorse = size;
+			break;
+		case 2:
+			numRabbit = size;
+			break;
+		case 3: case 4:
+			numCar = size;
+			break;
+		case 5: case 6:
+			numTruck = size;
+			break;
+		}
 		for (int j = 0; j < size; j++)
 		{
 			load >> xObj >> yObj >> colorO >> moveO >> speedO;
@@ -222,33 +259,27 @@ void CGAME::loadGame(fstream& load)
 			switch (i)
 			{
 			case 1:
-				numHorse = size;
-				if (moveO == LEFT)	
+				if (moveO == LEFT)
 					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseLeft_1, horseLeft_2);
-				else				
+				else
 					lane1->pushObj(xObj, yObj, colorO, moveO, speedO, horseRight_1, horseRight_2);
 				break;
 			case 2:
-				numRabbit = size;
-				if (moveO == LEFT)	
+				if (moveO == LEFT)
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitLeft_1, rabbitLeft_2);
-				else				
+				else
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
 				break;
 			case 3:
-				numCar = size;
 				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
 				break;
-			case 4:		
-				numCar = size;
+			case 4:
 				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight2, carFormRight2);
 				break;
 			case 5:
-				numTruck = size;
 				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
 				break;
-			case 6:	
-				numTruck = size;
+			case 6:
 				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight2, truckFormRight2);
 				break;
 			case 7:
@@ -297,19 +328,19 @@ bool CGAME::runApp(bool check) {
 	// MENU
 	while (1) {
 		// Menu chính
-		CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 30, isSound);
+		CMENU cmenu = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 30, isSound);
 		cmenu.addItem("Play game");
 		cmenu.addItem("Load game");
 		cmenu.addItem("High score");
 		cmenu.addItem("Settings");
 		cmenu.addItem("Quit");
 		choice = cmenu.getSelectFromUser();
-		CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 1, 32, 5 * 2 + 1);
-		
+		CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 32, 5 * 2 + 1);
+
 		bool checkFile = true; string str;
 
 		choice++;
-		switch (choice) 
+		switch (choice)
 		{
 		case 1: {
 			CMENU inputUser = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
@@ -326,18 +357,27 @@ bool CGAME::runApp(bool check) {
 
 			while (!checkFile)
 			{
-				CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, getSound());
+				CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 18 }, 24, getSound());
 				loadForm.addItem("Wrong filename!!!");
 				loadForm.addItem("\"Cancel\": to resume");
+				loadForm.setColorTable(121, 252);
 				loadForm.displayTableLine();
 				Load_game(checkFile, str);
-				if (str == "Cancel") break;
+				transform(str.begin(), str.end(), str.begin(), ::toupper);
+
+				if (str == "CANCEL") {
+					CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 18 }, 1, 25, 5 * 3);
+					break;
+				};
 			}
+			if (!checkFile)
+				break;
 			mciSendString(TEXT("close mp3"), NULL, 0, NULL);
 			return true;
 		case 3:
 			// high score
-			Input_HightScore("Text/HightScore.txt", COORD{ 80, 4 });
+			Input_HightScore("Text/HightScore.txt");
+			displayTopHighScore(5);
 			break;
 		case 4: {
 			// Menu setting
@@ -372,6 +412,7 @@ void CGAME::drawGuide() {
 	guide.addItem("P  : Pause game");
 	guide.addItem("U  : Settings  ");
 	guide.addItem("ESC: Exit game ");
+	guide.addItem("");
 
 	guide.setColorTable(ColorGame::black, ColorGame::blue);
 	guide.displayTableNoneLine();
@@ -386,7 +427,7 @@ void CGAME::drawInforLevel()
 	information.addItem("Score: " + to_string(score));
 	information.addItem("");
 
-	information.setColorTable(ColorGame::black, ColorGame::green);
+	information.setColorTable(ColorGame::olive, ColorGame::green);
 	information.setColorTitle(ColorGame::pink);
 	information.displayTableNoneLine();
 }
@@ -521,6 +562,16 @@ void CGAME::MusicStatus(bool play)
 	}
 }
 
+void CGAME::startGame()
+{
+	Sleep(50);
+	system("cls");
+	if (getNumOfCars() == 0)
+		resetGame();
+	drawGame();
+	startMusic();
+}
+
 // Process Win and next Level
 bool CGAME::Win_nextLevel()
 {
@@ -528,29 +579,32 @@ bool CGAME::Win_nextLevel()
 
 	// Vẽ màn hình Win
 	CDRAW::drawLevelCompleteScreen(COORD{ 12, 5 }, 10, isSound);
-	currentLevel++;
 	score += currentLevel * 50;
+	currentLevel++;
 
 	// menu
-	CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 24, isSound);
-	menu.addItem("Next Level");
-	menu.addItem("Save game");
-	menu.addItem("Quit");
-	menu.displayTableLine();
-	short choice = menu.getSelectFromUser();
-	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 236, 26, 2 * 3 + 1);
+	while (1) {
+		CMENU menu = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, isSound);
+		menu.addItem("Next Level");
+		menu.addItem("Save game");
+		menu.addItem("Quit");
+		menu.displayTableLine();
+		short choice = menu.getSelectFromUser();
+		CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 0, 26, 2 * 3 + 1);
 
-	if (choice == 0) {
-		resetGame();
+		if (choice == 0) {
+			resetGame();
+			return false;
+		}
+		else if (choice == 1) {
+			Save_game();
+			continue;
+		}
+		else if (choice == 2) {
+			// exit
+			return true;
+		}
 	}
-	else if (choice == 1) {
-		Save_game();
-	}
-	else if (choice == 2) {
-		// exit
-		return true;
-	}
-	return false;
 }
 
 // Process Game over
@@ -568,9 +622,12 @@ bool CGAME::Game_over()
 	menu.addItem("Quit");
 	menu.displayTableLine();
 	short choice = menu.getSelectFromUser();
-	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 236, 26, 2 * 3 + 1);
+	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 0, 26, 2 * 3 + 1);
 
 	if (choice == 0) {
+		Input_HightScore("Text/HightScore.txt");
+		Insert();
+		Output_HightScore("Text/HightScore.txt");
 		setLevel(1);
 		score = 0;
 		resetGame();
@@ -580,17 +637,18 @@ bool CGAME::Game_over()
 		Load_game(checkFile, str);
 		while (!checkFile)
 		{
-			CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, getSound());
+			CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 18, getSound());
 			loadForm.addItem("Wrong filename!!!");
 			loadForm.addItem("\"Cancel\": to resume");
+			loadForm.setColorTable(121, 252);
 			loadForm.displayTableLine();
 			Load_game(checkFile, str);
-			if (str == "Cancel") break;
+			transform(str.begin(), str.end(), str.begin(), ::toupper);
+			if (str == "CANCEL") break;
 		}
 	}
 	else if (choice == 2) {
 		// exit
-		
 		return true;
 	}
 	return false;
@@ -642,16 +700,26 @@ void CGAME::Save_game()
 	string filename = saveForm.getInputString();
 
 	// xử lý save game
-	if (filename.find(".txt", 0) != 0) filename += ".txt";
+	if (filename.find(".txt", 0) != 0) 
+		filename += ".txt";
+	filename = "Text/" + filename;
+
 	fstream saveG;
 	saveG.open(filename, ios::out);
 	saveGame(saveG);
+	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 119, 25, 3 * 2 + 1);
+
+	CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, isSound);
+	saveFormComplete.addItem("Save complete");
+	saveFormComplete.addItem("");
+	saveFormComplete.displayTableNoneLine();
+	Sleep(2000);
 }
 
 // Process Load game
 void CGAME::Load_game(bool& check, string& str)
 {
-	CMENU inputFileName = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
+	CMENU inputFileName = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 23 }, 24, isSound);
 	inputFileName.addItem("LOAD GAME");
 	inputFileName.addItem("Enter file \"name\".txt");
 	inputFileName.setColorTitle(46);
@@ -659,7 +727,9 @@ void CGAME::Load_game(bool& check, string& str)
 	str = filename;
 
 	// xử lý load game
-	if (filename.find(".txt", 0) != 0) filename += ".txt";
+	if (filename.find(".txt", 0) != 0) 
+		filename += ".txt";
+	filename = "Text/" + filename;
 
 	fstream loadG;
 	loadG.open(filename, ios::in);
@@ -673,12 +743,25 @@ void CGAME::Load_game(bool& check, string& str)
 	clearGame();
              
 	loadGame(loadG);
+
+	system("cls");
+	system("color 0e");
+	CONSOLE::gotoXY(SCREEN_CONSOLE_WIDTH / 2 - 8, SCREEN_CONSOLE_HEIGHT / 2 - 1);
+	CONSOLE::textcolor(9);
+	for (int i = 0; i < 16; i++)
+		cout << char(61);
+	CONSOLE::gotoXY(SCREEN_CONSOLE_WIDTH / 2 - 8, SCREEN_CONSOLE_HEIGHT / 2 - 1);
+	CONSOLE::textcolor(10);
+	for (int i = 0; i < 16; i++) {
+		cout << char(254);
+		Sleep(100);
+	}
 }
 
 // Exit game
 void CGAME::Exit_game(thread* run)
 {
-	Input_HightScore("Text/HightScore.txt", COORD{ 80, 4 });
+	Input_HightScore("Text/HightScore.txt");
 	Insert();
 	Output_HightScore("Text/HightScore.txt");
 	is_Running = false;
@@ -688,19 +771,12 @@ void CGAME::Exit_game(thread* run)
 	system("color 0e");
 }
 
-void CGAME::Input_HightScore(string filename, COORD coord)
+void CGAME::Input_HightScore(string filename)
 {
 	fstream infile;
 	infile.open(filename, ios::in);
 	hightScore.clear();
-	CONSOLE::gotoXY(coord.X - 30, coord.Y + 8);
-	cout << "                ~#TOP SERVER#~                 ";
-	CONSOLE::gotoXY(coord.X - 20, coord.Y + 9);
-	cout << "Name";
-	CONSOLE::gotoXY(coord.X , coord.Y + 9);
-	cout << "Level";
-	CONSOLE::gotoXY(coord.X + 20, coord.Y + 9);
-	cout << "Score";
+
 	int size = 1;
 	while (!infile.eof()) {
 		Top top;
@@ -712,32 +788,21 @@ void CGAME::Input_HightScore(string filename, COORD coord)
 		if (!infile.eof())
 			hightScore.emplace_back(top);
 	}
-	for (int i = 0; i < hightScore.size(); i++)
-	{
-		CONSOLE::textcolor(5);
-		CONSOLE::gotoXY(coord.X + -35, coord.Y + 10 + i);
-		cout << "Top " << i + 1;
-		CONSOLE::gotoXY(coord.X - 20, coord.Y + 10 + i);
-		cout << hightScore[i].name;
-		CONSOLE::gotoXY(coord.X, coord.Y + 10 + i);
-		cout << hightScore[i].Level;
-		CONSOLE::gotoXY(coord.X + 20, coord.Y + 10 + i);
-		cout << hightScore[i].Score;
-	}
 	infile.close();
 }
 
 
 void CGAME::Output_HightScore(string filename)
 {
-	for (int i = 0; i < hightScore.size() - 1; i++)
-		for (int j = i + 1; j < hightScore.size() - 1; j++)
+	for (int i = 0; i < hightScore.size(); i++)
+		for (int j = i + 1; j < hightScore.size(); j++)
 			if (hightScore[i].Score < hightScore[j].Score)
 				swap(hightScore[i], hightScore[j]);
 
+	short top = min(10, hightScore.size());
 	fstream outfile;
 	outfile.open(filename, ios::out);
-	for (int i = 0; i < hightScore.size() - 1; i++) {
+	for (int i = 0; i < top; i++) {
 		outfile << hightScore[i].name << endl;
 		outfile << hightScore[i].Level << endl;
 		outfile << hightScore[i].Score << endl;
@@ -752,5 +817,25 @@ void CGAME::Insert()
 	a.Level = currentLevel;
 	a.Score = score;
 	hightScore.emplace_back(a);
+}
+
+void CGAME::displayTopHighScore(short top)
+{
+	top = min(top, hightScore.size());
+	CMENU highScoreInfor = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 30);
+	highScoreInfor.addItem("TOP SCORE");
+	highScoreInfor.addItem("");
+	for (int i = 0; i < top; i++)
+	{
+		highScoreInfor.addItem(hightScore[i].name + " - " + to_string(hightScore[i].Score));
+	}
+
+	highScoreInfor.addItem("");
+	highScoreInfor.addItem("Press any key to back");
+	highScoreInfor.addItem("");
+	highScoreInfor.setColorTable(6, ColorGame::blue);
+	highScoreInfor.displayTableNoneLine();
+	_getch();
+	CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 32, 5 * 3);
 }
 

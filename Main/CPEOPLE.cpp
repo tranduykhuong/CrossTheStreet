@@ -69,7 +69,7 @@ void CPEOPLE::setState(bool state) {
 void CPEOPLE::setPosition(short x, short y) {
 	if (x < GameScreen::sRIGHT && x > GameScreen::sLEFT)
 		mX = x;
-	if (y + getHeightPeople() >= GameScreen::sBOTTOM && y + getHeightPeople() - HEIGHT_ROAD >= GameScreen::sTOP)
+	if (y + getHeightPeople() <= GameScreen::sBOTTOM && y + getHeightPeople() - HEIGHT_ROAD >= GameScreen::sTOP)
 		mY = y;
 	peopleShade = { {32,32,32},{32,32,32},{32,32,32} };
 }
@@ -107,6 +107,11 @@ short CPEOPLE::getColor() const {
 
 short CPEOPLE::getColorShade() const {
 	return colorShade;
+}
+
+vector<vector<int>> CPEOPLE::getPeopleShade()
+{
+	return peopleShade;
 }
 
 bool CPEOPLE::isDead() const {

@@ -8,6 +8,7 @@ private:
 	vector<vector<short>> form;
 
 	short countSpeed;
+
 public:
 	CTRAIN();
 	CTRAIN(const CTRAIN&);

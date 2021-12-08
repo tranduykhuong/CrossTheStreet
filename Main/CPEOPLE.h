@@ -49,6 +49,7 @@ public:
 	short getY() const;
 	short getColor() const;
 	short getColorShade() const;
+	vector<vector<int>> getPeopleShade();
 	short getHeightPeople() const { return peopleWait.size(); }
 	short getWidthPeople() const { return peopleWait[0].size(); }
 

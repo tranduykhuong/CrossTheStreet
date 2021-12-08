@@ -61,7 +61,7 @@ void CMENU::dataBox(COORD coord_data, string content, SHORT newColor) {
 
 	short x_box = coord_data.X + 1;
 	short y_box = coord_data.Y + 1;
-	CDRAW::backroundBox(COORD{ x_box, y_box }, width - 1, height - 1, textColor);
+	CDRAW::clearBox(COORD{ x_box, y_box }, textColor, width - 1, height - 1);
 
 	CONSOLE::textcolor(textColor);
 	CONSOLE::gotoXY(coord_data.X + 1 + (width - content.length()) / 2, coord_data.Y + height / 2);	// print a string at center of box
@@ -78,7 +78,7 @@ void CMENU::dataBoxTrueFalse(COORD coord_data, string& content, bool& set, SHORT
 
 	short x_box = coord_data.X + 1;
 	short y_box = coord_data.Y + 1;
-	CDRAW::backroundBox(COORD{ x_box, y_box }, width - 1, height - 1, textColor);	
+	CDRAW::clearBox(COORD{ x_box, y_box }, textColor, width - 1, height - 1);
 
 	CONSOLE::gotoXY(coord_data.X + 3, coord_data.Y + height / 2);
 	CONSOLE::textcolor(textColor);
@@ -122,8 +122,9 @@ void CMENU::displayTableLine() {
 // DISPLAY MENU NONE LINE
 void CMENU::displayTableNoneLine() {
 	short tempY = coord.Y;
-	CDRAW::drawBox(COORD{ coord.X, tempY }, width, opsArr.size() +  1, 205, 186, 201, 187, 200, 188, boxColor);
-	dataBox(COORD{ coord.X, tempY++ }, opsArr[0], titleColor);
+	CDRAW::drawBox(COORD{ coord.X, tempY }, width, opsArr.size() +  1, 223, 219, 219, 219, 223, 223, boxColor);
+	dataBox(COORD{ coord.X, tempY++ }, opsArr[0], titleColor); // vẽ title
+
 	for (int i = 1; i < opsArr.size(); i++) {
 		dataBox(COORD{ coord.X, tempY }, opsArr[i]);
 		//tempY += height;
@@ -142,46 +143,43 @@ int CMENU::getSelectFromUser() {
 	dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//hàm tạo màu khác cho option
 
 	while (true) {		//sử dụng 2 phím (lên, xuống) để điều kiển
-		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
-			char c = _getch();
-			if (c == 13) {		//khi nhập enter sẽ kết thúc while
-				if (isSound)
-					PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
-				return index;
-			}
-			else
-				if (c == -32) {
-					c = _getch();
-					if (c == 80) {	//đi xuống
-						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);			//vẽ chồng màu lên option
-						if (index < sizeOps - 1) {
-							y_ptr += height;
-							index++;
-						}
-						else {
-							y_ptr = coord.Y;
-							index = 0;
-						}
-						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
-						if (isSound)
-							PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
-					}
-					else if (c == 72) { //đi lên
-						dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);		//vẽ chồng màu lên option
-						if (index > 0) {	
-							y_ptr -= height;
-							index--;
-						}
-						else {
-							y_ptr = coord.Y + (sizeOps - 1) * height;
-							index = sizeOps - 1;
-						}
-						dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
-						if (isSound)
-							PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
-					}
-				}
+		char c = toupper(_getch());
+		if (c == 13) {		//khi nhập enter sẽ kết thúc while
+			if (isSound)
+				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
+			return index;
 		}
+		else {
+			if (c == 'S') {	//đi xuống
+				dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);			//vẽ chồng màu lên option
+				if (index < sizeOps - 1) {
+					y_ptr += height;
+					index++;
+				}
+				else {
+					y_ptr = coord.Y;
+					index = 0;
+				}
+				dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
+				if (isSound)
+					PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
+			}
+			else if (c == 'W') { //đi lên
+				dataBox(COORD{ coord.X, y_ptr }, opsArr[index]);		//vẽ chồng màu lên option
+				if (index > 0) {
+					y_ptr -= height;
+					index--;
+				}
+				else {
+					y_ptr = coord.Y + (sizeOps - 1) * height;
+					index = sizeOps - 1;
+				}
+				dataBox(COORD{ coord.X, y_ptr }, opsArr[index], optionColor);		//vẽ lại option mới
+				if (isSound)
+					PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
+			}
+		}
+
 	}
 }
 
@@ -245,56 +243,52 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 	dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor); //hàm tạo màu khác cho option
 
 	while (true) {			//sử dụng 2 phím (lên, xuống) để điều kiển
-		if (_kbhit()) {		//hàm phát hiện có kí tự nhập vào
-			char c = _getch();
-			if (c == 13 && y_ptr == coord.Y + height * 2) {		//khi nhập enter sẽ kết thúc while
-				if (isSound)
-					PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
-				this->isSound = a1;
-				return;
-			}
-			else
-				if (c == -32) {
-					c = _getch();
-					if (c == 80) {	//đi xuống
-						if (y_ptr == coord.Y) {
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1);
-							y_ptr += height;
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
-						}
-						else if (y_ptr == coord.Y + height) {
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2);
-							y_ptr += height;
-							dataBox(COORD{ coord.X, y_ptr }, opsArr[2], optionColor);
-						}
-					}
-					else if (c == 72) { //đi lên
-						if (y_ptr == coord.Y + height) {
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2);
-							y_ptr -= height;
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor);
-						}
-						else if (y_ptr == coord.Y + height*2) {
-							dataBox(COORD{ coord.X, y_ptr }, opsArr[2], 62);
-							y_ptr -= height;
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
-						}
-					}
-
-					// Setting True/False
-					if (c == 75 || c == 77) {
-						if (y_ptr == coord.Y) {
-							a1 = !a1;
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor);
-						}
-						else if (y_ptr == coord.Y + height) {
-							a2 = !a2;
-							dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
-						}
-					}
-					if (isSound)
-						PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
+		char c = toupper(_getch());
+		if (c == 13 && y_ptr == coord.Y + height * 2) {		//khi nhập enter sẽ kết thúc while
+			if (isSound)
+				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
+			this->isSound = a1;
+			return;
+		}
+		else {
+			if (c == 'S') {	//đi xuống
+				if (y_ptr == coord.Y) {
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1);
+					y_ptr += height;
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
 				}
+				else if (y_ptr == coord.Y + height) {
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2);
+					y_ptr += height;
+					dataBox(COORD{ coord.X, y_ptr }, opsArr[2], optionColor);
+				}
+			}
+			else if (c == 'W') { //đi lên
+				if (y_ptr == coord.Y + height) {
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2);
+					y_ptr -= height;
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor);
+				}
+				else if (y_ptr == coord.Y + height * 2) {
+					dataBox(COORD{ coord.X, y_ptr }, opsArr[2], 62);
+					y_ptr -= height;
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
+				}
+			}
+
+			// Setting True/False
+			if (c == 'A' || c == 'D') {
+				if (y_ptr == coord.Y) {
+					a1 = !a1;
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[0], a1, optionColor);
+				}
+				else if (y_ptr == coord.Y + height) {
+					a2 = !a2;
+					dataBoxTrueFalse(COORD{ coord.X, y_ptr }, opsArr[1], a2, optionColor);
+				}
+			}
+			if (isSound)
+				PlaySound(TEXT("OST/menu move.wav"), NULL, SND_ASYNC);
 		}
 	}
 }

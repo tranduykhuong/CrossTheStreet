@@ -70,52 +70,6 @@ void CDRAW::drawBox(COORD coord, SHORT width, SHORT height, SHORT horizo, SHORT 
 	cout << char(botRight);
 }
 
-/***************************************************************
-* FUNCTION TO DRAW NAME OF THE GAME
-* Parameters:
-*	filename	: name of file txt
-*	coord		: coordinates of the left end
-*   textColor	: the color of the character
-*	delay		: delay while printing each line
-****************************************************************/
-void CDRAW::drawGameTXT(string filename, COORD coord, SHORT color, int delay) {
-	ifstream fin(filename);
-	if (fin.fail())
-		return;
-
-	string line;
-	short y_pointer = coord.Y;
-	while (!fin.eof()) {
-		getline(fin, line);
-		CONSOLE::gotoXY(coord.X, y_pointer++);
-		CONSOLE::textcolor(color);
-		cout << line << endl;
-		Sleep(delay);
-	}
-	fin.close();
-}
-
-
-/*********************************************************
-* FUNCTION TO DRAW BACKGROUND COLOR FOR BOX
-* Parameters:
-*	coord		: coordinates of the left end
-*	width		: width of box
-*	height		: heigth of box
-*	backgroudColor: color of background
-**********************************************************/
-void CDRAW::backroundBox(COORD coord, SHORT width, SHORT height, SHORT backgroudColor) {
-	string line;
-	CONSOLE::textcolor(backgroudColor);
-
-	for (short i = 0; i < width; i++)
-		line += " ";
-	for (short i = coord.Y; i < coord.Y + height; i++) {
-		CONSOLE::gotoXY(coord.X, i);
-		cout << line;
-	}
-}
-
 /*********************************************************
 * FUNCTION TO CLEAR A BOX
 * Parameters:
@@ -230,13 +184,13 @@ void CDRAW::drawTitle(COORD coord, SHORT color, bool isSound) {
 		fi >> x >> y;
 		CONSOLE::gotoXY(coord.X + x, coord.Y + y);
 		cout << char(254);
-		Sleep(12);
+		Sleep(8);
 	}
 
 	for (int i = 0; i < 127; i++) {
 		CONSOLE::gotoXY(i + coord.X, 6 + coord.Y);
 		cout << char(254);
-		Sleep(7);
+		Sleep(4);
 	}
 
 	CONSOLE::textcolor(15);

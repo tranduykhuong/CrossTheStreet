@@ -2,7 +2,6 @@
 
 CGAME cg;
 char MOVING;
-bool isExit = false;
 
 void runGame() {
 
@@ -33,7 +32,7 @@ void runGame() {
             cg.pauseGame();
         }
 
-        Sleep(2);
+        Sleep(5);
     }
 }
 
@@ -50,14 +49,11 @@ int main()
 
    if (cg.runApp() == false)
         return 0;
-    system("cls");
-    if (cg.getNumOfCars() == 0)
-        cg.resetGame();
-    cg.drawGame();
-    cg.startMusic();
-
+    
     char key;
+    bool isExit = false;
 
+    cg.startGame();
     thread run(runGame);
 
     while (1) 
@@ -84,18 +80,11 @@ int main()
                     cg.resumeGame(runGame, &run);
                 }
                 else {
-                    
                     cg.Exit_game();
                     return 0;
                 }
             }
-            
-            // exit
-            else if (isExit) {
-                cg.Exit_game();
-                return 0;
-            }
-            
+                        
             // pause
             else if (key == 'P') {
                 int choice;
@@ -117,7 +106,6 @@ int main()
                     cg.resumeGame(runGame, &run);
                 }
                 else {
-                    
                     cg.Exit_game();
                     return 0;
                 }
@@ -141,12 +129,8 @@ int main()
                 cg.pauseGame(&run);
                 Sleep(500);
                 cg.Save_game();
-                CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
-                saveFormComplete.addItem("Save complete");
-                saveFormComplete.displayTableNoneLine();
-                Sleep(1500);
 
-                saveFormComplete.removeItem(0);
+                CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
                 saveFormComplete.addItem("Continue");
                 saveFormComplete.addItem("Back to menu");
                 saveFormComplete.addItem("Quit");
@@ -163,7 +147,14 @@ int main()
                 }
                 else if (choice == 1) {
                     system("cls");
-                    cg.runApp(false);
+                    if (cg.runApp(false)) {
+                        cg.startGame();
+                        cg.resumeGame(runGame, &run);
+                    }
+                    else {
+                        cg.Exit_game();
+                        return 0;
+                    }
                 }
                 else {
                     cg.Exit_game();
@@ -178,24 +169,26 @@ int main()
                 cg.pauseGame(&run);
                 Sleep(500);
 
-                bool checkFile = true; string str;
+                bool checkFile = true;
+                string str;
                 cg.Load_game(checkFile, str);
 
                 while (!checkFile)
                 {
-                    CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
+                    CMENU loadForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 18 }, 24, cg.getSound());
                     loadForm.addItem("Wrong filename!!!");
                     loadForm.addItem("\"Cancel\": to resume");
+                    loadForm.setColorTable(121, 252);
                     loadForm.displayTableLine();
                     cg.Load_game(checkFile, str);
-                    if (str == "Cancel") break;
+                    transform(str.begin(), str.end(), str.begin(), ::toupper);
+                    if (str == "CANCEL") break;
                 }
                 system("cls");
                 Sleep(300);
                 cg.MusicStatus(true);
                 cg.drawGame();
                 cg.resumeGame(runGame, &run);
-
             }
 
             // Di chuyển người
@@ -203,7 +196,6 @@ int main()
                 if (cg.isRunning())
                     MOVING = key;
             }
-
         }
 
         // Khi người chết
@@ -236,6 +228,12 @@ int main()
                 cg.drawGame();
                 cg.resumeGame(runGame, &run);
             }
+        }
+
+        // exit
+        if (isExit) {
+            cg.Exit_game();
+            return 0;
         }
     }
 }
