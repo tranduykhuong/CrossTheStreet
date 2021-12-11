@@ -179,7 +179,7 @@ void CDRAW::drawText(COORD coord, SHORT color, string file)
 *******************************************************************/
 void CDRAW::drawTitle(COORD coord, SHORT color, bool isSound) {
 	if (isSound) {
-		mciSendString(TEXT("open \"OST/title.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
+		mciSendString(TEXT("open \"OST/bensound.mp3\" type mpegvideo alias mp3"), NULL, 0, NULL);
 		mciSendString(TEXT("play mp3 repeat"), NULL, 0, NULL);
 	}
 

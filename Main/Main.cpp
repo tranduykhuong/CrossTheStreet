@@ -8,7 +8,7 @@ void runGame() {
     while (cg.isRunning()) {
 
         // Update tọa độ people khi còn sống
-        if (!cg.getPeople().isDead()) {
+        if (!cg.getPeople()->isDead()) {
             cg.updatePosPeople(MOVING);
         }
         MOVING = ' ';
@@ -20,16 +20,20 @@ void runGame() {
         cg.drawObjects(MOVING);
 
         // Xử lý va chạm
-        if (cg.getPeople().isImpact(cg.getTruckLefts(), cg.getNumOfTructs()) ||
-            cg.getPeople().isImpact(cg.getTruckRights(), cg.getNumOfTructs()) ||
-            cg.getPeople().isImpact(cg.getCarLefts(), cg.getNumOfCars()) ||
-            cg.getPeople().isImpact(cg.getCarRights(), cg.getNumOfCars()) ||
-            cg.getPeople().isImpact(cg.getTrain(), cg.getNumOfTrains()) ||
-            cg.getPeople().isImpact(cg.getHorses(), cg.getNumOfHorses()) ||
-            cg.getPeople().isImpact(cg.getRabbits(), cg.getNumOfRabbits()))
+        if (cg.getPeople()->isImpact(cg.getTruckLefts(), cg.getNumOfTructs()) ||
+            cg.getPeople()->isImpact(cg.getTruckRights(), cg.getNumOfTructs()) ||
+            cg.getPeople()->isImpact(cg.getCarLefts(), cg.getNumOfCars()) ||
+            cg.getPeople()->isImpact(cg.getCarRights(), cg.getNumOfCars()) ||
+            cg.getPeople()->isImpact(cg.getTrain(), cg.getNumOfTrains()) ||
+            cg.getPeople()->isImpact(cg.getHorses(), cg.getNumOfHorses()) ||
+            cg.getPeople()->isImpact(cg.getRabbits(), cg.getNumOfRabbits()))
         {
-            cg.getPeople().setState(false);
+            cg.getPeople()->setState(false);
             cg.pauseGame();
+
+            cg.getPeople()->drawDie();
+
+            CONSOLE::virtualPressKey();
         }
 
         Sleep(5);
@@ -58,12 +62,14 @@ int main()
 
     while (1) 
     {
-        if (cg.isRunning())
+        if (cg.isRunning()) {
             key = toupper(_getch());
+            CONSOLE::releaseChar();
+        }
         else key = ' ';
 
         // Người còn sống
-        if (!cg.getPeople().isDead()) {
+        if (!cg.getPeople()->isDead()) {
             
             // Press ESC
             if (key == 27) {
@@ -191,6 +197,22 @@ int main()
                 cg.resumeGame(runGame, &run);
             }
 
+            // Back to menu
+            else if (key == 'M') {
+                cg.MusicStatus(false);
+                cg.pauseGame(&run);
+                Sleep(500);
+                system("cls");
+                if (cg.runApp(false)) {
+                    cg.startGame();
+                    cg.resumeGame(runGame, &run);
+                }
+                else {
+                    cg.Exit_game();
+                    return 0;
+                }
+            }
+
             // Di chuyển người
             else {
                 if (cg.isRunning())
@@ -199,7 +221,7 @@ int main()
         }
 
         // Khi người chết
-        if (cg.getPeople().isDead() || !cg.isRunning()) {
+        if (cg.getPeople()->isDead() || !cg.isRunning()) {
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
             cg.pauseGame(&run);
             Sleep(500);
@@ -214,7 +236,7 @@ int main()
         }
 
         // Khi người qua được đường
-        else if (cg.getPeople().isWin()) {
+        else if (cg.getPeople()->isWin()) {
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
 
             cg.pauseGame(&run);
@@ -235,5 +257,6 @@ int main()
             cg.Exit_game();
             return 0;
         }
+
     }
 }

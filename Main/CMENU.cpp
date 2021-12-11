@@ -144,6 +144,7 @@ int CMENU::getSelectFromUser() {
 
 	while (true) {		//sử dụng 2 phím (lên, xuống) để điều kiển
 		char c = toupper(_getch());
+		CONSOLE::releaseChar();
 		if (c == 13) {		//khi nhập enter sẽ kết thúc while
 			if (isSound)
 				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);
@@ -244,6 +245,8 @@ void CMENU::getSettingFromUser(bool& a1, bool& a2) {
 
 	while (true) {			//sử dụng 2 phím (lên, xuống) để điều kiển
 		char c = toupper(_getch());
+		CONSOLE::releaseChar();
+
 		if (c == 13 && y_ptr == coord.Y + height * 2) {		//khi nhập enter sẽ kết thúc while
 			if (isSound)
 				PlaySound(TEXT("OST/menu click.wav"), NULL, SND_ASYNC);

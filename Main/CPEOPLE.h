@@ -57,6 +57,7 @@ public:
 	bool isImpact(const vector<CANIMAL*>&, short);
 
 	void draw(int);
+	void drawDie();
 	void tell();
 };
 

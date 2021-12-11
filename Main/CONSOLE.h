@@ -74,5 +74,7 @@ public:
 	static void gotoXY(int, int);
 	static void textcolor(int x);
 	static int getConsoleCharacter(const int&, const int&);
+	static void releaseChar();
+	static void virtualPressKey();
 };
 

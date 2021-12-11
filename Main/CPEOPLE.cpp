@@ -210,6 +210,27 @@ void CPEOPLE::draw(int key) {
 	}
 }
 
+void CPEOPLE::drawDie()
+{
+	vector<vector<short>> form = peopleWait;
+	form[0][1] = 233;
+
+	for (int i = 0; i < 15; i++) {
+		if (i % 2 == 0)
+			CONSOLE::textcolor(ColorGame::red);
+		else 
+			CONSOLE::textcolor(ColorGame::blue);
+
+		for (int i = 0; i < getHeightPeople(); i++) {
+			CONSOLE::gotoXY(mX, mY + i);
+			for (int j = 0; j < getWidthPeople(); j++)
+				cout << char(form[i][j]);
+		}
+
+		Sleep(100);
+	}
+}
+
 void CPEOPLE::tell()
 {
 	PlaySound(TEXT("OST/ouch.wav"), NULL, SND_ASYNC);

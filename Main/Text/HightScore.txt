@@ -1,24 +1,7 @@
-Nhom 5
-5
-500
-Nhom 5
-5
-500
 Duy Khuong
 3
 150
 Thanh Lam
 3
 150
-Nhom 5
-3
-150
-Ho Thi Ky
-3
-100
-La Tinh Toan
-3
-100
-aaaa
-1
-0
+

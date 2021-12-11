@@ -1,4 +1,4 @@
-#include "CONSOLE.h"
+﻿#include "CONSOLE.h"
 
 // Function to fixed screen
 void CONSOLE::FixConsoleWindow() {
@@ -83,4 +83,32 @@ int CONSOLE::getConsoleCharacter(const int& x, const int& y) {
     ReadConsoleOutputCharacterA(consoleHandle, &characterFromConsole, numberOfCharactersToRead, positionInBuffer, &numberOfCharactersReaded);
 
     return characterFromConsole;
+}
+
+void CONSOLE::releaseChar()
+{
+    INPUT ip;
+
+    ip.type = INPUT_KEYBOARD;
+    ip.ki.wScan = 0; 
+    ip.ki.time = 0;
+    ip.ki.dwExtraInfo = 0;
+
+    ip.ki.wVk = 0x30; // phím ảo cho key up
+    ip.ki.dwFlags = 0;
+    SendInput(1, &ip, sizeof(INPUT));
+
+    _getch();
+}
+
+void CONSOLE::virtualPressKey()
+{
+    INPUT ip;
+    ip.type = INPUT_KEYBOARD;
+    ip.ki.wScan = 0;
+    ip.ki.time = 0;
+    ip.ki.dwExtraInfo = 0;
+    ip.ki.wVk = 0x30;
+    ip.ki.dwFlags = 0;
+    SendInput(1, &ip, sizeof(INPUT));
 }

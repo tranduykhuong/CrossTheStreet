@@ -57,7 +57,7 @@ public:
 	void drawGame();
 	void resetGame(short level = 0);
 
-	CPEOPLE getPeople() const { return people; }
+	CPEOPLE* getPeople() { return &people; }
 	vector<CANIMAL*> getHorses() const { return lane1->getListObjs(); }
 	vector<CANIMAL*> getRabbits() const { return lane2->getListObjs(); }
 	vector<CVEHICLE*> getCarLefts() const { return lane3->getListObjs(); }
@@ -103,6 +103,7 @@ public:
 
 	void drawGuide();
 	void drawInforLevel();
+	void drawAbout();
 };
 
 

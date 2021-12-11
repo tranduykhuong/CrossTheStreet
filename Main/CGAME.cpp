@@ -7,20 +7,6 @@ CGAME::CGAME() {
 	srand(time(NULL));
 	username = "";
 
-	// Đọc các cài đặt âm thanh từ file
-	/*ifstream fi("Text/OST.txt");
-	if (fi.fail()) return;
-
-	char c;
-	fi >> c;
-	if (c == '1') isSound = true;
-	else isSound = false;
-
-	fi >> c;
-	if (c == '1') isMusic = true;
-	else isMusic = false;
-
-	fi.close();*/
 	isMusic = true;
 	isSound = true;
 }
@@ -82,6 +68,7 @@ void CGAME::resetGame(short level) {
 	clearGame();
 	// set lại vị trí người về điểm xuất phát
 	people.setPosition(GameScreen::sLEFT + 4, GameScreen::sBOTTOM - people.getHeightPeople());
+	people.setState(true);
 	people.setSound(isSound);
 
 	// xác định số lượng object ở mỗi level
@@ -339,9 +326,10 @@ bool CGAME::runApp(bool check) {
 		cmenu.addItem("Load game");
 		cmenu.addItem("High score");
 		cmenu.addItem("Settings");
+		cmenu.addItem("About");
 		cmenu.addItem("Quit");
 		choice = cmenu.getSelectFromUser();
-		CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 32, 5 * 2 + 1);
+		CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 32, 5 * 3);
 
 		bool checkFile = true; string str;
 
@@ -391,16 +379,16 @@ bool CGAME::runApp(bool check) {
 			break;
 		}
 		case 5:
+			// Information
+			drawAbout();
+			break;
+		case 6:
 			// exit
 			system("cls");
+			cout << "----- Thank you for playing game! -----\n";
 			return false;
 		}
 	}
-
-	// Lưu các cài đặt âm thanh ra file
-	/*ofstream fo("Text/OST.txt");
-	fo << isSound << endl << isMusic;
-	fo.close();*/
 }
 
 // Vẽ hướng dẫn trò chơi
@@ -408,16 +396,17 @@ void CGAME::drawGuide() {
 	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 24);
 	guide.addItem("GUIDE");
 	guide.addItem("");
-	guide.addItem("W: Up  ");
-	guide.addItem("S: Down");
-	guide.addItem("A: Left");
-	guide.addItem("D: Right");
+	guide.addItem("W: UP  ");
+	guide.addItem("S: DOWN");
+	guide.addItem("A: LEFT");
+	guide.addItem("D: RIGHT");
 	guide.addItem("");
-	guide.addItem("L  : Save game ");
-	guide.addItem("T  : Load game ");
-	guide.addItem("P  : Pause game");
-	guide.addItem("U  : Settings  ");
-	guide.addItem("ESC: Exit game ");
+	guide.addItem("L  : SAVE GAME     ");
+	guide.addItem("T  : LOAD GAME     ");
+	guide.addItem("P  : PAUSE GAME    ");
+	guide.addItem("U  : SETTINGS      ");
+	guide.addItem("M  : BACK TO MENU  ");
+	guide.addItem("ESC: EXIT          ");
 	guide.addItem("");
 
 	guide.setColorTable(ColorGame::black, ColorGame::blue);
@@ -426,16 +415,62 @@ void CGAME::drawGuide() {
 
 void CGAME::drawInforLevel()
 {
-	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 }, 24);
+	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 + 1 }, 24);
 	information.addItem(username);
 	information.addItem("");
-	information.addItem("Level: " + to_string(currentLevel));
-	information.addItem("Score: " + to_string(score));
+	information.addItem("LEVEL: " + to_string(currentLevel));
+	information.addItem("SCORE: " + to_string(score));
 	information.addItem("");
 
 	information.setColorTable(ColorGame::olive, ColorGame::green);
 	information.setColorTitle(ColorGame::pink);
 	information.displayTableNoneLine();
+}
+
+void CGAME::drawAbout()
+{
+	// information
+	CMENU aboutGame = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 31) / 3 + 3, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 31);
+	aboutGame.addItem("INFORMATION");
+	aboutGame.addItem("");
+
+	aboutGame.addItem("Class  : 20CLC05          ");
+	aboutGame.addItem("Project: Cross The Street ");
+	aboutGame.addItem("Subject: OOP              ");
+	aboutGame.addItem("Teacher: Truong Toan Thinh");
+	aboutGame.addItem("");
+	aboutGame.addItem("");
+	aboutGame.setColorTable(6, ColorGame::blue);
+	aboutGame.displayTableNoneLine();
+
+	// About
+	CMENU aboutTeam = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 33) / 2 + 17, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 33);
+	aboutTeam.addItem("TEAM 5");
+	aboutTeam.addItem("");
+
+	aboutTeam.addItem("Dinh Cao Hong Phuoc - 20127287");
+	aboutTeam.addItem("Tran Duy Khuong     - 20127539");
+	aboutTeam.addItem("Vo Thanh Lam        - 20127546");
+	aboutTeam.addItem("Tran Bao Long       - 20127557");
+	aboutTeam.addItem("Nguyen Hoai Man     - 20127561");
+	aboutTeam.addItem("");
+	aboutTeam.setColorTable(6, ColorGame::blue);
+	aboutTeam.displayTableNoneLine();
+
+	// CopyRight
+	CMENU copyRight = CMENU(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 10 }, 30);
+	copyRight.addItem("Press any key to Back");
+	copyRight.addItem("");
+	copyRight.addItem("CopyRight @Team 5 - 2021");
+	copyRight.addItem("");
+	copyRight.setColorTable(6, 176);
+	copyRight.setColorTitle(144);
+	copyRight.displayTableNoneLine();
+
+	_getch();
+	CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 31) / 3 + 3, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 33, 5 * 3);
+	CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 33) / 2 + 17, SCREEN_CONSOLE_HEIGHT / 2 - 2 }, 1, 35, 5 * 3);
+	CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 10 }, 1, 32, 6);
 }
 
 void CGAME::setLevel(short lev)
@@ -775,6 +810,7 @@ void CGAME::Exit_game(thread* run)
 		run->join();
 	system("cls");
 	system("color 0e");
+	cout << "----- Thank you for playing game! -----\n";
 }
 
 void CGAME::Input_HightScore(string filename)
