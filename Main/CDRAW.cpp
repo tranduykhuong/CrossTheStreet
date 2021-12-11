@@ -154,6 +154,21 @@ void CDRAW::drawLogo(COORD coord, SHORT speed, SHORT delay, bool isSound) {
 	DrawLogo("Text/Team5.txt", coord, speed, delay, 3, isSound);
 }
 
+void CDRAW::drawText(COORD coord, SHORT color, string file)
+{
+	CONSOLE::textcolor(color);
+
+	ifstream fi(file);
+	if (fi.fail()) return;
+
+	string s;
+	for (int i = 0; !fi.eof(); i++) {
+		getline(fi, s);
+		CONSOLE::gotoXY(coord.X, coord.Y + i);
+		cout << s;
+	}
+}
+
 
 /******************************************************************
 * Hàm vẽ title game

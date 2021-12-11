@@ -5,6 +5,11 @@ short CTRAFFIC_LIGHT::getLightColor()
 	return this->mColor;
 }
 
+CTRAFFIC_LIGHT::CTRAFFIC_LIGHT()
+{
+	mColor = 1;
+}
+
 void CTRAFFIC_LIGHT::setLightX(short X) {
 	this->mX = X;
 }

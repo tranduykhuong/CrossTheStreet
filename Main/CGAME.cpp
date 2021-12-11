@@ -57,6 +57,7 @@ void CGAME::drawGame() {
 			CDRAW::drawHorizontalLine(COORD{ x, tempY }, width, 61, colorText);
 	}
 
+	CDRAW::drawText(COORD{ SCREEN_GAME_WIDTH + 15, 0 }, ColorGame::red, "Text/titleCTS.txt");
 	// Vẽ hướng dẫn
 	drawGuide();
 	// Vẽ thông tin người chơi
@@ -133,6 +134,7 @@ void CGAME::resetGame(short level) {
 
 void CGAME::saveGame(fstream& save)
 {
+	save << username << endl;
 	save << currentLevel << " " << score << endl;
 	save << people.getX() << " " << people.getY() << endl;
 
@@ -150,7 +152,7 @@ void CGAME::saveGame(fstream& save)
 	vector<CANIMAL*> animals;
 	vector<CVEHICLE*> vehicles;
 	int size, sizeLane = 7;
-	if (currentLevel <= 4) sizeLane--;
+	//if (currentLevel <= 4) sizeLane--;
 
 	for (int i = 1; i <= sizeLane; i++) {
 		switch (i)
@@ -180,7 +182,10 @@ void CGAME::saveGame(fstream& save)
 			size = numTruck;
 			break;
 		case 7:
-			size = 1;
+			if (currentLevel > 4)
+				size = 1;
+			else
+				size = 0;
 			vehicles = laneTrain->getListObjs();
 			break;
 		}
@@ -214,6 +219,7 @@ void CGAME::loadGame(fstream& load)
 	short xPeople, yPeople, size;
 	short xObj, yObj, colorO, moveO, speedO;
 
+	getline(load, username, '\n');
 	load >> currentLevel >> score;
 	load.get();
 
@@ -234,7 +240,7 @@ void CGAME::loadGame(fstream& load)
 	}
 	people.setShade(peopleShade);
 
-	for (int i = 1; i <= 6; i++) {
+	for (int i = 1; i <= 7; i++) {
 		load >> size;
 		load.get();
 		switch (i)
@@ -402,7 +408,7 @@ void CGAME::drawGuide() {
 	CMENU guide = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 2 + 1 }, 24);
 	guide.addItem("GUIDE");
 	guide.addItem("");
-	guide.addItem("W: up  ");
+	guide.addItem("W: Up  ");
 	guide.addItem("S: Down");
 	guide.addItem("A: Left");
 	guide.addItem("D: Right");
@@ -420,7 +426,7 @@ void CGAME::drawGuide() {
 
 void CGAME::drawInforLevel()
 {
-	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 - 2}, 24);
+	CMENU information = CMENU(COORD{ SCREEN_GAME_WIDTH + 11, SCREEN_CONSOLE_HEIGHT / 4 }, 24);
 	information.addItem(username);
 	information.addItem("");
 	information.addItem("Level: " + to_string(currentLevel));
@@ -581,6 +587,7 @@ bool CGAME::Win_nextLevel()
 	CDRAW::drawLevelCompleteScreen(COORD{ 12, 5 }, 10, isSound);
 	score += currentLevel * 50;
 	currentLevel++;
+	resetGame();
 
 	// menu
 	while (1) {
@@ -593,7 +600,6 @@ bool CGAME::Win_nextLevel()
 		CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 0, 26, 2 * 3 + 1);
 
 		if (choice == 0) {
-			resetGame();
 			return false;
 		}
 		else if (choice == 1) {
