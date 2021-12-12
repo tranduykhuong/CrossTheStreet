@@ -80,7 +80,6 @@ int main()
                 isExit = cg.ESC();
                 if (!isExit) {
                     cg.MusicStatus(true);
-                    Sleep(300);
                     system("cls");
                     cg.drawGame();
                     cg.resumeGame(runGame, &run);
@@ -96,7 +95,7 @@ int main()
                 int choice;
                 cg.MusicStatus(false);
                 cg.pauseGame(&run);
-                Sleep(500);
+                Sleep(100);
 
                 CMENU pauseForm = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
                 pauseForm.addItem("Resume");
@@ -106,7 +105,6 @@ int main()
 
                 if (choice == 0) {
                     cg.MusicStatus(true);
-                    Sleep(300);
                     system("cls");
                     cg.drawGame();
                     cg.resumeGame(runGame, &run);
@@ -123,7 +121,6 @@ int main()
                 cg.Settings();
 
                 system("cls");
-                Sleep(300);
                 cg.drawGame();
                 cg.resumeGame(runGame, &run);
             }
@@ -133,7 +130,7 @@ int main()
                 int choice;
                 cg.MusicStatus(false);
                 cg.pauseGame(&run);
-                Sleep(500);
+                Sleep(100);
                 cg.Save_game();
 
                 CMENU saveFormComplete = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 24, cg.getSound());
@@ -146,7 +143,6 @@ int main()
 
                 if (choice == 0) {
                     cg.MusicStatus(true);
-                    Sleep(300);
                     system("cls");
                     cg.drawGame();
                     cg.resumeGame(runGame, &run);
@@ -173,7 +169,7 @@ int main()
 
                 cg.MusicStatus(false);
                 cg.pauseGame(&run);
-                Sleep(500);
+                Sleep(100);
 
                 bool checkFile = true;
                 string str;
@@ -201,7 +197,7 @@ int main()
             else if (key == 'M') {
                 cg.MusicStatus(false);
                 cg.pauseGame(&run);
-                Sleep(500);
+                Sleep(100);
                 system("cls");
                 if (cg.runApp(false)) {
                     cg.startGame();
@@ -224,12 +220,11 @@ int main()
         if (cg.getPeople()->isDead() || !cg.isRunning()) {
             mciSendString(TEXT("close mp3"), NULL, 0, NULL);
             cg.pauseGame(&run);
-            Sleep(500);
+            Sleep(100);
             isExit = cg.Game_over();
             if (!isExit) {
                 cg.startMusic();
                 system("cls");
-                Sleep(300);
                 cg.drawGame();
                 cg.resumeGame(runGame, &run);
             }
@@ -246,7 +241,6 @@ int main()
             if (!isExit) {
                 cg.startMusic();
                 system("cls");
-                Sleep(300);
                 cg.drawGame();
                 cg.resumeGame(runGame, &run);
             }

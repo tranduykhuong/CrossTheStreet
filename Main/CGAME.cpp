@@ -213,6 +213,7 @@ void CGAME::loadGame(fstream& load)
 	load >> xPeople >> yPeople;
 	people.setPosition(xPeople, yPeople);
 	load.get();
+	people.setState(true);
 
 	vector<vector<int>> peopleShade;
 
@@ -340,7 +341,7 @@ bool CGAME::runApp(bool check) {
 			CMENU inputUser = CMENU(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 20 }, 24, isSound);
 			inputUser.addItem("WELCOME");
 			inputUser.addItem("Enter your username");
-			inputUser.setColorTitle(46);
+			inputUser.setColorTitle(111);
 			username = inputUser.getInputString();
 
 			mciSendString(TEXT("close mp3"), NULL, 0, NULL);
