@@ -47,7 +47,9 @@ short CTRAIN::getHeight() const {
 }
 
 short CTRAIN::getWidth() const {
-	return form[0].size();
+	if (form.size() > 0)
+		return form[0].size();
+	return 0;
 }
 
 void CTRAIN::move() {

@@ -9,6 +9,43 @@ CGAME::CGAME() {
 
 	isMusic = true;
 	isSound = true;
+
+	carFormLeft2 = loadForm("Text/FormObj/carFormLeft2.txt");
+	carFormRight1 = loadForm("Text/FormObj/carFormRight1.txt");
+	truckFormLeft2 = loadForm("Text/FormObj/truckFormLeft2.txt");
+	truckFormRight1 = loadForm("Text/FormObj/truckFormRight1.txt");
+	trainFormLeft = loadForm("Text/FormObj/trainFormLeft.txt");
+	trainFormRight = loadForm("Text/FormObj/trainFormRight.txt");
+
+	rabbitLeft_1 = loadForm("Text/FormObj/rabbitFormLeft1.txt");
+	rabbitLeft_2 = loadForm("Text/FormObj/rabbitFormLeft2.txt");
+	rabbitRight_1 = loadForm("Text/FormObj/rabbitFormRight1.txt");
+	rabbitRight_2 = loadForm("Text/FormObj/rabbitFormRight2.txt");
+
+	horseLeft_1 = loadForm("Text/FormObj/horseFormLeft1.txt");
+	horseLeft_2 = loadForm("Text/FormObj/horseFormLeft2.txt");
+	horseRight_1 = loadForm("Text/FormObj/horseFormRight1.txt");
+	horseRight_2 = loadForm("Text/FormObj/horseFormRight2.txt");
+}
+
+CGAME::~CGAME()
+{
+	clearGame();
+
+	delete lane1;
+	lane1 = nullptr;
+	delete lane2;
+	lane2 = nullptr;
+	delete lane3;
+	lane3 = nullptr;
+	delete lane4;
+	lane4 = nullptr;
+	delete lane5;
+	lane5 = nullptr;
+	delete lane6;
+	lane6 = nullptr;
+	delete laneTrain;
+	laneTrain = nullptr;
 }
 
 // Vẽ màn hình Game
@@ -85,12 +122,12 @@ void CGAME::resetGame(short level) {
 	}
 
 	// set Car
-	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft1, carFormLeft1);
-	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight2, carFormRight2);
+	lane3->setLane(numCar, (level % 7 / 3 + 3), LEFT, carFormLeft2, carFormLeft2);
+	lane4->setLane(numCar, (level % 7 / 3 + 2), RIGHT, carFormRight1, carFormRight1);
 
 	// set Truck
-	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft1, truckFormLeft1);
-	lane6->setLane(numTruck, (level + 3) / 3 % 4 + 2, RIGHT, truckFormRight2, truckFormRight2);
+	lane5->setLane(numTruck, (level + 2) % 3 + 3, LEFT, truckFormLeft2, truckFormLeft2);
+	lane6->setLane(numTruck, (level + 3) / 3 % 4 + 2, RIGHT, truckFormRight1, truckFormRight1);
 
 	// set Horse
 	short move = (level % 2) == 0 ? LEFT : RIGHT;	// chạy qua trái hoặc phải phụ thuộc vào level
@@ -119,7 +156,7 @@ void CGAME::resetGame(short level) {
 	}
 }
 
-void CGAME::saveGame(fstream& save)
+void CGAME::saveGame(ofstream& save)
 {
 	save << username << endl;
 	save << currentLevel << " " << score << endl;
@@ -201,7 +238,7 @@ void CGAME::saveGame(fstream& save)
 	save.close();
 }
 
-void CGAME::loadGame(fstream& load)
+void CGAME::loadGame(ifstream& load)
 {
 	short xPeople, yPeople, size;
 	short xObj, yObj, colorO, moveO, speedO;
@@ -265,16 +302,16 @@ void CGAME::loadGame(fstream& load)
 					lane2->pushObj(xObj, yObj, colorO, moveO, speedO, rabbitRight_1, rabbitRight_2);
 				break;
 			case 3:
-				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft1, carFormLeft2);
+				lane3->pushObj(xObj, yObj, colorO, moveO, speedO, carFormLeft2, carFormLeft2);
 				break;
 			case 4:
-				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight2, carFormRight2);
+				lane4->pushObj(xObj, yObj, colorO, moveO, speedO, carFormRight1, carFormRight1);
 				break;
 			case 5:
-				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft1, truckFormLeft2);
+				lane5->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormLeft2, truckFormLeft2);
 				break;
 			case 6:
-				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight2, truckFormRight2);
+				lane6->pushObj(xObj, yObj, colorO, moveO, speedO, truckFormRight1, truckFormRight1);
 				break;
 			case 7:
 				if (currentLevel > 4 && numRabbit == 0) {
@@ -474,6 +511,35 @@ void CGAME::drawAbout()
 	CDRAW::clearBox(COORD{ (SCREEN_CONSOLE_WIDTH - 30) / 2, SCREEN_CONSOLE_HEIGHT / 2 + 10 }, 1, 32, 6);
 }
 
+vector<vector<short>> CGAME::loadForm(string filename)
+{
+	ifstream fin(filename);
+	vector<vector<short>> form;
+
+	if (!fin) return form;
+
+	vector<short> row;
+	while (!fin.eof()) {
+		char c;
+		c = fin.get();
+
+		if (fin.fail()) {
+			form.push_back(row);
+			break;
+		}
+
+		if (c == '\n') {
+			form.push_back(row);
+			row.clear();
+		}
+		else {
+			row.push_back(c);
+		}
+	}
+
+	return form;
+}
+
 void CGAME::setLevel(short lev)
 {
 	if (lev > 0)
@@ -507,7 +573,7 @@ void CGAME::updatePosVehicle() {
 			lane6->tellObj();
 	}
 	if (currentLevel > 4) {
-		laneTrain->setTimerLight((6 - (7 % 4 + 2)) * (SCREEN_GAME_WIDTH + 1) + 64, 100);
+		//laneTrain->setTimerLight((6 - (7 % 4 + 2)) * (SCREEN_GAME_WIDTH + 1) + 64, 100);
 		laneTrain->moveObj();
 		if (isSound)
 			laneTrain->tellObj();
@@ -746,8 +812,7 @@ void CGAME::Save_game()
 		filename += ".txt";
 	filename = "Text/" + filename;
 
-	fstream saveG;
-	saveG.open(filename, ios::out);
+	ofstream saveG(filename);
 	saveGame(saveG);
 	CDRAW::clearBox(COORD{ SCREEN_CONSOLE_WIDTH / 2 - 14, sTOP + 16 }, 119, 25, 3 * 2 + 1);
 
@@ -773,8 +838,7 @@ void CGAME::Load_game(bool& check, string& str)
 		filename += ".txt";
 	filename = "Text/" + filename;
 
-	fstream loadG;
-	loadG.open(filename, ios::in);
+	ifstream loadG(filename);
 
 	if (!loadG) {
 		check = false;

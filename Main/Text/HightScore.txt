@@ -1,15 +1,6 @@
-Nhom 5
-5
-500
-Nhom 5
-5
-500
 Duy Khuong
 3
 150
 Thanh Lam
 3
 150
-Nhom 5
-2
-50

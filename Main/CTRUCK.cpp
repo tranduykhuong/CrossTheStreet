@@ -39,7 +39,9 @@ void CTRUCK::set(const short& x, const short& y, const short& color, const short
 }
 
 short CTRUCK::getWidth() const {
-	return form[0].size();
+	if (form.size() > 0)
+		return form[0].size();
+	return 0;
 }
 
 short CTRUCK::getHeight() const {

@@ -111,20 +111,20 @@ inline void CLANE<T, U>::setLane
 {
 	short heightObj = form1.size();
 	short widthObj = form1[0].size();
-
+	short color = randomColor(ColorGame::black, ColorGame::olive);
 	for (short i = 0; i < num; i++) {
 		// set Object đầu tiên trong mảng
 		if (i == 0) {
 			// xe đi sang trái
 			if (move == LEFT) {
 				listObjs.push_back(new U(sRIGHT + 1, Y + HEIGHT_ROAD - heightObj,
-					randomColor(ColorGame::black, ColorGame::olive), speed, LEFT));
+					color, speed, LEFT));
 				listObjs[i]->setForm(form1, form2);
 			}
 			// xe đi sang phải
 			else {
 				listObjs.push_back(new U(sLEFT - widthObj, Y + HEIGHT_ROAD - heightObj,
-					randomColor(ColorGame::black, ColorGame::olive), speed, RIGHT));
+					color, speed, RIGHT));
 				listObjs[i]->setForm(form1, form2);
 			}
 		}
@@ -141,7 +141,7 @@ inline void CLANE<T, U>::setLane
 
 				// Push object vào listObjs
 				listObjs.push_back(new U(before_x + distance + widthObj, Y + HEIGHT_ROAD - heightObj,
-					randomColor(ColorGame::black, ColorGame::olive), speed, LEFT));
+					color, speed, LEFT));
 				listObjs[i]->setForm(form1, form2);
 			}
 			// xe đi sang trái
@@ -151,7 +151,7 @@ inline void CLANE<T, U>::setLane
 
 				// Push object vào listObjs
 				listObjs.push_back(new U(listObjs[i - 1]->getX() - widthObj - distance, Y + HEIGHT_ROAD - heightObj,
-					randomColor(ColorGame::black, ColorGame::olive), speed, RIGHT));
+					color, speed, RIGHT));
 				listObjs[i]->setForm(form1, form2);
 			}
 		}

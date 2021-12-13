@@ -58,7 +58,9 @@ short CHORSE::getHeight() const {
 }
 
 short CHORSE::getWidth() const {
-	return form1[0].size();
+	if (form1.size() > 0)
+		return form1[0].size();
+	return 0;
 }
 
 void CHORSE::tell() {
